@@ -1,0 +1,217 @@
+body {
+    font-family: 'verdana', sans-serif;
+    display: grid;
+	grid-template-columns: 1fr 1fr 1fr 1fr;
+	grid-template-rows: auto 1fr;
+	grid-gap: 10px;
+}
+
+#deck {
+	margin-bottom: 30px;
+}
+
+.theme {
+	border-radius: 15px;
+	padding: 10px;
+	display: grid;
+	position: relative;
+	grid-template-rows: 30px 1fr minmax(70px, auto);
+	
+}
+.theme .icon {
+	position: absolute;
+	right: 10px;
+	top: 15px;
+	width: 50px;
+	height: 50px;
+	font-size: 33px;
+	text-align: center;
+	border-radius: 0 0 0 15px;
+}
+.theme .inner {
+	padding: 5px 20px 5px 20px;
+}
+
+.theme .book {
+	
+	border-radius: 5px 5px 0 0;
+	padding: 7px 7px 7px 20px;
+	font-family: 'verdana', sans-serif;
+	font-size: 12px;
+	font-style: italic;
+}
+
+.theme .name {
+	font-size: 30px;
+	font-weight: bold;
+	font-family: 'verdana', sans-serif;
+	text-align: center;
+	margin-bottom: 20px;
+}
+
+.theme .attention, .theme .fade {
+	display: inline-block;
+	margin-right: 20px;
+}
+
+.theme .attention .label:after {
+	content: "Attention";
+}
+
+.mythos.theme .fade .label:after {
+	content: "Fade";
+}
+
+.logos.theme .fade .label:after {
+	content: "Crack";
+}
+
+.theme .attention .mark, .theme .fade .mark {
+	display: inline-block;
+	
+}
+
+.theme .attention .mark input, .theme .fade .mark input {
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	
+}
+
+.theme .mystery_head {
+	font-weight: bold;
+	margin-top: 20px;
+}
+
+.theme .mystery {
+	font-family: cursive;
+	font-size: 24px;
+	margin-bottom: 10px;
+}
+
+.theme .description {
+	font-family: serif;
+	margin-bottom: 20px;
+}
+
+.theme .powertags_head {
+	font-size: 18px;
+	font-weight: bold;
+}
+
+.theme .powertags {
+	list-style: none;
+	padding: 0;
+}
+
+.theme .powertags li input {
+	float: right;
+}
+
+.theme .weakness_head {
+	margin: 0;
+	font-weight: bold;
+	font-size: 18px;
+}
+
+.theme .weaknesses {
+	padding: 0;
+	list-style: none;
+	margin: 0;
+}
+
+
+
+.theme .footer {
+	border-radius: 0 0 5px 5px;
+	padding: 7px 20px 7px 20px;
+}
+
+.theme.mythos {
+	background-color: #ae9b99;
+	color: white;
+}
+
+.theme.mythos .inner {
+	background-color: #886f8f;
+}
+
+.theme.mythos .book, .theme.mythos .footer, .theme.mythos .icon {
+	background-color: #3c2134;
+}
+
+.theme.mythos .name, .theme.mythos .icon {
+	text-shadow:
+	   -1px -1px 0 rgba(255,0,255,0.5),
+		1px -1px 0 rgba(255,0,255,0.5),
+		-1px 1px 0 rgba(255,0,255,0.5),
+		 1px 1px 0 rgba(255,0,255,0.5),
+	   -3px -3px 0 rgba(255,0,255,0.1),
+		3px -3px 0 rgba(255,0,255,0.1),
+		-3px 3px 0 rgba(255,0,255,0.1),
+		 3px 3px 0 rgba(255,0,255,0.1);
+}
+
+.theme.logos {
+	background-color: #eee2ba;
+	color: #564335;
+}
+
+
+.theme.logos .inner {
+	background-color: #ddd0ba;
+}
+
+.theme.logos .book, .theme.logos .footer, .theme.logos .icon {
+	background-color: #a8562d;
+	color: white;
+}
+
+.roller {
+    font-size: 24px;
+    padding: 10px;
+}
+
+.total {
+    font-weight: bold;
+    display:inline-block;
+    width: 3em;
+}
+
+.math {
+    font-size: smaller;
+}
+.math:before, .label:before {
+    content: " (";
+}
+.math:after, .label:after {
+    content: ") ";
+}
+
+.die {
+    display:inline-block;
+    width: 1.2em;
+    height: 1.2em;
+    background-color: white;
+    border: thin solid black;
+    text-align: center;
+    vertical-align: bottom;
+}
+
+
+.bonus {
+    color: #080;
+}
+
+.penalty {
+    color: #800;
+}
+
+#rolls {
+    background-color: #eee;
+    overflow: auto;
+}
+
+.label {
+    font-size: smaller;
+}
