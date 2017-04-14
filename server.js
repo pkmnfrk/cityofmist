@@ -26,4 +26,4 @@ var server = http.createServer(function (req, res) {
 });
 
 bayeux.attach(server);
-server.listen(8000);
+server.listen(process.env.PORT || 8000);
