@@ -1,7 +1,11 @@
 branch-defaults:
   master:
-    environment: null
+    environment: prod
     group_suffix: null
+environment-defaults:
+  prod:
+    branch: master
+    repository: cityofmist
 global:
   application_name: cityofmist
   branch: master
