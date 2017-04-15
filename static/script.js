@@ -3,6 +3,11 @@
 var myRoom = window.location.search;
 if(myRoom[0] == "?") myRoom = myRoom.substring(1);
 
+if(!myRoom) {
+    myRoom = prompt("What is your nickname?");
+    location = "?" + myRoom;
+    
+}
 
 var client = new Faye.Client('/faye');
 var character = client.subscribe('/character/' + myRoom, function(message) {
