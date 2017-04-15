@@ -38,7 +38,7 @@ function save_put(req, res, bayeux) {
             }
             
             //notify clients
-            bayeux.getClient().publish('/' + id + '/character', JSON.parse(body));
+            bayeux.getClient().publish('/character/' + id, JSON.parse(body));
             
             res.writeHead(200, { "Content-Type": "application/json"});
             res.write("{\"ok\":true}");

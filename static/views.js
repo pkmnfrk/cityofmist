@@ -32,9 +32,10 @@ var Theme = {
 					save();
 				}}, t.name),
 				m("div", {class: "attention"}, [
-					t.attention.map(a => 
+					t.attention.map((a,i) => 
 						m("div", {class:"mark"}, [
-							m("input[type=checkbox]", { checked: a, onchange: () => {
+							m("input[type=checkbox]", { checked: a, onchange: (e) => {
+                                t.attention[i] = e.srcElement.checked;
 								save();
 							} })
 						])
@@ -42,9 +43,10 @@ var Theme = {
 					m("div", {class:"label"})
 				]),
 				m("div", {class: "fade"}, [
-					t.fade.map(a => 
+					t.fade.map((a,i) => 
 						m("div", {class:"mark"}, [
-							m("input[type=checkbox]", { checked: a, onchange: () => {
+							m("input[type=checkbox]", { checked: a, onchange: (e) => {
+                                t.fade[i] = e.srcElement.checked;
 								save();
 							} })
 						])
@@ -72,7 +74,8 @@ var Theme = {
 								}},
 								p.name
 							),
-							m("input[type=checkbox]", {checked: p.burned, onchange: () => {
+							m("input[type=checkbox]", {checked: p.burned, onchange: (e) => {
+                                p.burned = e.srcElement.checked;
 								save();
 							} })
 						])

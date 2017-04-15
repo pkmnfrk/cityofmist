@@ -181,10 +181,10 @@ body {
 .math {
     font-size: smaller;
 }
-.math:before, .label:before {
+.math:before, #rolls .label:before {
     content: " (";
 }
-.math:after, .label:after {
+.math:after, #rolls .label:after {
     content: ") ";
 }
 
@@ -212,6 +212,6 @@ body {
     overflow: auto;
 }
 
-.label {
+#rolls .label {
     font-size: smaller;
 }
