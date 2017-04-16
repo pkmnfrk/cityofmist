@@ -5,6 +5,8 @@ function editString(t) {
 }
 
 var Theme = {
+    tapped: false,
+    
 	toggleType: function(t) {
 		if(t == "logos") return "mythos";
 		return "logos";
@@ -157,7 +159,18 @@ var Theme = {
                 ]), //inner
                 m("div", {class: "footer"}, [
                     m("div", {class:"weakness_head"}, [
-                        "WEAKNESS TAGS",
+                        m("span", {
+                            ontouchstart: function(e) {
+                                e.preventDefault();
+                                
+                                if(!this.tapped) {
+                                    setTimeout(() => this.tapped = false, 500);
+                                    return;
+                                }
+                                
+                                toggleLocked();
+                            },
+                        }, "WEAKNESS TAGS"),
                         m("i[class=fa fa-plus-circle add]", {onclick: () => this.addWeakness(t) })
                     ]),
                     m("ul", {class: "weaknesses"}, 
