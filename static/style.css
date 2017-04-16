@@ -340,3 +340,8 @@ body.unlocked .theme .add, body.unlocked .theme .close {
     max-height: 2em;
     max-width: 100px;
 }
+
+.unlock {
+    max-height: 2em;
+    max-width: 150px;
+}

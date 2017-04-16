@@ -160,7 +160,7 @@ var Theme = {
                 m("div", {class: "footer"}, [
                     m("div", {class:"weakness_head"}, [
                         m("span", {
-                            ontouchstart: function(e) {
+                            /*onclick: function(e) {
                                 e.preventDefault();
                                 
                                 if(!this.tapped) {
@@ -169,7 +169,7 @@ var Theme = {
                                 }
                                 
                                 toggleLocked();
-                            },
+                            },*/
                         }, "WEAKNESS TAGS"),
                         m("i[class=fa fa-plus-circle add]", {onclick: () => this.addWeakness(t) })
                     ]),
@@ -373,7 +373,8 @@ var Deck  = {
 		return [
             m(Theme, {themes: vnode.attrs.themes}),
             m(Roller),
-            m(Statuses, {statuses: vnode.attrs.statuses})
+            m(Statuses, {statuses: vnode.attrs.statuses}),
+            m("button[class=unlock]", { onclick: () => {toggleLocked()}}, "Lock/unlock themes")
         ]
 	}
 };

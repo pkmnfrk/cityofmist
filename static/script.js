@@ -13,11 +13,11 @@ document.onkeypress = function(e) {
     e = e || window.event;
     
     if(e.key == "l") {
-        togleLocked();
+        toggleLocked();
     }
 }
 
-function togleLocked() {
+function toggleLocked() {
     document.body.classList.toggle("unlocked");
 }
 
