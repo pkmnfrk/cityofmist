@@ -94,7 +94,10 @@ var Theme = {
                         t.weaknesses.map(w => m("li", {onclick: () => {
                             w.name = editString(w.name);
                             save();
-                        }}, w.name))
+                        }}, [
+                            m("i[class=fa fa-times-circle-o close]", {onclick: () => {}}),
+                            w.name
+                        ]))
                     )
                 ])
             ]);

@@ -10,6 +10,14 @@ body {
 	margin-bottom: 30px;
 }
 
+.theme .add, .theme .close {
+    display: none;
+}
+
+body.unlocked .theme .add, body.unlocked .theme .close {
+    display:inline;
+}
+
 .theme > .close {
     position: absolute;
     bottom: 13px;
@@ -114,7 +122,7 @@ body {
 	padding: 0;
 }
 
-.theme .powertags li i {
+.theme .powertags li i, .theme .weaknesses li i {
     margin-right: 4px;
 }
 
