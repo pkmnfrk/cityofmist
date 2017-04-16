@@ -91,17 +91,31 @@ $.ajax({
     method: "GET",
     success: function(data) {
         //alert(data);
+        
+        if(Array.isArray(data)) {
+            data = {
+                themes: data
+            };
+        }
+        
         objs = data;
+        
+        if(!objs.statuses) {
+            objs.statuses = [];
+        }
         
         draw();
     },
     error: function() {
-        objs = [
-            JSON.parse(JSON.stringify(template)),
-            JSON.parse(JSON.stringify(template)),
-            JSON.parse(JSON.stringify(template)),
-            JSON.parse(JSON.stringify(template))
-        ];
+        objs = {
+            themes: [
+                JSON.parse(JSON.stringify(template)),
+                JSON.parse(JSON.stringify(template)),
+                JSON.parse(JSON.stringify(template)),
+                JSON.parse(JSON.stringify(template))
+            ],
+            statuses: []
+        };
         
         draw();
     }
@@ -124,6 +138,5 @@ function save() {
 
 function draw() {
     var root = document.body;
-    Deck.deck = objs;
-    m.render(root, m(Deck));
+    m.render(root, m(Deck, objs));
 }

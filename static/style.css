@@ -10,7 +10,13 @@ body {
 	margin-bottom: 30px;
 }
 
-.theme {
+.theme > .close {
+    position: absolute;
+    bottom: 13px;
+    right: 13px;
+}
+
+.theme, .status {
 	border-radius: 15px;
 	padding: 10px;
 	display: grid;
@@ -32,7 +38,7 @@ body {
 	padding: 5px 20px 5px 20px;
 }
 
-.theme .book {
+.theme .book, .status .header {
 	
 	border-radius: 5px 5px 0 0;
 	padding: 7px 7px 7px 20px;
@@ -99,9 +105,17 @@ body {
 	font-weight: bold;
 }
 
+.theme .powertags_head .add, .theme .weakness_head .add {
+    margin-left: 10px;
+}
+
 .theme .powertags {
 	list-style: none;
 	padding: 0;
+}
+
+.theme .powertags li i {
+    margin-right: 4px;
 }
 
 .theme .powertags li input {
@@ -152,7 +166,7 @@ body {
 		 3px 3px 0 rgba(255,0,255,0.1);
 }
 
-.theme.logos {
+.theme.logos, .status {
 	background-color: #eee2ba;
 	color: #564335;
 }
@@ -162,7 +176,7 @@ body {
 	background-color: #ddd0ba;
 }
 
-.theme.logos .book, .theme.logos .footer, .theme.logos .icon {
+.theme.logos .book, .theme.logos .footer, .theme.logos .icon, .status .header {
 	background-color: #a8562d;
 	color: white;
 }
@@ -210,8 +224,107 @@ body {
 #rolls {
     background-color: #eee;
     overflow: auto;
+    list-style: none;
+    padding-left: 0;
+    
 }
 
 #rolls .label {
     font-size: smaller;
+}
+
+.status {
+    font-family: "Impact", "Verdana", sans-serif;
+    
+}
+
+.status .header {
+    font-style: normal;
+    font-size: 14px;
+    text-align: center;
+}
+
+.status .inner {
+    display:grid;
+    grid-column-gap: 2px;
+    grid-template-columns: 5fr 5fr 4fr 5fr 3fr 4fr 5fr 2fr 3fr 4fr 5fr 1fr 2fr 3fr 4fr 5fr;
+    text-align: center;
+    margin-left: 5px;
+    margin-right: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+    margin-top: 10px;
+}
+
+.status .inner div.col {
+    background-color: rgba(255, 255, 255, 0.75);
+    transform: skewX(-10deg);
+}
+
+.status .inner div.col.shaded {
+    background-color: rgba(64, 0, 0, 0.75)
+}
+
+.status .inner div.col div {
+    min-height: 10px;
+}
+
+.status .inner div.col div.label {
+    font-size: 10px;
+    color: #f00;
+    min-height: 1em;
+}
+
+.status .inner div.col div.number {
+    font-size: 40px;
+    font-weight: bold;
+    line-height: 40px;
+    /*vertical-align: sub;*/
+    text-align: right;
+}
+
+.status .inner div.col.shaded div.number {
+    color: #fff;
+}
+
+.close, .add {
+    cursor: pointer;
+}
+
+.status .close {
+    position: absolute;
+    right: -12px;
+    top: -12px;
+}
+
+.status .tagwrap {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    line-height: 48px;
+    height: 48px;
+    margin-top: 10px;
+}
+
+.status .taglabel {
+    font-size: 48px;
+}
+
+.status .tag {
+    font-size: 40px;
+    padding-left: 10px;
+    background-color: white;
+}
+
+.status .help {
+    font-family: "Verdana", sans-serif;
+    text-transform: uppercase;
+    font-size: 10px;
+    text-align: center;
+    margin-left: 35px;
+    margin-right: 36px;
+}
+
+.newstatus {
+    max-height: 2em;
+    max-width: 100px;
 }
