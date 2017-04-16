@@ -9,11 +9,74 @@ var Theme = {
 		if(t == "logos") return "mythos";
 		return "logos";
 	},
+    
+    deleteTheme: function(themes, theme) {
+        for(var i = 0; i < themes.length; i++) {
+            if(themes[i] == theme) {
+                themes.splice(i, 1);
+                break;
+            }
+        }
+        
+        save();
+    },
+    
+    addTheme: function(themes) {
+        var newTheme = JSON.parse(JSON.stringify(template));
+        
+        themes.push(newTheme);
+        save();
+    },
 	
+    deletePower: function(theme, power) {
+        for(var i = 0; i < theme.powertags.length; i++) {
+            if(theme.powertags[i] == power) {
+                theme.powertags.splice(i, 1);
+                break;
+            }
+        }
+        
+        save();
+    },
+    
+    deleteWeakness: function(theme, weak) {
+        for(var i = 0; i < theme.weaknesses.length; i++) {
+            if(theme.weaknesses[i] == weak) {
+                theme.weaknesses.splice(i, 1);
+                break;
+            }
+        }
+        
+        save();
+    },
+    
+    addPower: function(theme) {
+        var newPower = {
+            name: "<new tag>",
+            burned: false
+        };
+        
+        theme.powertags.push(newPower);
+        save();
+        
+    },
+    
+    addWeakness: function(theme) {
+        var newWeakness = {
+            name: "<new tag>"
+        }
+        
+        theme.weaknesses.push(newWeakness);
+        save();
+    },
+    
 	view: function(vnode) {
-        return vnode.attrs.themes.map(t => {
+        var ret = vnode.attrs.themes.map(t => {
             return m("div", {class: "theme " + t.type}, [
-                m("i[class=close fa fa-times-circle-o fa-2x]"),
+                m("i[class=close fa fa-times-circle-o fa-2x]", {onclick: () => {
+                    this.deleteTheme(vnode.attrs.themes, t);
+                }}),
+                
                 m("div", {class: "book", onclick: () => {
                     t.book = editString(t.book);
                     save();
@@ -63,12 +126,12 @@ var Theme = {
 
                     m("div", {class: "powertags_head"}, [
                         "POWER TAGS",
-                        m("i[class=fa fa-plus-circle add]", {onclick: () => {}})
+                        m("i[class=fa fa-plus-circle add]", {onclick: () => this.addPower(t)})
                     ]),
                     m("ul", {class: "powertags"},
                         t.powertags.map(
                             p => m("li", [
-                                m("i[class=fa fa-times-circle-o close]", {onclick: () => {}}),
+                                m("i[class=fa fa-times-circle-o close]", {onclick: () => this.deletePower(t, p)}),
                                 
                                 m("span",
                                     {onclick: () => {
@@ -88,20 +151,30 @@ var Theme = {
                 m("div", {class: "footer"}, [
                     m("div", {class:"weakness_head"}, [
                         "WEAKNESS TAGS",
-                        m("i[class=fa fa-plus-circle add]", {onclick: () => {}})
+                        m("i[class=fa fa-plus-circle add]", {onclick: () => this.addWeakness(t) })
                     ]),
                     m("ul", {class: "weaknesses"}, 
-                        t.weaknesses.map(w => m("li", {onclick: () => {
-                            w.name = editString(w.name);
-                            save();
-                        }}, [
-                            m("i[class=fa fa-times-circle-o close]", {onclick: () => {}}),
-                            w.name
+                        t.weaknesses.map(w => m("li", [
+                            m("i[class=fa fa-times-circle-o close]", {onclick: () => this.deleteWeakness(t, w)}),
+                            m("span", {onclick: () => {
+                                w.name = editString(w.name);
+                                save();
+                            }}, w.name)
                         ]))
                     )
                 ])
             ]);
         });
+        
+        while(ret.length < 4) {
+            ret.push(m("button", {
+                onclick: () => {
+                    this.addTheme(vnode.attrs.themes);
+                }
+            }, "Add Theme"));
+        }
+        
+        return ret;
     }
 };
 
@@ -113,8 +186,6 @@ var Roller = {
         return [
             m("div", {class: "rollers"}, [
                 m("button", {class: "roller", onclick: () => { roll("roll", 2, 6)}}, "Roll 2d6"),
-                m("button", {class: "roller", onclick: () => { roll("+mythos", 2, 6, Deck.deck.filter(o => o.type == "mythos").length)}}, "Roll +Mythos"),
-                m("button", {class: "roller", onclick: () => { roll("+logos", 2, 6, Deck.deck.filter(o => o.type == "logos").length)}}, "Roll +Logos"),
                 m("ul", {id: "rolls"}, this.rolls.map((r) => m("li", [
                     "(",
                     new Date(r.when).toLocaleTimeString(),

@@ -9,6 +9,14 @@ if(!myRoom) {
     
 }
 
+document.onkeypress = function(e) {
+    e = e || window.event;
+    
+    if(e.key == "l") {
+        document.body.classList.toggle("unlocked");
+    }
+}
+
 var client = new Faye.Client('/faye');
 var character = client.subscribe('/character/' + myRoom, function(message) {
     objs = message;
@@ -117,7 +125,9 @@ $.ajax({
             statuses: []
         };
         
-        draw();
+        objs.themes[0].type = "mythos";
+        
+        save();
     }
 })
 

@@ -243,7 +243,7 @@ body.unlocked .theme .add, body.unlocked .theme .close {
 
 .status {
     font-family: "Impact", "Verdana", sans-serif;
-    
+    height: 300px;
 }
 
 .status .header {
@@ -267,6 +267,9 @@ body.unlocked .theme .add, body.unlocked .theme .close {
 .status .inner div.col {
     background-color: rgba(255, 255, 255, 0.75);
     transform: skewX(-10deg);
+    display: grid;
+    grid-template-rows: 20px auto 34px;
+    overflow: hidden;
 }
 
 .status .inner div.col.shaded {
@@ -284,6 +287,7 @@ body.unlocked .theme .add, body.unlocked .theme .close {
 }
 
 .status .inner div.col div.number {
+    color: #d1c59d;
     font-size: 40px;
     font-weight: bold;
     line-height: 40px;
@@ -292,7 +296,7 @@ body.unlocked .theme .add, body.unlocked .theme .close {
 }
 
 .status .inner div.col.shaded div.number {
-    color: #fff;
+    color: #eee2ba;
 }
 
 .close, .add {
