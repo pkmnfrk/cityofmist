@@ -17,6 +17,10 @@ document.onkeypress = function(e) {
     }
 }
 
+function isLocked() {
+    return !document.body.classList.contains("unlocked");
+}
+
 var client = new Faye.Client('/faye');
 var character = client.subscribe('/character/' + myRoom, function(message) {
     objs = message;

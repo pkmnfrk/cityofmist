@@ -74,14 +74,17 @@ var Theme = {
         var ret = vnode.attrs.themes.map(t => {
             return m("div", {class: "theme " + t.type}, [
                 m("i[class=close fa fa-times-circle-o fa-2x]", {onclick: () => {
+                    if(isLocked()) return;
                     this.deleteTheme(vnode.attrs.themes, t);
                 }}),
                 
                 m("div", {class: "book", onclick: () => {
+                    if(isLocked()) return;
                     t.book = editString(t.book);
                     save();
                 }}, t.book),
                 m("div", {class: "icon", onclick: () => {
+                    if(isLocked()) return;
                     t.type = this.toggleType(t.type);
                     save();
                 }}, [
@@ -89,6 +92,7 @@ var Theme = {
                 ]),
                 m("div", {class: "inner"}, [
                     m("div", {class: "name", onclick: () => {
+                        if(isLocked()) return;
                         t.name = editString(t.name);
                         save();
                     }}, t.name),
@@ -116,10 +120,12 @@ var Theme = {
                     ]),
                     m("div", {class: "mystery_head"}, (t.type == "mythos" ? "Mystery" : "Identity") + ":"),
                     m("div", {class: "mystery", onclick: () => {
+                        if(isLocked()) return;
                         t.mystery = editString(t.mystery);
                         save();
                     }}, t.mystery),
                     m("div", {class: "description", onclick: () => {
+                        if(isLocked()) return;
                         t.description = editString(t.description);
                         save();
                     }}, t.description),
@@ -135,6 +141,7 @@ var Theme = {
                                 
                                 m("span",
                                     {onclick: () => {
+                                        if(isLocked()) return;
                                         p.name = editString(p.name);
                                         save();
                                     }},
@@ -157,6 +164,7 @@ var Theme = {
                         t.weaknesses.map(w => m("li", [
                             m("i[class=fa fa-times-circle-o close]", {onclick: () => this.deleteWeakness(t, w)}),
                             m("span", {onclick: () => {
+                                if(isLocked()) return;
                                 w.name = editString(w.name);
                                 save();
                             }}, w.name)
