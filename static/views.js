@@ -205,9 +205,9 @@ var Roller = {
     view: function(vnode) {
         
         return [
-            m("div", {class: "rollers"}, [
-                m("button", {class: "roller", onclick: () => { roll("roll", 2, 6)}}, "Roll 2d6"),
-                m("ul", {id: "rolls"}, this.rolls.map((r) => m("li", [
+            m("div[class=rollers]", [
+                m("button[class=roller]", {onclick: () => { roll("", 2, 6)}}, "Roll 2d6"),
+                m("ul[id=rolls]", this.rolls.map((r) => m("li", [
                     "(",
                     new Date(r.when).toLocaleTimeString(),
                     ") ",
@@ -228,7 +228,7 @@ var Roller = {
                         typeof r.bonus == "number" ? [" + ", m("span", {class: "bonus"}, r.bonus)] : [],
                         typeof r.penalty == "number" ? [" - ", m("span", {class: "penalty"}, r.penalty)] : [],
                     ]),
-                    m("span", {class: "label"}, r.label)
+                    r.label ? m("span", {class: "label"}, r.label) : ""
 
                 ])))
             ])
@@ -366,79 +366,31 @@ var Statuses = {
             m("button[class=newstatus]", {onclick: () => {this.addStatus(statuses)}}, "Add status")
         ];
     }
-}
+};
+
+var Name = {
+    view: function(vnode) {
+        var char = vnode.attrs.char;
+        
+        return [
+            m("div[class=name]", { onclick: () => {
+                if(!isLocked()) {
+                    char.name = editString(char.name);
+                    save();
+                }
+            }}, char.name)
+        ];
+    }
+};
 
 var Deck  = {
 	view: function(vnode) {
 		return [
-            m(Theme, {themes: vnode.attrs.themes}),
+            m(Name, {char: vnode.attrs.char}),
+            m(Theme, {themes: vnode.attrs.char.themes}),
             m(Roller),
-            m(Statuses, {statuses: vnode.attrs.statuses}),
+            m(Statuses, {statuses: vnode.attrs.char.statuses}),
             m("button[class=unlock]", { onclick: () => {toggleLocked()}}, "Lock/unlock themes")
         ]
 	}
 };
-
-/*
-var objs = [
-{
-    type: "mythos",
-    book: "Adaptation",
-    name: "Living in a Dream",
-    attention: [true, false, false],
-    fade: [false, false, false],
-    mystery: "Who is guiding the dream?",
-    description: "The world around Declan changes like a dream; he can open a door at home and find himself in a marketplace or suddenly become invisible without warning.",
-    powertags: [
-        {
-            name: "Mysterious reality bending",
-            burned: false
-        },
-        {
-            name: "Subconcious reaction speed",
-            burned: false
-        },
-        {
-            name: "Premonitions",
-            burned: false
-        }
-    ],
-
-    weaknesses: [
-        {
-            name: "No conscious control of dreams"
-        }
-    ]
-},
-{
-    type: "logos",
-    book: "Occupation",
-    name: "Dubious Antiques Dealer",
-    attention: [false, false, false],
-    fade: [false, false, false],
-    mystery: "The Ancients knew something, and I'm going to find out what.",
-    description: "Declan searches after ancient artifacts or texts that will explain the mysterious force that guides him. To do so, he has set up a thriving antiques shop.",
-    powertags: [
-        {
-            name: "Archaeologist",
-            burned: false
-        },
-        {
-            name: "Smuggling",
-            burned: false
-        },
-        {
-            name: "Business connections",
-            burned: false
-        }
-    ],
-
-    weaknesses: [
-        {
-            name: "Black market heat"
-        }
-    ]
-},
-JSON.parse(JSON.stringify(template)),
-JSON.parse(JSON.stringify(template))
-]*/

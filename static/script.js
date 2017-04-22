@@ -41,6 +41,11 @@ var rolls = client.subscribe('/rolls/*').withChannel(function(channel, message) 
     draw();
 });
 
+function firstName(name) {
+    var parts = name.split(" ", 2);
+    return parts[0];
+}
+
 function roll(label, nDice, nSides, bonus, penalty) {
     var dice = [];
     var total = 0;
@@ -61,7 +66,7 @@ function roll(label, nDice, nSides, bonus, penalty) {
     var message = {
         label: label,
         when: Date.now(),
-        who: myRoom,
+        who: firstName(objs.name),
         dice: dice,
         bonus: bonus,
         penalty: penalty,
@@ -120,10 +125,15 @@ $.ajax({
             objs.statuses = [];
         }
         
+        if(!objs.name) {
+            objs.name = "<character name>";
+        }
+        
         draw();
     },
     error: function() {
         objs = {
+            name: "<character name>",
             themes: [
                 JSON.parse(JSON.stringify(template)),
                 JSON.parse(JSON.stringify(template)),
@@ -156,5 +166,5 @@ function save() {
 
 function draw() {
     var root = document.body;
-    m.render(root, m(Deck, objs));
+    m.render(root, m(Deck, {char:objs}));
 }
