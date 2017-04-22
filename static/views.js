@@ -142,11 +142,14 @@ var Theme = {
                                 m("i[class=fa fa-times-circle-o close]", {onclick: () => this.deletePower(t, p)}),
                                 
                                 m("span",
-                                    {onclick: () => {
-                                        if(isLocked()) return;
-                                        p.name = editString(p.name);
-                                        save();
-                                    }},
+                                    {
+                                        onclick: () => {
+                                            if(isLocked()) return;
+                                            p.name = editString(p.name);
+                                            save();
+                                        },
+                                        class: p.burned ? "burned" : ""
+                                    },
                                     p.name
                                 ),
                                 m("input[type=checkbox]", {checked: p.burned, onchange: (e) => {
@@ -206,7 +209,7 @@ var Roller = {
         
         return [
             m("div[class=rollers]", [
-                m("button[class=roller]", {onclick: () => { roll("", 2, 6)}}, "Roll 2d6"),
+                m("button[class=roller]", {onclick: () => { roll("", vnode.attrs.who, vnode.attrs.room, 2, 6)}}, "Roll 2d6"),
                 m("ul[id=rolls]", rolls.map((r) => m("li", [
                     "(",
                     new Date(r.when).toLocaleTimeString(),
@@ -388,9 +391,72 @@ var Deck  = {
 		return [
             m(Name, {char: vnode.attrs.char}),
             m(Theme, {themes: vnode.attrs.char.themes}),
-            m(Roller, {rolls: vnode.attrs.rolls }),
+            m(Roller, {rolls: vnode.attrs.rolls, who: firstName(vnode.attrs.char.name), room: myRoom }),
             m(Statuses, {statuses: vnode.attrs.char.statuses}),
             m("button[class=unlock]", { onclick: () => {toggleLocked()}}, "Lock/unlock themes")
         ]
 	}
 };
+
+var GMDeck = {
+    spectrum: function(s) {
+        if(s <= 1) return "1";
+        if(s <= 2) return "2";
+        if(s <= 3) return "2 + " + (s - 2);
+        if(s <= 4) return "3";
+        if(s <= 6) return "3 + " + (s - 4);
+        if(s <= 7) return "4";
+        if(s <= 10) return "4 + " + (s - 7);
+        if(s <= 11) return "5";
+        if(s <= 15) return "5 + " + (s - 11);
+        if(s <= 16) return "6";
+    },
+    view: function(vnode) {
+        var allchars = vnode.attrs.chars;
+        
+        return [
+            m(Roller, {rolls: vnode.attrs.rolls, who: "GM", room: "GM" }),
+            Object.keys(allchars).map((k) => {return {
+                who: k,
+                char: allchars[k]
+            }}).map((c) => m("div[class=player]", [
+                m("div[class=human]", [
+                    "Player: ",
+                    m("a", { href: "/?" + c.who }, c.who)
+                ]),
+                m("div[class=name]", ["Name: ", c.char.name]),
+                m("div", [
+                    "Themes:",
+                    m("ul[class=themes]", c.char.themes.map((t) => m("li", {class: t.type }, [
+                        t.name,
+                        m("span[class=attention]", t.attention.map((a) => {
+                            if(a) 
+                                return m("i[class=fa fa-check-square-o]")
+                            else
+                                return m("i[class=fa fa-square-o]")
+                        })),
+                        m("span[class=fade]", t.fade.map((a) => {
+                            if(a) 
+                                return m("i[class=fa fa-times-circle-o]")
+                            else
+                                return m("i[class=fa fa-circle-o]")
+                        })),
+                        m("ul[class=powers]", t.powertags.map((p) => m("li", { class: p.burned ? "burned": "" }, p.name))),
+                        m("ul[class=weaknesses]", t.weaknesses.map((w) => m("li", w.name)))
+
+                        //m("input[type=checkmark]", {checked: p.burned})
+                    ])))
+                ] ),
+                
+                m("div", [
+                    "Statuses:",
+                    m("ul[class=statuses]", c.char.statuses.map((s) => m("li", {class: s.spectrum >= 11 ? "danger" : ""}, [
+                        s.name,
+                        " - ",
+                        this.spectrum(s.spectrum)
+                    ])))
+                ] )
+            ]))
+        ];
+    }
+}

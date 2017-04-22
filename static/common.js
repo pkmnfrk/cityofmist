@@ -18,7 +18,7 @@ function firstName(name) {
     return parts[0];
 }
 
-function roll(label, nDice, nSides, bonus, penalty) {
+function roll(label, who, room, nDice, nSides, bonus, penalty) {
     var dice = [];
     var total = 0;
     
@@ -38,14 +38,26 @@ function roll(label, nDice, nSides, bonus, penalty) {
     var message = {
         label: label,
         when: Date.now(),
-        who: firstName(objs.name),
+        who: who,
         dice: dice,
         bonus: bonus,
         penalty: penalty,
         total: total
     };
     
-    client.publish('/rolls/' + myRoom, message);
+    client.publish('/rolls/' + room, message);
 }
 
+function getSave(id, cb) {
+    $.ajax({
+        url: "/save/" + id,
+        method: "GET",
+        success: function(data) {            
+            cb(null, data);
+        },
+        error: function(err) {
+            cb(err);
+        }
+    });
+}
 

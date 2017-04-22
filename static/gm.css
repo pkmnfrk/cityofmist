@@ -1,0 +1,124 @@
+body {
+    font-family: 'verdana', sans-serif;
+    display: grid;
+    grid-gap: 10px;
+    /*grid-template-columns: repeat(5, 1fr);*/
+}
+
+.player {
+    
+}
+
+.themes {
+    margin-left: 0;
+    padding: 1em;
+    list-style: none;
+}
+
+.themes > li {
+    margin-bottom: 1em;
+    margin-left: 0;
+    padding: 1em;
+}
+
+.themes > li.mythos {
+    background-color: #e99eff;
+}
+
+.themes > li.logos {
+    background-color: #ffcb6d;
+}
+
+.attention {
+    margin-left: 5px;
+}
+.fade {
+    margin-left: 5px;
+}
+
+ul {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+ul.powers li {
+    list-style-type: none;
+    margin: 0;
+    color: #080;
+}
+
+ul.powers li:before {
+    content: "+ ";
+}
+
+ul.powers li.burned {
+    text-decoration:line-through;
+}
+
+ul.weaknesses li {
+    list-style-type: none;
+    margin: 0;
+    color: #800;
+}
+
+ul.weaknesses li:before {
+    content: "- ";
+}
+
+.roller {
+    font-size: 24px;
+    padding: 10px;
+    width: 80%;
+}
+
+.danger {
+    color: red;
+}
+
+
+.total {
+    font-weight: bold;
+    display:inline-block;
+    width: 3em;
+}
+
+.math {
+    font-size: smaller;
+}
+.math:before, #rolls .label:before {
+    content: " (";
+}
+.math:after, #rolls .label:after {
+    content: ") ";
+}
+
+.die {
+    display:inline-block;
+    width: 1.2em;
+    height: 1.2em;
+    background-color: white;
+    border: thin solid black;
+    text-align: center;
+    vertical-align: bottom;
+}
+
+
+.bonus {
+    color: #080;
+}
+
+.penalty {
+    color: #800;
+}
+
+#rolls {
+    background-color: #eee;
+    overflow: auto;
+    list-style: none;
+    padding-left: 0;
+    
+}
+
+#rolls .label {
+    font-size: smaller;
+}

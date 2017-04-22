@@ -367,3 +367,7 @@ body.unlocked .theme .add, body.unlocked .theme .close {
     font-size: 48px;
     font-weight: bold;
 }
+
+.burned {
+    text-decoration: line-through;
+}
