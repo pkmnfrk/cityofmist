@@ -200,14 +200,14 @@ var Theme = {
 };
 
 var Roller = {
-    rolls: [],
-    
+
     view: function(vnode) {
+        var rolls = vnode.attrs.rolls;
         
         return [
             m("div[class=rollers]", [
                 m("button[class=roller]", {onclick: () => { roll("", 2, 6)}}, "Roll 2d6"),
-                m("ul[id=rolls]", this.rolls.map((r) => m("li", [
+                m("ul[id=rolls]", rolls.map((r) => m("li", [
                     "(",
                     new Date(r.when).toLocaleTimeString(),
                     ") ",
@@ -388,7 +388,7 @@ var Deck  = {
 		return [
             m(Name, {char: vnode.attrs.char}),
             m(Theme, {themes: vnode.attrs.char.themes}),
-            m(Roller),
+            m(Roller, {rolls: vnode.attrs.rolls }),
             m(Statuses, {statuses: vnode.attrs.char.statuses}),
             m("button[class=unlock]", { onclick: () => {toggleLocked()}}, "Lock/unlock themes")
         ]

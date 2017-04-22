@@ -1,5 +1,3 @@
-
-
 var myRoom = window.location.search;
 if(myRoom[0] == "?") myRoom = myRoom.substring(1);
 
@@ -8,6 +6,11 @@ if(!myRoom) {
     location = "?" + myRoom;
     
 }
+
+var character = client.subscribe('/character/' + myRoom, function(message) {
+    objs = message;
+    draw();
+});
 
 document.onkeypress = function(e) {
     e = e || window.event;
@@ -25,56 +28,6 @@ function isLocked() {
     return !document.body.classList.contains("unlocked");
 }
 
-var client = new Faye.Client('/faye');
-var character = client.subscribe('/character/' + myRoom, function(message) {
-    objs = message;
-    draw();
-});
-
-var rolls = client.subscribe('/rolls/*').withChannel(function(channel, message) {
-
-    Roller.rolls.unshift(message);
-    while(Roller.rolls.length > 15) {
-        Roller.rolls.pop();
-    }
-    
-    draw();
-});
-
-function firstName(name) {
-    var parts = name.split(" ", 2);
-    return parts[0];
-}
-
-function roll(label, nDice, nSides, bonus, penalty) {
-    var dice = [];
-    var total = 0;
-    
-    for(var i = 0; i < nDice; i++) {
-        var d = Math.floor(Math.random() * nSides) + 1;
-        dice.push(d);
-        total += d;
-    }
-    
-    if(bonus) {
-        total += bonus;
-    }
-    if(penalty) {
-        total -= penalty;
-    }
-    
-    var message = {
-        label: label,
-        when: Date.now(),
-        who: firstName(objs.name),
-        dice: dice,
-        bonus: bonus,
-        penalty: penalty,
-        total: total
-    };
-    
-    client.publish('/rolls/' + myRoom, message);
-}
 
 var template = {
     type: "logos",
@@ -166,5 +119,5 @@ function save() {
 
 function draw() {
     var root = document.body;
-    m.render(root, m(Deck, {char:objs}));
+    m.render(root, m(Deck, { char:objs, rolls: rolls }));
 }
