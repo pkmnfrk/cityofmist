@@ -33,6 +33,9 @@ var music_client = client.subscribe("/music", function(message) {
         case "vol":
             youtube_player.setVolume(message.vol);
             break;
+        case "loop":
+            youtube_player.setLoop(message.loop);
+            break;
     }
 });
 

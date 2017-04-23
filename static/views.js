@@ -242,6 +242,8 @@ var Roller = {
                             sendVideo(document.getElementById("youtubelink").value);
                         }}, "Send"),
                         m("button", { onclick: function() {
+                            
+                            setLoop(document.getElementById("shouldloop").checked);
                             playVideo();
                         }}, "Play"),
                         m("button", { onclick: function() {
@@ -252,7 +254,12 @@ var Roller = {
                         }}, "Vol: 25%"),
                         m("button", { onclick: function() {
                             setVolume(50);
-                        }}, "Vol: 50%")
+                        }}, "Vol: 50%"),
+                        m("input[type=checkbox][id=shouldloop]", { onchange: function() {
+                            setLoop(document.getElementById("shouldloop").checked);
+                        }}),
+                        m("label[for=shouldloop]", "Should loop")
+                        
                     ]) : m("button", { onclick: function() {
                         stopYoutubeVideo();
                     }}, "Stop Music"),

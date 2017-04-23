@@ -72,3 +72,7 @@ function playVideo() {
 function setVolume(vol) {
     client.publish('/music', {command: "vol", vol: vol});
 }
+
+function setLoop(loop) {
+    client.publish('/music', {command: "loop", loop});
+}
