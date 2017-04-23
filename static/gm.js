@@ -28,10 +28,12 @@ function loadone(done) {
 }
 
 function draw() {
-    var root = document.body;
+    var root = document.getElementById("root");
     m.render(root, m(GMDeck, { chars: allChars, rolls: rolls }));
     
     root.style.gridTemplateColumns = "repeat(" + (characterKeys.length + 1) + ", 1fr)";
+    
+    initialize_youtube();
 }
 
 loadone(function() {
@@ -47,3 +49,26 @@ loadone(function() {
 
     draw();
 })
+
+function sendVideo(id) {
+    
+    var m = /v=(.*)(?:&.)?/.exec(id);
+    
+    if(m) {
+        id = m[1];
+    }
+    
+    client.publish('/music', {command: "load", id: id});
+}
+
+function stopVideo() {
+    client.publish('/music', {command: "stop"});
+}
+
+function playVideo() {
+    client.publish('/music', {command: "play"});
+}
+
+function setVolume(vol) {
+    client.publish('/music', {command: "vol", vol: vol});
+}

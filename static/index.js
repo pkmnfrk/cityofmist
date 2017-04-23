@@ -120,4 +120,6 @@ function save() {
 function draw() {
     var root = document.body;
     m.render(root, m(Deck, { char:objs, rolls: rolls }));
+    
+    initialize_youtube();
 }

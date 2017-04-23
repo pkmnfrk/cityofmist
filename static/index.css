@@ -371,3 +371,7 @@ body.unlocked .theme .add, body.unlocked .theme .close {
 .burned {
     text-decoration: line-through;
 }
+
+#player {
+    display: none;
+}

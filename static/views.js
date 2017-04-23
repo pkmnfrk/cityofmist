@@ -233,7 +233,32 @@ var Roller = {
                     ]),
                     r.label ? m("span", {class: "label"}, r.label) : ""
 
-                ])))
+                ]))),
+                
+                isGm() ?
+                    m("div[class=music]", [
+                        m("input[type=text][id=youtubelink]", { value: "" }),
+                        m("button", { onclick: function() {
+                            sendVideo(document.getElementById("youtubelink").value);
+                        }}, "Send"),
+                        m("button", { onclick: function() {
+                            playVideo();
+                        }}, "Play"),
+                        m("button", { onclick: function() {
+                            stopVideo();
+                        }}, "Stop"),
+                        m("button", { onclick: function() {
+                            setVolume(25);
+                        }}, "Vol: 25%"),
+                        m("button", { onclick: function() {
+                            setVolume(50);
+                        }}, "Vol: 50%")
+                    ]) : m("button", { onclick: function() {
+                        stopYoutubeVideo();
+                    }}, "Stop Music"),
+                
+                m("div[id=player]")
+                
             ])
         ]
         

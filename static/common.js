@@ -13,6 +13,29 @@ var rolls_client = client.subscribe('/rolls/*').withChannel(function(channel, me
     draw();
 });
 
+var music_client = client.subscribe("/music", function(message) {
+    switch(message.command) {
+        case "play":
+            youtube_player.playVideo();
+            break;
+        case "stop":
+            youtube_player.pauseVideo();
+            break;
+        case "load":
+            /*youtube_player.loadVideoById({
+                videoId: message.id
+            });*/
+            youtube_player.loadPlaylist({
+                playlist: message.id
+            })
+            youtube_player.setLoop(true);
+            break;
+        case "vol":
+            youtube_player.setVolume(message.vol);
+            break;
+    }
+});
+
 function firstName(name) {
     var parts = name.split(" ", 2);
     return parts[0];
@@ -61,3 +84,63 @@ function getSave(id, cb) {
     });
 }
 
+function isGm() {
+    return document.body.classList.contains("gm");
+}
+
+var youtube_player = null;
+
+/* YOUTUBE EMBED API */
+
+function initialize_youtube() {
+    if(youtube_player) return;
+    
+    // 2. This code loads the IFrame Player API code asynchronously.
+    var tag = document.createElement('script');
+
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+}
+
+// 3. This function creates an <iframe> (and YouTube player)
+//    after the API code downloads.
+
+function onYouTubeIframeAPIReady() {
+    youtube_player = new YT.Player('player', {
+        height: '180',
+        width: '320',
+        //videoId: 'RdYsLC0GELo',
+        //videoId: 'Z6UjLGP549M',
+        /*playerVars: {
+            loop: true,
+            
+        },*/
+        events: {
+            'onReady': onPlayerReady,
+            'onStateChange': onPlayerStateChange
+        }
+    });
+}
+
+// 4. The API will call this function when the video player is ready.
+function onPlayerReady(event) {
+    //event.target.playVideo();
+}
+
+// 5. The API calls this function when the player's state changes.
+//    The function indicates that when playing a video (state=1),
+//    the player should play for six seconds and then stop.
+var youtube_done = false;
+function onPlayerStateChange(event) {
+    //if (event.data == YT.PlayerState.PLAYING) {
+        //setTimeout(stopVideo, 6000);
+//        youtube_done = false;
+    //}
+}
+
+
+function stopYoutubeVideo() {
+    youtube_player.stopVideo();
+}
+/* END YOUTUBE EMBED API */

@@ -1,4 +1,4 @@
-body {
+#root {
     font-family: 'verdana', sans-serif;
     display: grid;
     grid-gap: 10px;
@@ -121,4 +121,15 @@ ul.weaknesses li:before {
 
 #rolls .label {
     font-size: smaller;
+}
+
+.music #youtubelink {
+    width: 80%;
+}
+.music button {
+    width: 19%;
+}
+
+#player {
+    display: none;
 }
