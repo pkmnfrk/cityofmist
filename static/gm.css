@@ -1,8 +1,12 @@
 #root {
     font-family: 'verdana', sans-serif;
-    display: grid;
-    grid-gap: 10px;
+    
     /*grid-template-columns: repeat(5, 1fr);*/
+}
+
+#main {
+	display: grid;
+    grid-gap: 10px;
 }
 
 .player {
@@ -133,3 +137,87 @@ ul.weaknesses li:before {
 #player {
     display: none;
 }
+
+.tabswitcher {
+	margin-bottom: 10px;
+}
+
+.tabswitcher .tab {
+	padding: 10px;
+	border: 1px solid black;
+	display: inline-block;
+	cursor: pointer;
+	
+}
+
+.tabswitcher .tab.active {
+	background-color: white;
+}
+
+.tabswitcher .tab.inactive {
+	background-color: lightgrey;
+}
+
+#moves section {
+	display: grid;
+	grid-gap: 10px;
+	justify-content: space-evenly;
+	grid-template-columns: repeat(auto-fill, 550px);
+	align-items: start;
+}
+
+#moves .move {
+	background-color: #7c5dd1;
+	border-radius: 10px;
+	padding-bottom: 10px;
+	position:relative;
+}
+
+#moves .move h2 {
+	background-color: #4319b7;
+	color: white;
+	margin: 10px;
+	margin-bottom: 0;
+	padding: 10px;
+	border-radius: 5px 5px 0 0;
+	position: relative;
+}
+
+#moves .move .body {
+	background-color: #b89eff;
+	margin: 0 10px;
+	padding: 0 10px;
+	overflow: auto;
+	border-radius: 0 0 5px 5px;
+}
+
+#moves .move .body ul {
+    margin-bottom: 10px;
+}
+
+#moves .move .actions {
+	transform: rotate(-90deg);
+	position: absolute;
+	font-size: 10px;
+	font-weight: bold;
+	left: 0;
+	bottom: 24px;
+	display: inline-block;
+	color: white;
+}
+#moves .move .examples {
+	margin: 0;
+	padding: 10px 10px 0 40px;
+	font-size: 10px;
+	font-weight:bold;
+	text-transform: uppercase;
+	color: white;
+	min-height: 4em;
+}
+
+#moves .move .examples li {
+	display: inline-block;
+	margin-left: 10px;
+	margin-right: 10px;
+}
+

@@ -445,50 +445,157 @@ var GMDeck = {
     },
     view: function(vnode) {
         var allchars = vnode.attrs.chars;
-        
+        var allcharkeys = Object.keys(allchars);
+		
         return [
-            m(Roller, {rolls: vnode.attrs.rolls, who: "GM", room: "GM" }),
-            Object.keys(allchars).map((k) => {return {
-                who: k,
-                char: allchars[k]
-            }}).map((c) => m("div[class=player]", [
-                m("div[class=human]", [
-                    "Player: ",
-                    m("a", { href: "/?" + c.who }, c.who)
-                ]),
-                m("div[class=name]", ["Name: ", c.char.name]),
-                m("div", [
-                    "Themes:",
-                    m("ul[class=themes]", c.char.themes.map((t) => m("li", {class: t.type }, [
-                        t.name,
-                        m("span[class=attention]", t.attention.map((a) => {
-                            if(a) 
-                                return m("i[class=fa fa-check-square-o]")
-                            else
-                                return m("i[class=fa fa-square-o]")
-                        })),
-                        m("span[class=fade]", t.fade.map((a) => {
-                            if(a) 
-                                return m("i[class=fa fa-times-circle-o]")
-                            else
-                                return m("i[class=fa fa-circle-o]")
-                        })),
-                        m("ul[class=powers]", t.powertags.map((p) => m("li", { class: p.burned ? "burned": "" }, p.name))),
-                        m("ul[class=weaknesses]", t.weaknesses.map((w) => m("li", w.name)))
+			m(TabSwitcher, {
+				tabs: [
+					{
+						id: "main",
+						label: "Characters"
+					},
+					{
+						id: "moves",
+						label: "Moves"
+					}
+				],
+				active: vnode.attrs.activetab,
+				switchtab: function(t) {
+					
+				}
+			}),
+			m("#main", {
+				style: "grid-template-columns: repeat(" + (allcharkeys.length + 1) + ", 1fr)"
+			}, [
+				m(Roller, {rolls: vnode.attrs.rolls, who: "GM", room: "GM" }),
+				allcharkeys.map((k) => {return {
+					who: k,
+					char: allchars[k]
+				}}).map((c) => m("div[class=player]", [
+					m("div[class=human]", [
+						"Player: ",
+						m("a", { href: "/?" + c.who }, c.who)
+					]),
+					m("div[class=name]", ["Name: ", c.char.name]),
+					m("div", [
+						"Themes:",
+						m("ul[class=themes]", c.char.themes.map((t) => m("li", {class: t.type }, [
+							t.name,
+							m("span[class=attention]", t.attention.map((a) => {
+								if(a) 
+									return m("i[class=fa fa-check-square-o]")
+								else
+									return m("i[class=fa fa-square-o]")
+							})),
+							m("span[class=fade]", t.fade.map((a) => {
+								if(a) 
+									return m("i[class=fa fa-times-circle-o]")
+								else
+									return m("i[class=fa fa-circle-o]")
+							})),
+							m("ul[class=powers]", t.powertags.map((p) => m("li", { class: p.burned ? "burned": "" }, p.name))),
+							m("ul[class=weaknesses]", t.weaknesses.map((w) => m("li", w.name)))
 
-                        //m("input[type=checkmark]", {checked: p.burned})
-                    ])))
-                ] ),
-                
-                m("div", [
-                    "Statuses:",
-                    m("ul[class=statuses]", c.char.statuses.map((s) => m("li", {class: s.spectrum >= 11 ? "danger" : ""}, [
-                        s.name,
-                        " - ",
-                        this.spectrum(s.spectrum)
-                    ])))
-                ] )
-            ]))
+							//m("input[type=checkmark]", {checked: p.burned})
+						])))
+					] ),
+					
+					m("div", [
+						"Statuses:",
+						m("ul[class=statuses]", c.char.statuses.map((s) => m("li", {class: s.spectrum >= 11 ? "danger" : ""}, [
+							s.name,
+							" - ",
+							this.spectrum(s.spectrum)
+						])))
+					] )
+				]))
+			]),
+			m(Moves, {
+				personal: allcharkeys.map(function(c) {
+					return {
+						name: allchars[c].name,
+						moves: allchars[c].moves
+					}
+				})
+			})
         ];
     }
+};
+
+var TabSwitcher = {
+	active: null,
+	view: function(vnode) {
+		var tabs = vnode.attrs.tabs;
+		if(!TabSwitcher.active) {
+			TabSwitcher.active = tabs[0].id;
+		}
+		
+		return m(".tabswitcher", tabs.map(function(t, i) {
+			var update = function() {
+				var dom = document.getElementById(t.id);
+				if(t.id != TabSwitcher.active && dom) {
+					dom.style.display = "none";
+				} else if(dom) {
+					dom.style.display = null;
+				}
+			};
+			return m(".tab", {
+				"class": t.id == TabSwitcher.active ? "active" : "inactive",
+				onclick: function() {
+					TabSwitcher.active = t.id;
+					draw();
+				},
+				onupdate: update,
+				oncreate: update
+			}, t.label);
+			
+		}));
+	}
+};
+
+var Moves = {
+	view: function(vnode) {
+		var global = global_moves;
+		var personal = vnode.attrs.personal;
+		
+		return m("#moves", [
+			m("h1", "Global moves"),
+			m("section", global.map(function(move) {
+				return m(Move, move);
+			})),
+			personal.map(function(section) {
+				if(!section.moves) return null;
+				
+				return [
+					m("h1", section.name),
+					m("section", section.moves.map(function(move) {
+						return m(Move, move);
+					}))
+				];
+			}),
+			
+		])
+	}
+};
+
+var Move = {
+	view: function(vnode) {
+		var move = vnode.attrs;
+		
+		return m(".move", [
+			m("h2", move.name),
+			m(".body", m.trust(move.text)),
+			move.examples && move.examples.length
+				? [
+					m(".actions", "ACTIONS"),
+					m("ul.examples", [
+						move.examples.map(function(ex) {
+							return m("li", ex)
+						}),
+						m("li", "etc.")
+					])
+				]
+				: null
+		]);
+	}
 }

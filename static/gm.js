@@ -29,9 +29,9 @@ function loadone(done) {
 
 function draw() {
     var root = document.getElementById("root");
-    m.render(root, m(GMDeck, { chars: allChars, rolls: rolls }));
+    m.render(root, m(GMDeck, { chars: allChars, rolls: rolls, activetab: "main" }));
     
-    root.style.gridTemplateColumns = "repeat(" + (characterKeys.length + 1) + ", 1fr)";
+    //root.style.gridTemplateColumns = "repeat(" + (characterKeys.length + 1) + ", 1fr)";
     
     initialize_youtube();
 }
