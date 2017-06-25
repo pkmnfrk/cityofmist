@@ -118,8 +118,8 @@ function save() {
 }
 
 function draw() {
-    var root = document.body;
-    m.render(root, m(Deck, { char:objs, rolls: rolls }));
+    var root = document.getElementById("root");
+    m.render(root, m(Deck, { char:objs, rolls: rolls, activetab: "main" }));
     
     initialize_youtube();
 }

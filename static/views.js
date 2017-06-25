@@ -421,12 +421,29 @@ var Name = {
 var Deck  = {
 	view: function(vnode) {
 		return [
-            m(Name, {char: vnode.attrs.char}),
-            m(Theme, {themes: vnode.attrs.char.themes}),
-            m(Roller, {rolls: vnode.attrs.rolls, who: firstName(vnode.attrs.char.name), room: myRoom }),
-            m(Statuses, {statuses: vnode.attrs.char.statuses}),
-            m("button[class=unlock]", { onclick: () => {toggleLocked()}}, "Lock/unlock themes")
-        ]
+			m(TabSwitcher, {
+				tabs: [
+					{
+						id: "main",
+						label: "Character"
+					},
+					{
+						id: "moves",
+						label: "Moves"
+					},
+				]
+			}),
+			m("#main", [
+				m(Name, {char: vnode.attrs.char}),
+				m(Theme, {themes: vnode.attrs.char.themes}),
+				m(Roller, {rolls: vnode.attrs.rolls, who: firstName(vnode.attrs.char.name), room: myRoom }),
+				m(Statuses, {statuses: vnode.attrs.char.statuses}),
+				m("button[class=unlock]", { onclick: () => {toggleLocked()}}, "Lock/unlock themes")
+			]),
+			m(Moves, {
+				personal: vnode.attrs.char.moves
+			})
+        ];
 	}
 };
 
@@ -458,11 +475,7 @@ var GMDeck = {
 						id: "moves",
 						label: "Moves"
 					}
-				],
-				active: vnode.attrs.activetab,
-				switchtab: function(t) {
-					
-				}
+				]
 			}),
 			m("#main", {
 				style: "grid-template-columns: repeat(" + (allcharkeys.length + 1) + ", 1fr)"
@@ -558,6 +571,8 @@ var Moves = {
 		var moves = [global_moves, vnode.attrs.personal];
 		
 		return m("#moves", moves.map(function(set) {
+			if(!set) return null;
+			
 			return set.map(function(section) {
 				return m(MoveSection, {section: section});
 			});
