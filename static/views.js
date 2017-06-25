@@ -555,26 +555,29 @@ var TabSwitcher = {
 
 var Moves = {
 	view: function(vnode) {
-		var global = global_moves;
-		var personal = vnode.attrs.personal;
+		var moves = [global_moves, vnode.attrs.personal];
 		
-		return m("#moves", [
-			m("h1", "Global moves"),
-			m("section", global.map(function(move) {
-				return m(Move, move);
-			})),
-			personal.map(function(section) {
-				if(!section.moves) return null;
-				
-				return [
-					m("h1", section.name),
-					m("section", section.moves.map(function(move) {
-						return m(Move, move);
-					}))
-				];
-			}),
+		return m("#moves", moves.map(function(set) {
+			return set.map(function(section) {
+				return m(MoveSection, {section: section});
+			});
 			
-		])
+		}));
+	}
+};
+
+var MoveSection = {
+	view: function(vnode) {
+		var section = vnode.attrs.section;
+		
+		if(!section.moves) return null;
+				
+		return [
+			m("h1", section.name),
+			m("section", section.moves.map(function(move) {
+				return m(Move, move);
+			}))
+		]; 
 	}
 };
 
@@ -598,4 +601,4 @@ var Move = {
 				: null
 		]);
 	}
-}
+};
