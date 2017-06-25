@@ -102,7 +102,7 @@ var Theme = {
                         t.attention.map((a,i) => 
                             m("div", {class:"mark"}, [
                                 m("input[type=checkbox]", { checked: a, onchange: (e) => {
-                                    t.attention[i] = e.srcElement.checked;
+                                    t.attention[i] = e.target.checked;
                                     save();
                                 } })
                             ])
@@ -113,7 +113,7 @@ var Theme = {
                         t.fade.map((a,i) => 
                             m("div", {class:"mark"}, [
                                 m("input[type=checkbox]", { checked: a, onchange: (e) => {
-                                    t.fade[i] = e.srcElement.checked;
+                                    t.fade[i] = e.target.checked;
                                     save();
                                 } })
                             ])
@@ -153,7 +153,7 @@ var Theme = {
                                     p.name
                                 ),
                                 m("input[type=checkbox]", {checked: p.burned, onchange: (e) => {
-                                    p.burned = e.srcElement.checked;
+                                    p.burned = e.target.checked;
                                     save();
                                 } })
                             ])
