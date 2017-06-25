@@ -108,7 +108,7 @@ var global_moves = [
 		moves: [
 			{
 				name: "Photomontage [Downtime]",
-				text: "<p>Todo</p>"
+				text: "<p>Whenever you have some downtime, choose one way to spend it:</p><ul><li><strong>Give attention to one of your Logos themes.</strong> Tell everone at the table how you do it and mark Attention on that theme.</li><li><strong>Investigate a case.</strong> Tell everyone at the table how you do it. You gain three Clues to use as in the <strong>Investigate</strong> move, bsed on your investigation.</li><li><strong>Explore your Mythos.</strong> Tell everyone at the table which Mystery you explore and how you do it. You gain one Clue to use as in the <strong>Investigate</strong> move, based on your investigation. Mark Attention on that Mystery's theme.</li><li><strong>Prepare for your next activity.</strong> Tell everyone how you prepare and choose one: recover all your burnt tags OR gain 3 Juice to use as in <strong>Change the Game</strong> move (you can choose from all the options).</li><li><strong>Recover from the last activity.</strong> For each ongoing status still afflicting you, the MC will tell you if and how it can be removed during your downtime. The MC can also rule that you partially recover from a status or allow you to reduce it by 1 tier for each relevant tag you have.</li></ul><p>The MC can cue into any of the photomontage events and continue them as scenes.</p>"
 			}
 		]
 	},
@@ -121,7 +121,7 @@ var global_moves = [
 			},
 			{
 				name: "Stop. Holding. Back.",
-				text: "<p>When you <strong>use your abilities in a way or scale you've never attempted before</strong>, the MC will choose one stake and write it on a piece of paper, out of sight:</p> <ul><li><strong>You're resisting.</strong><br/>What you are trying to do comes into conflict with your Identity/Mystery _______. Mark Crack/Fade on its theme.</li><li><strong>It will burn you out.</strong><br/>If you do it, mark the burn icon next to all the tags in the theme _______. They're burnt.</li><li><strong>It will leave a mark.</strong><br/>If you do it, take a status _____. You cannot avoid it with <strong>Face Danger</strong>.</li><li><strong>It will change you forever.</strong><br/>If you do it, you will lose your theme _______.</li></ul> <p>Then, roll +logos. On a 7-9, you do it and pay the price. On a 10+, you can take a look at the stakes the MC wrote and then choose&em;do it and pay the price or hold back. On a miss, you lose control over your powers&em;the MC will say how.</p>"
+				text: "<p>When you <strong>use your abilities in a way or scale you've never attempted before</strong>, the MC will choose one stake and write it on a piece of paper, out of sight:</p> <ul><li><strong>You're resisting.</strong><br/>What you are trying to do comes into conflict with your Identity/Mystery _______. Mark Crack/Fade on its theme.</li><li><strong>It will burn you out.</strong><br/>If you do it, mark the burn icon next to all the tags in the theme _______. They're burnt.</li><li><strong>It will leave a mark.</strong><br/>If you do it, take a status _____. You cannot avoid it with <strong>Face Danger</strong>.</li><li><strong>It will change you forever.</strong><br/>If you do it, you will lose your theme _______.</li></ul> <p>Then, roll +logos. On a 7-9, you do it and pay the price. On a 10+, you can take a look at the stakes the MC wrote and then choose&mdash;do it and pay the price or hold back. On a miss, you lose control over your powers&mdash;the MC will say how.</p>"
 			},
 			{
 				name: "Make a Hard Choice",
