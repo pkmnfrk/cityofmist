@@ -8,9 +8,12 @@ const static = require('node-static');
 const datastore = require("./datastore");
 const url = require('url');
 
+const roll_listener = require("./roll_listener");
 
 var bayeux = new faye.NodeAdapter({mount: '/faye', timeout: 45});
 var fileServer = new static.Server('./static', { cache: 0 });
+
+roll_listener.subscribe(bayeux);
 
 var server = http.createServer(function (req, res) {
     var uri = url.parse(req.url);

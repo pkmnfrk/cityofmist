@@ -250,8 +250,8 @@ var Roller = {
                             stopVideo();
                         }}, "Stop"),
                         m("button", { onclick: function() {
-                            setVolume(10);
-                        }}, "Vol: 10%"),
+                            setVolume(5);
+                        }}, "Vol: 5%"),
                         m("button", { onclick: function() {
                             setVolume(50);
                         }}, "Vol: 50%"),
