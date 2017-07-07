@@ -136,19 +136,19 @@ body.unlocked .theme .add, body.unlocked .theme .close {
 	padding: 0;
 }
 
-.theme.mythos .powertags li.plus {
+.theme.mythos .plus {
 	background-image: url(images/plus.gif);
 }
 
-.theme.logos .powertags li.plus {
+.theme.logos .plus {
 	background-image: url(images/plus-lt.gif);
 }
 
-.theme.mythos .powertags li.minus {
+.theme.mythos .minus {
 	background-image: url(images/minus.gif);
 }
 
-.theme.logos .powertags li.minus {
+.theme.logos .minus {
 	background-image: url(images/minus-lt.gif);
 }
 
@@ -276,6 +276,14 @@ body.unlocked .theme .add, body.unlocked .theme .close {
     font-family: "Impact", "Verdana", sans-serif;
     height: 300px;
     order: 5;
+}
+
+.status .plus {
+	background-image: url(images/plus-lt.gif);
+}
+
+.status .minus {
+	background-image: url(images/minus-lt.gif);
 }
 
 .status .header {

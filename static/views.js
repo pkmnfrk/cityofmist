@@ -195,13 +195,30 @@ var Theme = {
                         m("i[class=fa fa-plus-circle add]", {onclick: () => this.addWeakness(t) })
                     ]),
                     m("ul", {class: "weaknesses"}, 
-                        t.weaknesses.map(w => m("li", [
+                        t.weaknesses.map(w => m("li", 
+						{
+							class: w.selected || null
+						},
+						[
                             m("i[class=fa fa-times-circle-o close]", {onclick: () => this.deleteWeakness(t, w)}),
-                            m("span", {onclick: () => {
-                                if(isLocked()) return;
-                                w.name = editString(w.name);
-                                save();
-                            }}, w.name)
+                            m("span", {
+								onclick: () => {
+									if(isLocked()) {
+										if(!w.selected) {
+											w.selected = "plus";
+										} else if(w.selected == "plus") {
+											w.selected = "minus";
+										} else if(w.selected == "minus") {
+											delete w.selected;
+										}
+									}
+									else 
+									{
+										w.name = editString(w.name);
+									}
+									save();
+								}
+							}, w.name)
                         ]))
                     )
                 ])
@@ -227,8 +244,8 @@ var Roller = {
         var bonus = 0
 		var penalty = 0
 		
-		if(vnode.attrs.themes) {
-			for(var theme of vnode.attrs.themes) {
+		if(vnode.attrs.char) {
+			for(var theme of vnode.attrs.char.themes) {
 				for(var tag of theme.powertags) {
 					if(tag.selected == "plus") {
 						bonus += 1;
@@ -237,6 +254,24 @@ var Roller = {
 						penalty += 1;
 					}
 				}
+				
+				for (var weak of theme.weaknesses) {
+					if(weak.selected == "plus") {
+						bonus += 1;
+					}
+					if(weak.selected == "minus") {
+						penalty += 1;
+					}
+				}
+			}
+			
+			for(var status of vnode.attrs.char.statuses) {
+				if(status.selected == "plus") {
+					bonus += spectrumLevel(status.spectrum);
+				}
+				if(status.selected == "minus") {
+					penalty += spectrumLevel(status.spectrum);
+				}
 			}
 		}
 		
@@ -244,6 +279,34 @@ var Roller = {
             m("div[class=rollers]", [
                 m("button[class=roller]", {onclick: () => { 
 					roll("", vnode.attrs.who, vnode.attrs.room, 2, 6, bonus, penalty)
+					
+					if(vnode.attrs.char) {
+						var any = false;
+						for(var theme of vnode.attrs.char.themes) {
+							for(var tag of theme.powertags) {
+								if(tag.selected) {
+									any = true;
+									delete tag.selected;
+								}
+							}
+							for(var weak of theme.weaknesses) {
+								if(weak.selected) {
+									any = true;
+									delete weak.selected;
+								}
+							}
+						}
+						for(var status of vnode.attrs.char.statuses) {
+							if(status.selected) {
+								delete status.selected;
+							}
+						}
+						
+						if(any) {
+							save();
+						}
+					}
+					
 				}}, "Roll 2d6" + (bonus ? "+" + bonus : "") + (penalty ? "-" + penalty : "")),
                 m("ul[id=rolls]", rolls.map((r) => m("li", [
                     "(",
@@ -382,7 +445,20 @@ var Status = {
         var status = vnode.attrs.status;
         return m("div[class=status]", [
             m("i[class=fa fa-2x fa-times-circle-o close]", {onclick: vnode.attrs.del}),
-            m("div[class=header]", [
+            m("div[class=header]", {
+				class: status.selected || null,
+				onclick: () => {
+					if(!status.selected) {
+						status.selected = "plus";
+					} else if(status.selected == "plus") {
+						status.selected = "minus";
+					} else if(status.selected == "minus") {
+						delete status.selected;
+					}
+					save();
+				}
+			},
+			[
                 "STATUS SPECTRUM CARD",
             ]),
             m("div[class=inner]", this.viewSpectrumLabels(status)),
@@ -471,7 +547,7 @@ var Deck  = {
 			m("#main", [
 				m(Name, {char: vnode.attrs.char}),
 				m(Theme, {themes: vnode.attrs.char.themes}),
-				m(Roller, {rolls: vnode.attrs.rolls, who: firstName(vnode.attrs.char.name), room: myRoom, themes: vnode.attrs.char.themes }),
+				m(Roller, {rolls: vnode.attrs.rolls, who: firstName(vnode.attrs.char.name), room: myRoom, char: vnode.attrs.char }),
 				m(Statuses, {statuses: vnode.attrs.char.statuses}),
 				m("button[class=unlock]", { onclick: () => {toggleLocked()}}, "Lock/unlock themes")
 			]),
