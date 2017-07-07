@@ -138,14 +138,29 @@ var Theme = {
                     ]),
                     m("ul", {class: "powertags"},
                         t.powertags.map(
-                            p => m("li", [
+                            p => m("li", 
+							{
+								class: p.selected || null
+							},
+							[
                                 m("i[class=fa fa-times-circle-o close]", {onclick: () => this.deletePower(t, p)}),
                                 
                                 m("span",
                                     {
                                         onclick: () => {
-                                            if(isLocked()) return;
-                                            p.name = editString(p.name);
+                                            if(isLocked()) {
+												if(!p.burned) {
+													if(!p.selected) {
+														p.selected = "plus";
+													} else if(p.selected == "plus") {
+														p.selected = "minus";
+													} else if(p.selected == "minus") {
+														delete p.selected;
+													}
+												}
+											} else {
+												p.name = editString(p.name);
+											}
                                             save();
                                         },
                                         class: p.burned ? "burned" : ""
@@ -154,6 +169,9 @@ var Theme = {
                                 ),
                                 m("input[type=checkbox]", {checked: p.burned, onchange: (e) => {
                                     p.burned = e.target.checked;
+									if(p.burned) {
+										delete p.selected;
+									}
                                     save();
                                 } })
                             ])

@@ -136,6 +136,22 @@ body.unlocked .theme .add, body.unlocked .theme .close {
 	padding: 0;
 }
 
+.theme.mythos .powertags li.plus {
+	background-image: url(images/plus.gif);
+}
+
+.theme.logos .powertags li.plus {
+	background-image: url(images/plus-lt.gif);
+}
+
+.theme.mythos .powertags li.minus {
+	background-image: url(images/minus.gif);
+}
+
+.theme.logos .powertags li.minus {
+	background-image: url(images/minus-lt.gif);
+}
+
 .theme .powertags li i, .theme .weaknesses li i {
     margin-right: 4px;
 }
