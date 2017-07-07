@@ -153,8 +153,8 @@ var Theme = {
 													if(!p.selected) {
 														p.selected = "plus";
 													} else if(p.selected == "plus") {
-														p.selected = "minus";
-													} else if(p.selected == "minus") {
+													//	p.selected = "minus";
+													//} else if(p.selected == "minus") {
 														delete p.selected;
 													}
 												}
@@ -205,10 +205,10 @@ var Theme = {
 								onclick: () => {
 									if(isLocked()) {
 										if(!w.selected) {
-											w.selected = "plus";
-										} else if(w.selected == "plus") {
 											w.selected = "minus";
 										} else if(w.selected == "minus") {
+										//	w.selected = "plus";
+										//} else if(w.selected == "plus") {
 											delete w.selected;
 										}
 									}
@@ -449,10 +449,10 @@ var Status = {
 				class: status.selected || null,
 				onclick: () => {
 					if(!status.selected) {
-						status.selected = "plus";
-					} else if(status.selected == "plus") {
 						status.selected = "minus";
 					} else if(status.selected == "minus") {
+						status.selected = "plus";
+					} else if(status.selected == "plus") {
 						delete status.selected;
 					}
 					save();
