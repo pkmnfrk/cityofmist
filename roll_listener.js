@@ -1,7 +1,7 @@
 const http = require("https");
 const url = require("url");
 
-const discord_webhook = url.parse(process.env.DISCORD_DICE_WEBHOOK);
+const discord_webhook = process.env.DISCORD_DICE_WEBHOOK ? url.parse(process.env.DISCORD_DICE_WEBHOOK) : null;
 
 function subscribe(bayeux)
 {
@@ -52,35 +52,35 @@ function subscribe(bayeux)
 		}
 		
 		var str = JSON.stringify(discord_message);
-		
-		var req = http.request({
-			protocol: discord_webhook.protocol,
-			hostname: discord_webhook.hostname,
-			port: discord_webhook.port,
-			path: discord_webhook.path,
-			query: discord_webhook.query,
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-				"Content-Length": Buffer.byteLength(str)
-			}
-		}, function(res) {
-			res.on('data', function(d) {
-//				console.log("Discord response body: " + d);
+		if(discord_webhook) {
+			var req = http.request({
+				protocol: discord_webhook.protocol,
+				hostname: discord_webhook.hostname,
+				port: discord_webhook.port,
+				path: discord_webhook.path,
+				query: discord_webhook.query,
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					"Content-Length": Buffer.byteLength(str)
+				}
+			}, function(res) {
+				res.on('data', function(d) {
+	//				console.log("Discord response body: " + d);
+				});
+				res.on('end', function() {
+					//console.log("Discord response done.");
+				});
 			});
-			res.on('end', function() {
-				//console.log("Discord response done.");
+		
+			req.on("error", function(err) {
+				console.log("Error making discord request: " + err.message);
 			});
-		});
-		
-		req.on("error", function(err) {
-			console.log("Error making discord request: " + err.message);
-		});
-		
-		
-		req.write(str);
-		req.end();
-		
+			
+			
+			req.write(str);
+			req.end();
+		}
 	});
 }
 
