@@ -17,7 +17,7 @@ function subscribe(bayeux)
 	
 	bayeux.getClient().subscribe('/rolls/*').withChannel(function(channel, message) {
 		
-		console.log("Detected roll");
+		//console.log("Detected roll");
 		
 		var status = message.who + " just rolled ";
 		
