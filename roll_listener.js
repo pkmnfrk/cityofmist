@@ -29,14 +29,11 @@ function subscribe(bayeux)
 			status += "[" + message.dice[i] + "]";
 		}
 		
-		if(message.bonus > 0) {
-			status += " + ";
-		} else if(message.bonus < 0) {
-			status += " - ";
-		}
-		
 		if(message.bonus) {
-			status += Math.abs(message.bonus);
+			status += " + " + message.bonus;
+		}
+		if(message.penalty) {
+			status += " - " + message.penalty;
 		}
 		
 		status += " = " + message.total;
@@ -69,7 +66,7 @@ function subscribe(bayeux)
 			}
 		}, function(res) {
 			res.on('data', function(d) {
-				console.log("Discord response body: " + d);
+//				console.log("Discord response body: " + d);
 			});
 			res.on('end', function() {
 				//console.log("Discord response done.");

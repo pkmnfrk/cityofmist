@@ -224,10 +224,27 @@ var Roller = {
 
     view: function(vnode) {
         var rolls = vnode.attrs.rolls;
-        
+        var bonus = 0
+		var penalty = 0
+		
+		if(vnode.attrs.themes) {
+			for(var theme of vnode.attrs.themes) {
+				for(var tag of theme.powertags) {
+					if(tag.selected == "plus") {
+						bonus += 1;
+					}
+					if(tag.selected == "minus") {
+						penalty += 1;
+					}
+				}
+			}
+		}
+		
         return [
             m("div[class=rollers]", [
-                m("button[class=roller]", {onclick: () => { roll("", vnode.attrs.who, vnode.attrs.room, 2, 6)}}, "Roll 2d6"),
+                m("button[class=roller]", {onclick: () => { 
+					roll("", vnode.attrs.who, vnode.attrs.room, 2, 6, bonus, penalty)
+				}}, "Roll 2d6" + (bonus ? "+" + bonus : "") + (penalty ? "-" + penalty : "")),
                 m("ul[id=rolls]", rolls.map((r) => m("li", [
                     "(",
                     new Date(r.when).toLocaleTimeString(),
@@ -246,8 +263,8 @@ var Roller = {
                             return a;
 
                         }, []),
-                        typeof r.bonus == "number" ? [" + ", m("span", {class: "bonus"}, r.bonus)] : [],
-                        typeof r.penalty == "number" ? [" - ", m("span", {class: "penalty"}, r.penalty)] : [],
+                        r.bonus ? [" + ", m("span", {class: "bonus"}, r.bonus)] : [],
+                        r.penalty ? [" - ", m("span", {class: "penalty"}, r.penalty)] : [],
                     ]),
                     r.label ? m("span", {class: "label"}, r.label) : ""
 
@@ -454,7 +471,7 @@ var Deck  = {
 			m("#main", [
 				m(Name, {char: vnode.attrs.char}),
 				m(Theme, {themes: vnode.attrs.char.themes}),
-				m(Roller, {rolls: vnode.attrs.rolls, who: firstName(vnode.attrs.char.name), room: myRoom }),
+				m(Roller, {rolls: vnode.attrs.rolls, who: firstName(vnode.attrs.char.name), room: myRoom, themes: vnode.attrs.char.themes }),
 				m(Statuses, {statuses: vnode.attrs.char.statuses}),
 				m("button[class=unlock]", { onclick: () => {toggleLocked()}}, "Lock/unlock themes")
 			]),
