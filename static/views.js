@@ -617,8 +617,8 @@ var GMDeck = {
 								else
 									return m("i[class=fa fa-circle-o]")
 							})),
-							m("ul[class=powers]", t.powertags.map((p) => m("li", { class: p.burned ? "burned": "" }, p.name))),
-							m("ul[class=weaknesses]", t.weaknesses.map((w) => m("li", w.name)))
+							m("ul[class=powers]", t.powertags.map((p) => m("li", { class: (p.burned ? "burned ": " ") + (p.selected || "") }, p.name))),
+							m("ul[class=weaknesses]", t.weaknesses.map((w) => m("li", { class: w.selected }, w.name)))
 
 							//m("input[type=checkmark]", {checked: p.burned})
 						])))
@@ -626,7 +626,7 @@ var GMDeck = {
 					
 					m("div", [
 						"Statuses:",
-						m("ul[class=statuses]", c.char.statuses.map((s) => m("li", {class: s.spectrum >= 11 ? "danger" : ""}, [
+						m("ul[class=statuses]", c.char.statuses.map((s) => m("li", {class: (s.spectrum >= 11 ? "danger " : " ") + (s.selected || "")}, [
 							s.name,
 							" - ",
 							this.spectrum(s.spectrum)

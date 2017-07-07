@@ -221,3 +221,11 @@ ul.weaknesses li:before {
 	margin-right: 10px;
 }
 
+
+.plus {
+	background-image: url(images/plus-lt.gif);
+}
+
+.minus {
+	background-image: url(images/minus-lt.gif);
+}
