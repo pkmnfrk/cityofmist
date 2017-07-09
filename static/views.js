@@ -539,9 +539,14 @@ var Deck  = {
 						label: "Character"
 					},
 					{
+						id: "map",
+						label: "Map"
+					},
+					{
 						id: "moves",
 						label: "Moves"
 					},
+					
 				]
 			}),
 			m("#main", [
@@ -553,7 +558,8 @@ var Deck  = {
 			]),
 			m(Moves, {
 				personal: vnode.attrs.char.moves
-			})
+			}),
+			m(MapScreen)
         ];
 	}
 };
@@ -646,9 +652,7 @@ var GMDeck = {
 					}
 				})
 			}),
-			m(MapScreen, {
-				gm: true
-			})
+			m(MapScreen)
         ];
     }
 };
