@@ -76,7 +76,7 @@ function save_put(req, res, bayeux) {
 function map_put(req, res, bayeux) {
 	var body = "";
 	
-	console.log("map_put");
+	//console.log("map_put");
 	
 	req.on('data', function(data) {
         body += data;
@@ -84,7 +84,7 @@ function map_put(req, res, bayeux) {
 	
 	req.on('end', function() {
 		
-		console.log("map_put req_end");
+		//console.log("map_put req_end");
         
 		var bucket = bucket_name();
 		
