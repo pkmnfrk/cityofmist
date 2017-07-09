@@ -10,7 +10,9 @@
   "license": "ISC",
   "dependencies": {
     "aws-sdk": "^2.41.0",
+    "dataurl": "^0.1.0",
     "faye": "^1.2.4",
-    "node-static": "^0.7.9"
+    "node-static": "^0.7.9",
+    "proxy-agent": "^2.0.0"
   }
 }

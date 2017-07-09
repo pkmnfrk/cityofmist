@@ -583,6 +583,10 @@ var GMDeck = {
 						label: "Characters"
 					},
 					{
+						id: "map",
+						label: "Map"
+					},
+					{
 						id: "moves",
 						label: "Moves"
 					}
@@ -641,6 +645,9 @@ var GMDeck = {
 						moves: allchars[c].moves
 					}
 				})
+			}),
+			m(MapScreen, {
+				gm: true
 			})
         ];
     }
@@ -728,3 +735,13 @@ var Move = {
 		]);
 	}
 };
+
+var MapScreen = {
+	view: function(vnode) {
+		
+		return m("div[id=map]", [
+			m("img[id=mapimg][src=/map]")
+		]);
+		
+	}
+}

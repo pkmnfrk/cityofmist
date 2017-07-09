@@ -27,6 +27,41 @@ function loadone(done) {
     });
 }
 
+
+function onpaste(e) {
+	if(TabSwitcher.active != "map") return;
+	
+	console.log("Start paste");
+	for(var item of e.clipboardData.items) {
+		if(item.kind == "file" && item.type == "image/png") {
+			var file = item.getAsFile();
+			var reader = new FileReader();
+			
+			reader.addEventListener("load", function() {
+				//console.log(reader.result);
+				
+				$.ajax({
+					url: "/map",
+					data: reader.result,
+					contentType: "text/plain",
+					method: "PUT",
+					
+					complete: function() {}
+				});
+				
+			});
+			
+			if(file) {
+				console.log("Reading image...");
+				reader.readAsDataURL(file);
+			}
+		}
+	}
+	console.log("End paste");
+};
+
+document.addEventListener("paste", onpaste);
+
 function draw() {
     var root = document.getElementById("root");
     m.render(root, m(GMDeck, { chars: allChars, rolls: rolls, activetab: "main" }));

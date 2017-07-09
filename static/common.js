@@ -142,6 +142,17 @@ var rolls_client = client.subscribe('/rolls/*').withChannel(function(channel, me
     draw();
 });
 
+var map_client = client.subscribe("/map", function(message) {
+	var map = document.getElementById("mapimg");
+	
+	if(map) {
+		map.src = "";
+		map.src = "/map";
+		//map.src = "/map?" + Math.random();
+		
+	}
+})
+
 var music_client = client.subscribe("/music", function(message) {
     switch(message.command) {
         case "play":

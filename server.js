@@ -1,6 +1,11 @@
 const AWS = require('aws-sdk');
+const proxy = require("proxy-agent");
 
-AWS.config.update({region: 'us-east-1'});
+AWS.config.update({
+	region: 'us-east-1',
+	//httpOptions: { agent: proxy('http://localhost:8888') },
+	//sslEnabled: false
+});
 
 const http = require('http');
 const faye = require('faye');
@@ -20,7 +25,9 @@ var server = http.createServer(function (req, res) {
     
     if(uri.pathname.startsWith("/save/")) {
         return datastore.save(req, res, bayeux);
-    }
+    } else if(uri.pathname.startsWith("/map")) {
+		return datastore.map(req, res, bayeux);
+	}
     
     req.addListener('end', function() {
         fileServer.serve(req, res);
