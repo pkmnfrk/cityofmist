@@ -147,8 +147,8 @@ var map_client = client.subscribe("/map", function(message) {
 	
 	if(map) {
 		map.src = "";
-		map.src = "/map";
-		//map.src = "/map?" + Math.random();
+		//map.src = "/map";
+		map.src = "/map?" + Math.random();
 		
 	}
 })
