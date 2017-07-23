@@ -117,9 +117,28 @@ function save() {
     });
 }
 
+function onSwitchTab(tab, title) {
+	history.pushState({tab: tab}, title + " - City of Mist", "#" + tab)
+}
+
+function handleState(state) {
+	if(!state) state = {tab: "main"};
+	TabSwitcher.active = state.tab;
+	draw();
+}
+
+window.onpopstate = function(e) {
+	handleState(e.state);
+};
+
+var currentTab = "main";
+if(location.hash) {
+	currentTab = location.hash.substring(1);
+}
+
 function draw() {
     var root = document.getElementById("root");
-    m.render(root, m(Deck, { char:objs, rolls: rolls, activetab: "main" }));
-    
+    m.render(root, m(Deck, { char:objs, rolls: rolls, activetab: currentTab, onswitch: onSwitchTab}));
+    document.title = TabSwitcher.title + " - City of Mist";
     initialize_youtube();
 }

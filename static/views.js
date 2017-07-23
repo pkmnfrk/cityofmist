@@ -547,7 +547,9 @@ var Deck  = {
 						label: "Moves"
 					},
 					
-				]
+				],
+				activetab: vnode.attrs.activetab,
+				onswitch: vnode.attrs.onswitch
 			}),
 			m("#main", [
 				m(Name, {char: vnode.attrs.char}),
@@ -661,6 +663,11 @@ var TabSwitcher = {
 	active: null,
 	view: function(vnode) {
 		var tabs = vnode.attrs.tabs;
+		var onswitch = vnode.attrs.onswitch;
+		
+		if(!TabSwitcher.active) {
+			TabSwitcher.active = vnode.attrs.activetab
+		}
 		if(!TabSwitcher.active) {
 			TabSwitcher.active = tabs[0].id;
 		}
@@ -672,12 +679,14 @@ var TabSwitcher = {
 					dom.style.display = "none";
 				} else if(dom) {
 					dom.style.display = null;
+					TabSwitcher.title = t.label;
 				}
 			};
 			return m(".tab", {
 				"class": t.id == TabSwitcher.active ? "active" : "inactive",
 				onclick: function() {
 					TabSwitcher.active = t.id;
+					if(onswitch) onswitch(t.id, t.label);
 					draw();
 				},
 				onupdate: update,
