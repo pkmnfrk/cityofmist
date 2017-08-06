@@ -16,7 +16,7 @@ const url = require('url');
 const roll_listener = require("./roll_listener");
 
 var bayeux = new faye.NodeAdapter({mount: '/faye', timeout: 45});
-var fileServer = new static.Server('./static', { cache: 0 });
+var fileServer = new static.Server('./dist', { cache: 0 });
 
 roll_listener.subscribe(bayeux);
 

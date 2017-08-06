@@ -240,6 +240,12 @@ function spectrumLevel(s) {
 	return 6;
 }
 
+function editString(t) {
+    var n = prompt("Edit", t);
+    if(!n) return t;
+    return n;
+}
+
 var youtube_player = null;
 
 /* YOUTUBE EMBED API */

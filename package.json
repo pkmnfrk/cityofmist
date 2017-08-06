@@ -4,7 +4,9 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack",
+    "gulp": "gulp"
   },
   "author": "",
   "license": "ISC",
@@ -14,5 +16,18 @@
     "faye": "^1.2.4",
     "node-static": "^0.7.9",
     "proxy-agent": "^2.0.0"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.1",
+    "gulp-connect": "latest",
+    "gulp-header": "^1.8.9",
+    "gulp-sass": "latest",
+    "gulp-sourcemaps": "^2.6.0",
+    "gulp-uglify": "latest",
+    "gulp-util": "latest",
+    "pump": "^1.0.2",
+    "uglify-es": "^3.0.27",
+    "webpack": "^3.4.1"
   }
 }
