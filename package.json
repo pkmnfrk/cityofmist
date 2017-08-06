@@ -20,11 +20,8 @@
   "devDependencies": {
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.1",
-    "gulp-connect": "latest",
     "gulp-gzip": "^1.4.0",
     "gulp-hash-src": "^0.1.6",
-    "gulp-header": "^1.8.9",
-    "gulp-sass": "latest",
     "gulp-sourcemaps": "^2.6.0",
     "gulp-uglify": "latest",
     "gulp-util": "latest",
