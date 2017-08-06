@@ -80,11 +80,15 @@ var GMDeck = {
 			]),
 			m(Moves, {
 				personal: allcharkeys.map(function(c) {
-					return {
-						name: allchars[c].name,
-						moves: allchars[c].moves
-					}
-				})
+					var ret = allchars[c].moves.map(function(d) {
+						return {
+							name: allchars[c].name + ' - ' + d.name,
+							moves: d.moves
+						}	
+					});
+					return ret;
+					
+				}).reduce(function(a, b){ return a.concat(b); }, [])
 			}),
 			m(MapScreen)
         ];

@@ -1,6 +1,6 @@
 var Moves = {
 	view: function(vnode) {
-		var moves = [global_moves, vnode.attrs.personal];
+		var moves = [vnode.attrs.personal, global_moves];
 		
 		return m("#moves", moves.map(function(set) {
 			if(!set) return null;

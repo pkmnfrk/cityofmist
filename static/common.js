@@ -8,7 +8,7 @@ var global_moves = [
 		moves: [
 			{
 				name: "Investigate",
-				text: "<p>When you use your abilities to <strong>seek answers to burning questions</strong>, roll +power. On a hit, you uncover as many Clues as your Power. Spend Clues 1-to-1 to ask the MC a question about the subject of your investigation or ask another player a relevant question about their character. They must give you either a straight answer or a solid lead. On a 7-9, they can also choose 1:</p> <ul><li>Your investigation exposes you to danger.</li><li>The Clues you get are fuzzy, incomplete or part-true part-false.</li><li>Whoever or whatever you are asking the question(s) can ask you one question as well. You answer on the same terms.</li></ul>",
+				text: "<p>When you use your abilities to <strong>seek answers to burning questions</strong>, roll +power. On a hit, you uncover as many Clues as your Power. Spend Clues 1-to-1 to ask the MC a question about the subject of your investigation or ask another player a relevant question about their character. They must give you either a straight answer or a solid lead. On a 7-9, they can also choose 1:</p> <ul><li>Your investigation exposes you to danger.</li><li>The Clues you get are fuzzy, incomplete or part-true part-false.</li><li>Whoever or whatever you are asking the question(s) can ask you one question as well. You answer on the same terms.</li></ul><p>Sample questions:</p><ul><li>What here is useful to me?</li><li>What happened here recently?</li><li>Where can I find &lt;person/thing&gt;?</li><li>What is the best way out/in/through/around?</ul>",
 				examples: [
 					"Search using your senses",
 					"Ask questions in a conversation",
