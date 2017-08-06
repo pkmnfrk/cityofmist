@@ -26,7 +26,6 @@
     "gulp-uglify": "latest",
     "gulp-util": "latest",
     "pump": "^1.0.2",
-    "uglify-es": "^3.0.27",
-    "webpack": "^3.4.1"
+    "uglify-es": "^3.0.27"
   }
 }
