@@ -1,7 +1,10 @@
 const http = require("https");
 const url = require("url");
+const argv = require('yargs').argv;
 
-const discord_webhook = process.env.DISCORD_DICE_WEBHOOK ? url.parse(process.env.DISCORD_DICE_WEBHOOK) : null;
+var hookurl = argv.discord_dice_webhook || process.env.DISCORD_DICE_WEBHOOK;
+
+const discord_webhook = hookurl ? url.parse(hookurl) : null;
 
 function subscribe(bayeux)
 {

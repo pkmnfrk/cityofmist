@@ -15,6 +15,11 @@ const url = require('url');
 
 const roll_listener = require("./roll_listener");
 
+
+const argv = require('yargs').argv;
+
+
+
 var bayeux = new faye.NodeAdapter({mount: '/faye', timeout: 45});
 var fileServer = new static.Server('./dist', { 
 	cache: 0,
@@ -39,4 +44,4 @@ var server = http.createServer(function (req, res) {
 });
 
 bayeux.attach(server);
-server.listen(process.env.PORT || 8000);
+server.listen(argv.port || process.env.PORT || 8000);

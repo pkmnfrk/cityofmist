@@ -1,9 +1,10 @@
 const AWS = require('aws-sdk');
 const url = require('url');
 const dataurl = require('dataurl');
-
 var dynamodb = new AWS.DynamoDB();
 var s3 = new AWS.S3();
+
+const argv = require('yargs').argv;
 
 var decoded_map = null;
 
@@ -24,7 +25,7 @@ if(bucket_name()) {
 }
 
 function bucket_name() {
-	return process.env.S3_BUCKET;
+	return argv.s3_bucket || process.env.S3_BUCKET;
 }
 
 function save_put(req, res, bayeux) {
