@@ -214,11 +214,19 @@ function roll(label, who, room, nDice, nSides, bonus, penalty) {
     client.publish('/rolls/' + room, message);
 }
 
+function updatePlayer(player) {
+	if(!player.moves) {
+		player.moves = [];
+	}
+	
+}
+
 function getSave(id, cb) {
     $.ajax({
         url: "/save/" + id,
         method: "GET",
-        success: function(data) {            
+        success: function(data) {
+			updatePlayer(data);
             cb(null, data);
         },
         error: function(err) {
