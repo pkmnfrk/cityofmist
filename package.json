@@ -11,21 +11,21 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "aws-sdk": "^2.41.0",
+    "aws-sdk": "^2.211.0",
     "dataurl": "^0.1.0",
     "faye": "^1.2.4",
-    "node-static": "^0.7.9",
-    "proxy-agent": "^2.0.0"
+    "node-static": "^0.7.10",
+    "proxy-agent": "^2.2.0"
   },
   "devDependencies": {
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.1",
-    "gulp-gzip": "^1.4.0",
+    "gulp-gzip": "^1.4.2",
     "gulp-hash-src": "^0.1.6",
-    "gulp-sourcemaps": "^2.6.0",
+    "gulp-sourcemaps": "^2.6.4",
     "gulp-uglify": "latest",
     "gulp-util": "latest",
-    "pump": "^1.0.2",
-    "uglify-es": "^3.0.27"
+    "pump": "^1.0.3",
+    "uglify-es": "^3.3.10"
   }
 }
