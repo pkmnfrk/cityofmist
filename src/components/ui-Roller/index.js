@@ -1,5 +1,5 @@
 import m from 'mithril';
-import { rolls, roll, isGm, stopYoutubeVideo, spectrumLevel } from './common';
+import { rolls, roll, isGm, stopYoutubeVideo, spectrumLevel } from '../../common';
 
 export default {
 

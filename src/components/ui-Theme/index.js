@@ -1,16 +1,15 @@
-import m from 'mithril';
+import React from 'react';
+import Icon from '../ui-Icon';
 
-import { save, isLocked, editString } from './common';
+import { save, editString } from '../../common';
 
-export default {
-    tapped: false,
-    
-	toggleType: function(t) {
+export default class Theme extends React.Component {
+	toggleType(t) {
 		if(t == "logos") return "mythos";
 		return "logos";
-	},
+	}
     
-    deleteTheme: function(themes, theme) {
+    deleteTheme(themes, theme) {
         for(var i = 0; i < themes.length; i++) {
             if(themes[i] == theme) {
                 themes.splice(i, 1);
@@ -19,16 +18,16 @@ export default {
         }
         
         save();
-    },
+    }
     
-    addTheme: function(themes) {
+    addTheme(themes) {
         var newTheme = JSON.parse(JSON.stringify(template));
         
         themes.push(newTheme);
         save();
-    },
+    }
 	
-    deletePower: function(theme, power) {
+    deletePower(theme, power) {
         for(var i = 0; i < theme.powertags.length; i++) {
             if(theme.powertags[i] == power) {
                 theme.powertags.splice(i, 1);
@@ -37,9 +36,9 @@ export default {
         }
         
         save();
-    },
+    }
     
-    deleteWeakness: function(theme, weak) {
+    deleteWeakness(theme, weak) {
         for(var i = 0; i < theme.weaknesses.length; i++) {
             if(theme.weaknesses[i] == weak) {
                 theme.weaknesses.splice(i, 1);
@@ -48,9 +47,9 @@ export default {
         }
         
         save();
-    },
+    }
     
-    addPower: function(theme) {
+    addPower(theme) {
         var newPower = {
             name: "<new tag>",
             burned: false
@@ -59,18 +58,28 @@ export default {
         theme.powertags.push(newPower);
         save();
         
-    },
+    }
     
-    addWeakness: function(theme) {
+    addWeakness(theme) {
         var newWeakness = {
             name: "<new tag>"
         }
         
         theme.weaknesses.push(newWeakness);
         save();
-    },
+    }
     
-	view: function(vnode) {
+	render() {
+		return (
+			<div className={"theme " + this.props.theme.type}>
+				<Icon hide={this.props.isLocked} className="close" big="true" icon="times-circle-o" />
+				<div className="book">{this.props.theme.book}</div>
+				<div className="icon">
+					<Icon fixed="true" icon={this.props.theme.type == "mythos" ? "bolt" : "id-badge"} />
+				</div>
+			</div>
+		);
+		/*
         var ret = vnode.attrs.themes.map(t => {
             return m("div", {class: "theme " + t.type}, [
                 m("i[class=close fa fa-times-circle-o fa-2x]", {onclick: () => {
@@ -178,18 +187,7 @@ export default {
                 ]), //inner
                 m("div", {class: "footer"}, [
                     m("div", {class:"weakness_head"}, [
-                        m("span", {
-                            /*onclick: function(e) {
-                                e.preventDefault();
-                                
-                                if(!this.tapped) {
-                                    setTimeout(() => this.tapped = false, 500);
-                                    return;
-                                }
-                                
-                                toggleLocked();
-                            },*/
-                        }, "WEAKNESS TAGS"),
+                        m("span", "WEAKNESS TAGS"),
                         m("i[class=fa fa-plus-circle add]", {onclick: () => this.addWeakness(t) })
                     ]),
                     m("ul", {class: "weaknesses"}, 
@@ -221,6 +219,7 @@ export default {
                     )
                 ])
             ]);
+			
         });
         
         while(ret.length < 4) {
@@ -232,5 +231,6 @@ export default {
         }
         
         return ret;
+		*/
     }
 };

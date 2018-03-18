@@ -2,7 +2,7 @@ import m from 'mithril';
 import $ from 'jquery';
 
 import GMDeck from './GMDeck';
-import TabSwitcher from './TabSwitcher';
+import TabSwitcher from './components/ui-TabSwitcher';
 
 import { getSave, client } from "./common";
 import * as Common from "./common";

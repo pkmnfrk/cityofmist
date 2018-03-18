@@ -5,26 +5,6 @@ export var client = new Faye.Client('/api/faye');
 
 export var rolls = [];
 
-export var save = null;
-export var draw = null;
-
-export function setSaveCallback(cb) {
-	save = cb;
-}
-export function setDrawCallback(cb) {
-	draw = cb;
-}
-
-var _isLocked = false;
-
-export function isLocked() {
-	return !document.body.classList.contains("unlocked");
-}
-
-export function toggleLocked(l) {
-	document.body.classList.toggle("unlocked");
-}
-
 var rolls_client = client.subscribe('/rolls/*').withChannel(function(channel, message) {
 
     rolls.unshift(message);
