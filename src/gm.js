@@ -1,3 +1,14 @@
+import m from 'mithril';
+import $ from 'jquery';
+
+import GMDeck from './GMDeck';
+import TabSwitcher from './TabSwitcher';
+
+import { getSave, client } from "./common";
+import * as Common from "./common";
+
+import './css/gm.css';
+
 var characterKeys = location.search;
 var allChars = {};
 var character_client = null;
@@ -41,7 +52,7 @@ function onpaste(e) {
 				//console.log(reader.result);
 				
 				$.ajax({
-					url: "/map",
+					url: "/api/map",
 					data: reader.result,
 					contentType: "text/plain",
 					method: "PUT",
@@ -64,12 +75,16 @@ document.addEventListener("paste", onpaste);
 
 function draw() {
     var root = document.getElementById("root");
-    m.render(root, m(GMDeck, { chars: allChars, rolls: rolls, activetab: "main" }));
+    m.render(root, m(GMDeck, { chars: allChars, activetab: "main" }));
     
     //root.style.gridTemplateColumns = "repeat(" + (characterKeys.length + 1) + ", 1fr)";
     
-    initialize_youtube();
+    Common.initialize_youtube();
 }
+
+Common.setDrawCallback(draw);
+
+
 
 loadone(function() {
     

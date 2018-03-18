@@ -4,7 +4,7 @@ export default {
 	view: function(vnode) {
 		
 		return m("div[id=map]", [
-			m("img[id=mapimg][src=/map]")
+			m("img", { id: "mapimg", src: "/api/map" })
 		]);
 		
 	}

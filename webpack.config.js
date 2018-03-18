@@ -5,10 +5,11 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = {
 	entry: {
-		index: './src/index.js'
+		index: './src/index.js',
+		gm: './src/gm.js'
 	},
 	output: {
-		filename: '[name].bundle.js',
+		filename: '[name].[chunkhash].js',
 		path: path.resolve(__dirname, 'dist')
 	},
 	mode: 'development',
@@ -25,7 +26,16 @@ module.exports = {
 		new HtmlWebpackPlugin({
 			title: "City of Mist",
 			template: "index.html",
-			favicon: "src/images/city-tiny.png"
+			filename: "index.html",
+			favicon: "src/images/city-tiny.png",
+			chunks: ["index"]
+		}),
+		new HtmlWebpackPlugin({
+			title: "City of Mist GM",
+			template: "index.html",
+			filename: "gm.html",
+			favicon: "src/images/city-tiny-gm.png",
+			chunks: ["gm"]
 		})
 	],
 	module: {

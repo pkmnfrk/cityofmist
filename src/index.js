@@ -59,35 +59,6 @@ var template = {
 }
 var objs = null;
 
-/*$.ajax({
-    url: "/save/" + myRoom,
-    method: "GET",
-    success: function(data) {
-        //alert(data);
-        
-        objs = data;
-        
-        draw();
-    },
-    error: function() {
-        objs = {
-            name: "<character name>",
-            themes: [
-                JSON.parse(JSON.stringify(template)),
-                JSON.parse(JSON.stringify(template)),
-                JSON.parse(JSON.stringify(template)),
-                JSON.parse(JSON.stringify(template))
-            ],
-            statuses: []
-        };
-        
-        objs.themes[0].type = "mythos";
-        
-        save();
-    }
-})*/
-
-
 Common.getSave(myRoom, function(err, data) {
 	if(err) {
 		data = {
