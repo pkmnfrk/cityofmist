@@ -1,7 +1,10 @@
-var Roller = {
+import m from 'mithril';
+import { rolls, roll, isGm, stopYoutubeVideo, spectrumLevel } from './common';
+
+export default {
 
     view: function(vnode) {
-        var rolls = vnode.attrs.rolls;
+        
         var bonus = 0
 		var penalty = 0
 		

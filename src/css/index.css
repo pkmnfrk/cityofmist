@@ -137,19 +137,19 @@ body.unlocked .theme .add, body.unlocked .theme .close {
 }
 
 .theme.mythos .plus {
-	background-image: url(images/plus.gif);
+	background-image: url(../images/plus.gif);
 }
 
 .theme.logos .plus {
-	background-image: url(images/plus-lt.gif);
+	background-image: url(../images/plus-lt.gif);
 }
 
 .theme.mythos .minus {
-	background-image: url(images/minus.gif);
+	background-image: url(../images/minus.gif);
 }
 
 .theme.logos .minus {
-	background-image: url(images/minus-lt.gif);
+	background-image: url(../images/minus-lt.gif);
 }
 
 .theme .powertags li i, .theme .weaknesses li i {
@@ -279,11 +279,11 @@ body.unlocked .theme .add, body.unlocked .theme .close {
 }
 
 .status .plus {
-	background-image: url(images/plus-lt.gif);
+	background-image: url(../images/plus-lt.gif);
 }
 
 .status .minus {
-	background-image: url(images/minus-lt.gif);
+	background-image: url(../images/minus-lt.gif);
 }
 
 .status .header {

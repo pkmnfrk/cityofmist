@@ -1,4 +1,8 @@
-var Statuses = {
+import m from 'mithril';
+import Status from './Status';
+import { save } from './common';
+
+export default {
     deleteStatus: function(statuses, status) {
         for(var i = 0; i < statuses.length; i++) {
             if(statuses[i] == status) {

@@ -1,4 +1,7 @@
-var TabSwitcher = {
+import m from 'mithril';
+import { draw } from './common';
+
+let TabSwitcher = {
 	active: null,
 	view: function(vnode) {
 		var tabs = vnode.attrs.tabs;
@@ -35,3 +38,5 @@ var TabSwitcher = {
 		}));
 	}
 };
+
+export default TabSwitcher;

@@ -1,4 +1,14 @@
-var GMDeck = {
+import m from 'mithril';
+import Name from './Name';
+import TabSwitcher from './TabSwitcher';
+import Theme from './Theme';
+import Roller from './Roller';
+import Statuses from './Statuses';
+import Moves from './Moves';
+import MapScreen from './MapScreen';
+//import { firstName, toggleLocked } from './common';
+
+export default {
     spectrum: function(s) {
         if(s <= 1) return "1";
         if(s <= 2) return "2";

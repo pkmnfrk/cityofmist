@@ -223,11 +223,11 @@ ul.weaknesses li:before {
 
 
 .plus {
-	background-image: url(images/plus-lt.gif);
+	background-image: url(../images/plus-lt.gif);
 }
 
 .minus {
-	background-image: url(images/minus-lt.gif);
+	background-image: url(../images/minus-lt.gif);
 }
 
 #map {
