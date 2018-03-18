@@ -1,4 +1,8 @@
-var Theme = {
+import m from 'mithril';
+
+import { save, isLocked, editString } from './common';
+
+export default {
     tapped: false,
     
 	toggleType: function(t) {

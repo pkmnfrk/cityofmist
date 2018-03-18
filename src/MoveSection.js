@@ -1,4 +1,7 @@
-var MoveSection = {
+import m from 'mithril';
+import Move from './Move';
+
+export default {
 	view: function(vnode) {
 		var section = vnode.attrs.section;
 		

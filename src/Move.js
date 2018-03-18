@@ -1,4 +1,7 @@
-var Move = {
+import m from 'mithril';
+
+
+export default {
 	view: function(vnode) {
 		var move = vnode.attrs;
 		

@@ -1,3 +1,11 @@
+import $ from 'jquery';
+import m from 'mithril';
+import * as Common from './common';
+import Deck from './Deck'
+import TabSwitcher from './TabSwitcher';
+
+import './css/index.css';
+
 var myRoom = window.location.search;
 if(myRoom[0] == "?") myRoom = myRoom.substring(1);
 
@@ -7,7 +15,7 @@ if(!myRoom) {
     
 }
 
-var character = client.subscribe('/character/' + myRoom, function(message) {
+var character = Common.client.subscribe('/character/' + myRoom, function(message) {
     objs = message;
     draw();
 });
@@ -16,18 +24,9 @@ document.onkeypress = function(e) {
     e = e || window.event;
     
     if(e.key == "l") {
-        toggleLocked();
+        Common.toggleLocked();
     }
 }
-
-function toggleLocked() {
-    document.body.classList.toggle("unlocked");
-}
-
-function isLocked() {
-    return !document.body.classList.contains("unlocked");
-}
-
 
 var template = {
     type: "logos",
@@ -60,27 +59,13 @@ var template = {
 }
 var objs = null;
 
-$.ajax({
+/*$.ajax({
     url: "/save/" + myRoom,
     method: "GET",
     success: function(data) {
         //alert(data);
         
-        if(Array.isArray(data)) {
-            data = {
-                themes: data
-            };
-        }
-        
         objs = data;
-        
-        if(!objs.statuses) {
-            objs.statuses = [];
-        }
-        
-        if(!objs.name) {
-            objs.name = "<character name>";
-        }
         
         draw();
     },
@@ -100,22 +85,38 @@ $.ajax({
         
         save();
     }
-})
+})*/
+
+
+Common.getSave(myRoom, function(err, data) {
+	if(err) {
+		data = {
+            name: "<character name>",
+            themes: [
+                JSON.parse(JSON.stringify(template)),
+                JSON.parse(JSON.stringify(template)),
+                JSON.parse(JSON.stringify(template)),
+                JSON.parse(JSON.stringify(template))
+            ],
+            statuses: []
+        };
+		data.themes[0].type = "mythos";
+	}
+	
+	objs = data;
+	
+	save();
+});
+
 
 
 function save() {
     draw();
-    
-    $.ajax({
-        url: "/save/" + myRoom,
-        method: "PUT",
-        data: JSON.stringify(objs),
-        contentType: "application/json",
-        success: function() {
-            
-        }
-    });
+   
+	Common.putSave(myRoom, objs);
 }
+
+Common.setSaveCallback(save);
 
 function onSwitchTab(tab, title) {
 	history.pushState({tab: tab}, title + " - City of Mist", "#" + tab)
@@ -137,8 +138,11 @@ if(location.hash) {
 }
 
 function draw() {
-    var root = document.getElementById("root");
-    m.render(root, m(Deck, { char:objs, rolls: rolls, activetab: currentTab, onswitch: onSwitchTab}));
+    m.render(root, m(Deck, { char:objs, activetab: currentTab, onswitch: onSwitchTab, room: myRoom}));
     document.title = TabSwitcher.title + " - City of Mist";
-    initialize_youtube();
 }
+
+Common.initialize_youtube();
+Common.setDrawCallback(draw);
+
+window.root = document.getElementById("root");

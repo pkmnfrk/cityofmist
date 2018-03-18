@@ -1,4 +1,7 @@
-var Status = {
+import m from 'mithril';
+import { save, editString } from './common';
+
+export default {
     statusCheck: function(status, i) {
         return (e) => {
             status.spectrum = i + 1;

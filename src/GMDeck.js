@@ -1,4 +1,4 @@
-var GMDeck = {
+export default {
     spectrum: function(s) {
         if(s <= 1) return "1";
         if(s <= 2) return "2";

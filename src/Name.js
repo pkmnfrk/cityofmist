@@ -1,4 +1,8 @@
-var Name = {
+import m from 'mithril';
+
+import { save, isLocked, editString } from './common';
+
+export default {
     view: function(vnode) {
         var char = vnode.attrs.char;
         

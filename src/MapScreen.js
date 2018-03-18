@@ -1,4 +1,6 @@
-var MapScreen = {
+import m from 'mithril';
+
+export default {
 	view: function(vnode) {
 		
 		return m("div[id=map]", [
