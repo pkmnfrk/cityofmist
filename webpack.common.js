@@ -2,6 +2,8 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const WebappWebpackPlugin  = require('webapp-webpack-plugin');
 
 module.exports = {
 	entry: {
@@ -27,6 +29,29 @@ module.exports = {
 			filename: "gm.html",
 			favicon: "src/images/city-tiny-gm.png",
 			chunks: ["gm"]
+		}),
+		new WebappWebpackPlugin ({
+			logo: './src/images/city.png',
+			prefix: 'icon-[hash]',
+			persistentCache: true,
+			inject: true,
+			favicons: {
+				background: '#000',
+				appName: 'cityofmist',
+				appDescription: "City of Mist",
+				developerName: "Mike Caron",
+				developerURL: null,
+				icons: {
+					coast: false,
+					yandex: false,
+					firefox: false,
+					windows: false
+				}
+				
+			}
+		}),
+		new MiniCssExtractPlugin({
+			filename: "[name].[chunkhash].css"
 		})
 	],
 	module: {
@@ -34,7 +59,7 @@ module.exports = {
 			{
 				test: /\.css$/,
 				use: [
-					'style-loader',
+					MiniCssExtractPlugin.loader,
 					'css-loader'
 				]
 			},
