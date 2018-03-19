@@ -3,17 +3,6 @@ import $ from 'jquery';
 
 export var client = new Faye.Client('/api/faye');
 
-export var rolls = [];
-
-var rolls_client = client.subscribe('/rolls/*').withChannel(function(channel, message) {
-
-    rolls.unshift(message);
-    while(rolls.length > 15) {
-        rolls.pop();
-    }
-    
-    draw();
-});
 
 var map_client = client.subscribe("/map", function(message) {
 	var map = document.getElementById("mapimg");

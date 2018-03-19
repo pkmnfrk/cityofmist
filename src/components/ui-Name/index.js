@@ -1,6 +1,7 @@
 import React from 'react';
  
 import { editString } from '../../common';
+import "./index.css"; 
 
 export default class Name extends React.Component {
 	constructor(props) {
@@ -19,7 +20,7 @@ export default class Name extends React.Component {
 	
     render() {
 		return (
-			<div className="name" onClick={this.handleClick}>
+			<div className={"name" + (this.props.isLocked ? "" : " editable")} onClick={this.handleClick}>
 				{this.props.name}
 			</div>
 		);

@@ -44,6 +44,8 @@ export default class Deck extends React.Component {
 		<div id="main">
 			<Name name={this.props.char.name} onChange={this.handleNameChange} isLocked={this.props.isLocked} />
 			<ThemeList themes={this.props.char.themes} isLocked={this.props.isLocked} onChange={this.props.onChange} />
+			<Roller who={firstName(this.props.char.name)} room={this.props.room} char={this.props.char} onChange={this.props.onChange} />
+			{/*Statuses*/}
 			<button className="unlock" onClick={toggleLocked}>Lock/unlock themes</button>
 		</div>
 		);
@@ -73,10 +75,10 @@ export default class Deck extends React.Component {
 		var thing = content[this.props.activeTab].bind(this);
 		
 		return (
-			<div>
+			<React.Fragment>
 				<TabSwitcher tabs={tabs} activeTab={this.props.activeTab} onSwitch={this.props.onSwitch} />
 				{thing()}
-			</div>
+			</React.Fragment>
 		);
 	}
 };
@@ -85,17 +87,9 @@ export default class Deck extends React.Component {
 export default {
 	view: function(vnode) {
 		return [
-			m(TabSwitcher, {
-				tabs: tabs,
-				activetab: vnode.attrs.activetab,
-				onswitch: vnode.attrs.onswitch
-			}),
 			m("#main", [
-				m(Name, {char: vnode.attrs.char}),
-				m(Theme, {themes: vnode.attrs.char.themes}),
-				m(Roller, { who: firstName(vnode.attrs.char.name), room: vnode.attrs.room, char: vnode.attrs.char }),
 				m(Statuses, {statuses: vnode.attrs.char.statuses}),
-				m("button[class=unlock]", { onclick: () => {toggleLocked()}}, "Lock/unlock themes")
+				
 			]),
 			m(Moves, {
 				personal: vnode.attrs.char.moves

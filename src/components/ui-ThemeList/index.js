@@ -17,8 +17,8 @@ export default class ThemeList extends React.Component {
 			/>
 		);
 		
-		return <div>
+		return <React.Fragment>
 			{themes}
-		</div>;
+		</React.Fragment>;
 	}
 }

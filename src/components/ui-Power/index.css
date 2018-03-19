@@ -1,0 +1,7 @@
+.burned {
+    text-decoration: line-through;
+}
+
+.burned.editable {
+	text-decoration: underline line-through;
+}
