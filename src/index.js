@@ -13,28 +13,7 @@ if(!myRoom) {
     
 }
 
-function onSwitchTab(tab, title) {
-	history.pushState({tab: tab}, title + " - City of Mist", "#" + tab)
-	currentTab = tab;
-	draw();
-}
-
-function handleState(state) {
-	if(!state) state = {tab: "main"};
-	currentTab = state.tab;
-	draw();
-}
-
-window.onpopstate = function(e) {
-	handleState(e.state);
-};
-
-var currentTab = "main";
-if(location.hash) {
-	currentTab = location.hash.substring(1);
-}
-
-Common.initialize_youtube();
+//Common.initialize_youtube();
 
 window.root = document.getElementById("root");
 

@@ -1,24 +1,34 @@
 import React from 'react';
 import Icon from '../ui-Icon';
+import CheckScale from '../ui-CheckScale';
 
 import { save, editString } from '../../common';
 
 export default class Theme extends React.Component {
+	constructor(props) {
+		super(props);
+		
+		//this.handleBookClick = this.handleBookClick.bind(this);
+		//this.handleIconClick = this.handleIconClick.bind(this);
+		//console.log("Properties:");
+		Object.getOwnPropertyNames(Theme.prototype).forEach((prop) => {
+			if(typeof(this[prop]) == "function" && prop.startsWith("handle")) {
+				//console.log(prop);
+				this[prop] = this[prop].bind(this);
+			}
+		})
+		/*for(var prop in ) {
+			console.log(prop + ": " + typeof(this[prop]));
+			if(typeof(this[prop]) == "function" && prop.startsWith("handle")) {
+				this[prop] = this[prop].bind(this);
+			}
+		}*/
+	}
+	
 	toggleType(t) {
 		if(t == "logos") return "mythos";
 		return "logos";
 	}
-    
-    deleteTheme(themes, theme) {
-        for(var i = 0; i < themes.length; i++) {
-            if(themes[i] == theme) {
-                themes.splice(i, 1);
-                break;
-            }
-        }
-        
-        save();
-    }
     
     addTheme(themes) {
         var newTheme = JSON.parse(JSON.stringify(template));
@@ -68,43 +78,83 @@ export default class Theme extends React.Component {
         theme.weaknesses.push(newWeakness);
         save();
     }
-    
+	
+	handleBookClick() {
+		if(this.props.isLocked) return;
+		
+		var newBook = editString(this.props.theme.book)
+		
+		if(this.props.theme.book != newBook) {
+			this.props.theme.book = newBook;
+			this.props.onChange();
+		}
+	}
+	
+	handleIconClick() {
+		if(this.props.isLocked) return;
+		
+		this.props.theme.type = this.toggleType(this.props.theme.type);
+		this.props.onChange();
+	}
+	
+	handleNameClick() {
+		if(this.props.isLocked) return;
+		
+		var newBook = editString(this.props.theme.name)
+		
+		if(this.props.theme.name != newBook) {
+			this.props.theme.name = newBook;
+			this.props.onChange();
+		}
+	}
+	
+	handleAttention(v) {
+		if(this.props.theme.attention != v) {
+			this.props.theme.attention = v;
+			this.props.onChange();
+		}
+	}
+	
+	handleFade(v) {
+		if(this.props.theme.fade != v) {
+			this.props.theme.fade = v;
+			this.props.onChange();
+		}
+	}
+	
 	render() {
 		return (
 			<div className={"theme " + this.props.theme.type}>
-				<Icon hide={this.props.isLocked} className="close" big="true" icon="times-circle-o" />
-				<div className="book">{this.props.theme.book}</div>
+				<Icon
+					hide={this.props.isLocked}
+					className="close"
+					big="true"
+					icon="times-circle-o"
+					onClick={this.props.onDelete}
+				/>
+				<div className="book" onClick={this.handleBookClick}>{this.props.theme.book}</div>
 				<div className="icon">
-					<Icon fixed="true" icon={this.props.theme.type == "mythos" ? "bolt" : "id-badge"} />
+					<Icon fixed="true" icon={this.props.theme.type == "mythos" ? "bolt" : "id-badge"} onClick={this.handleIconClick} />
+				</div>
+				<div className="inner">
+					<div className="name" onClick={this.handleNameClick}>{this.props.theme.name}</div>
+				</div>
+				<div className="attention">
+					<CheckScale value={this.props.theme.attention} onChange={this.handleAttention} />
+					<div className="label"/>
+				</div>
+				<div className="fade">
+					<CheckScale value={this.props.theme.fade} onChange={this.handleFade} />
+					<div className="label"/>
 				</div>
 			</div>
 		);
 		/*
         var ret = vnode.attrs.themes.map(t => {
             return m("div", {class: "theme " + t.type}, [
-                m("i[class=close fa fa-times-circle-o fa-2x]", {onclick: () => {
-                    if(isLocked()) return;
-                    this.deleteTheme(vnode.attrs.themes, t);
-                }}),
-                
-                m("div", {class: "book", onclick: () => {
-                    if(isLocked()) return;
-                    t.book = editString(t.book);
-                    save();
-                }}, t.book),
-                m("div", {class: "icon", onclick: () => {
-                    if(isLocked()) return;
-                    t.type = this.toggleType(t.type);
-                    save();
-                }}, [
-                    m("i", {class: "fa fa-fw fa-" + (t.type == "mythos" ? "bolt" : "id-badge" )})
-                ]),
+
                 m("div", {class: "inner"}, [
-                    m("div", {class: "name", onclick: () => {
-                        if(isLocked()) return;
-                        t.name = editString(t.name);
-                        save();
-                    }}, t.name),
+
                     m("div", {class: "attention"}, [
                         t.attention.map((a,i) => 
                             m("div", {class:"mark"}, [

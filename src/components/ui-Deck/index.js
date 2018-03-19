@@ -43,7 +43,7 @@ export default class Deck extends React.Component {
 		return (
 		<div id="main">
 			<Name name={this.props.char.name} onChange={this.handleNameChange} isLocked={this.props.isLocked} />
-			<ThemeList themes={this.props.char.themes} isLocked={this.props.isLocked} />
+			<ThemeList themes={this.props.char.themes} isLocked={this.props.isLocked} onChange={this.props.onChange} />
 			<button className="unlock" onClick={toggleLocked}>Lock/unlock themes</button>
 		</div>
 		);

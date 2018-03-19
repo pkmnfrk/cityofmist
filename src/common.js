@@ -105,6 +105,15 @@ function updatePlayer(player) {
 	if(!player.name) {
 		player.name = "<character name>";
 	}
+	
+	for(var i = 0; i < player.themes.length; i++) {
+		if(Array.isArray(player.themes[i].attention)) {
+			player.themes[i].attention = player.themes[i].attention.reduce((a,v) => a + (v?1:0),0);
+		}
+		if(Array.isArray(player.themes[i].fade)) {
+			player.themes[i].fade = player.themes[i].fade.reduce((a,v) => a + (v?1:0),0);
+		}
+	}
 }
 
 export function getSave(id, cb) {

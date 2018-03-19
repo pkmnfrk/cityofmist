@@ -41,13 +41,14 @@ export default class Player extends React.Component {
 		
 		this.state = {
 			player: null,
-			currentTab: "main",
+			currentTab: (location.hash || "#main").substring(1),
 			isLocked: true
 		};
 		
 		this.handleOnSwitchTab = this.handleOnSwitchTab.bind(this);
 		this.handleSave = this.handleSave.bind(this);
 		this.handleKeyPress = this.handleKeyPress.bind(this);
+		this.handlePopState = this.handlePopState.bind(this);
 	}
 	
 	componentDidMount() {
@@ -79,15 +80,31 @@ export default class Player extends React.Component {
 			});
 		});
 		
+		window.addEventListener('popstate', this.handlePopState);
 	}
 	
 	componentWillUnmount() {
+		window.removeEventListener('popstate', this.handlePopState);
 		
 		this.characterClient.unsubscribe();
 		
 	}
 	
-	handleOnSwitchTab(tab) {
+	handleState(state) {
+		if(!state) state = {tab: "main"};
+		
+		this.setState({
+			currentTab: state.tab
+		});
+	}
+	
+	handlePopState(e) {
+		this.handleState(e.state);
+	}
+	
+	handleOnSwitchTab(tab, title) {
+		history.pushState({tab: tab}, title + " - City of Mist", "#" + tab);
+		
 		this.setState({
 			currentTab: tab
 		});
@@ -95,7 +112,11 @@ export default class Player extends React.Component {
 	
 	handleSave() {
 		if(this.state.player != null) {
-			Common.putSave(this.props.room, this.state.player);
+			//Common.putSave(this.props.room, this.state.player);
+			console.log("Skipped saving");
+			this.setState({
+				player: this.state.player
+			})
 		}
 	}
 	
