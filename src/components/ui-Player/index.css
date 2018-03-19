@@ -20,6 +20,11 @@ body {
 	grid-gap: 10px;
 }
 
+#main > button {
+	order: 10;
+	
+}
+
 #deck {
 	margin-bottom: 30px;
 }

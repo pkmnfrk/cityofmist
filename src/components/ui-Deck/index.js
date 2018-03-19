@@ -9,7 +9,7 @@ import Roller from '../ui-Roller';
 //import Statuses from './Statuses';
 //import Moves from './Moves';
 //import MapScreen from './MapScreen';
-import { firstName, toggleLocked } from '../../common';
+import { firstName } from '../../common';
 
 var tabs = [
 	{
@@ -46,7 +46,7 @@ export default class Deck extends React.Component {
 			<ThemeList themes={this.props.char.themes} isLocked={this.props.isLocked} onChange={this.props.onChange} />
 			<Roller who={firstName(this.props.char.name)} room={this.props.room} char={this.props.char} onChange={this.props.onChange} />
 			{/*Statuses*/}
-			<button className="unlock" onClick={toggleLocked}>Lock/unlock themes</button>
+			<button className="unlock" onClick={this.props.toggleLocked}>Lock/unlock themes</button>
 		</div>
 		);
 	}

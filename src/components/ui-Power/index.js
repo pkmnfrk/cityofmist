@@ -15,11 +15,21 @@ export default class Power extends React.Component {
 	handleClick() {
 		if(this.props.isLocked) {
 			if(!this.props.power.burned) {
+				if(!this.props.canPlus && !this.props.canMinus) return;
+				
 				if(!this.props.power.selected) {
-					this.props.power.selected = "plus";
+					if(this.props.canPlus) {
+						this.props.power.selected = "plus";
+					} else {
+						this.props.power.selected = "minus";
+					}
 				} else if(this.props.power.selected == "plus") {
-				//	this.props.power.selected = "minus";
-				//} else if(this.props.power.selected == "minus") {
+					if(this.props.canMinus) {
+						this.props.power.selected = "minus";
+					} else {
+						delete this.props.power.selected;
+					}
+				} else if(this.props.power.selected == "minus") {
 					delete this.props.power.selected;
 				}
 			}
@@ -43,14 +53,20 @@ export default class Power extends React.Component {
 	}
 	
 	render() {
-					
+
+		var burn = null;
+		
+		if(this.props.canBurn) {
+			burn = <input type="checkbox" checked={this.props.power.burned} onChange={this.handleBurn} />;
+		}
+		
 		return (
 		<li className={this.props.power.selected}>
 			<Icon icon="times-circle-o" hide={this.props.isLocked} onClick={this.props.onDelete} />
 			<span className={(this.props.power.burned ? "burned" : "") + (this.props.isLocked ? "" : " editable")} onClick={this.handleClick}>
 			{this.props.power.name}
 			</span>
-			<input type="checkbox" checked={this.props.power.burned} onChange={this.handleBurn} />
+			{burn}
 		</li>);
 	}
 /*m("li", 

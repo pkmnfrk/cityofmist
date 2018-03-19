@@ -6,25 +6,49 @@ import { save, editString } from '../../common';
 
 import './index.css';
 
+export function template() {
+	
+	return {
+		type: "logos",
+		book: "<type>",
+		name: "<name>",
+		attention: [false, false, false],
+		fade: [false, false, false],
+		mystery: "<identity/mystery here>",
+		description: "<description here>",
+		powertags: [
+			{
+				name: "<first power tag>",
+				burned: false
+			},
+			{
+				name: "<second power tag>",
+				burned: false
+			},
+			{
+				name: "<third power tag>",
+				burned: false
+			}
+		],
+
+		weaknesses: [
+			{
+				name: "<weakness tag>"
+			}
+		]
+	};
+}
+
 export default class Theme extends React.Component {
 	constructor(props) {
 		super(props);
 		
-		//this.handleBookClick = this.handleBookClick.bind(this);
-		//this.handleIconClick = this.handleIconClick.bind(this);
-		//console.log("Properties:");
 		Object.getOwnPropertyNames(Theme.prototype).forEach((prop) => {
 			if(typeof(this[prop]) == "function" && prop.startsWith("handle")) {
 				//console.log(prop);
 				this[prop] = this[prop].bind(this);
 			}
 		})
-		/*for(var prop in ) {
-			console.log(prop + ": " + typeof(this[prop]));
-			if(typeof(this[prop]) == "function" && prop.startsWith("handle")) {
-				this[prop] = this[prop].bind(this);
-			}
-		}*/
 	}
 	
 	toggleType(t) {
@@ -50,14 +74,13 @@ export default class Theme extends React.Component {
     }
     
     handleDeleteWeakness(weak) {
-        for(var i = 0; i < theme.weaknesses.length; i++) {
-            if(theme.weaknesses[i] == weak) {
-                theme.weaknesses.splice(i, 1);
+        for(var i = 0; i < this.props.theme.weaknesses.length; i++) {
+            if(this.props.theme.weaknesses[i] == weak) {
+                this.props.theme.weaknesses.splice(i, 1);
+				this.props.onChange()
                 break;
             }
         }
-        
-        save();
     }
     
     handleAddPower() {
@@ -184,7 +207,36 @@ export default class Theme extends React.Component {
 					</div>
 					<ul className="powertags">
 						{this.props.theme.powertags.map((p, i) => 
-							<Power key={i} power={p} isLocked={this.props.isLocked} onChange={this.props.onChange} onDelete={() => this.handleDeletePower(p)} />
+							<Power
+								key={i}
+								power={p}
+								isLocked={this.props.isLocked}
+								onChange={this.props.onChange}
+								onDelete={() => this.handleDeletePower(p)}
+								canBurn={true}
+								canPlus={true}
+								canMinus={false}
+							/>
+						)}
+					</ul>
+				</div>
+				<div className="footer">
+					<div className="weakness_head">
+						<span>WEAKNESS TAGS</span>
+						<Icon className="add" icon="plus-circle" hide={this.props.isLocked} onClick={this.handleAddWeakness}/>
+					</div>
+					<ul className="weaknesses">
+						{this.props.theme.weaknesses.map((p, i) => 
+							<Power
+								key={i}
+								power={p}
+								isLocked={this.props.isLocked}
+								onChange={this.props.onChange}
+								onDelete={() => this.handleDeleteWeakness(p)}
+								canBurn={false}
+								canPlus={false}
+								canMinus={true}
+							/>
 						)}
 					</ul>
 				</div>
@@ -192,54 +244,7 @@ export default class Theme extends React.Component {
 		);
 		/*
         var ret = vnode.attrs.themes.map(t => {
-            return m("div", {class: "theme " + t.type}, [
-
-                m("div", {class: "inner"}, [
-                    
-                    m("div", {class: "powertags_head"}, [
-                        "POWER TAGS",
-                        m("i[class=fa fa-plus-circle add]", {onclick: () => this.addPower(t)})
-                    ]),
-                    m("ul", {class: "powertags"},
-                        t.powertags.map(
-                            p => 
-                        )
-                    )
-                ]), //inner
-                m("div", {class: "footer"}, [
-                    m("div", {class:"weakness_head"}, [
-                        m("span", "WEAKNESS TAGS"),
-                        m("i[class=fa fa-plus-circle add]", {onclick: () => this.addWeakness(t) })
-                    ]),
-                    m("ul", {class: "weaknesses"}, 
-                        t.weaknesses.map(w => m("li", 
-						{
-							class: w.selected || null
-						},
-						[
-                            m("i[class=fa fa-times-circle-o close]", {onclick: () => this.deleteWeakness(t, w)}),
-                            m("span", {
-								onclick: () => {
-									if(isLocked()) {
-										if(!w.selected) {
-											w.selected = "minus";
-										} else if(w.selected == "minus") {
-										//	w.selected = "plus";
-										//} else if(w.selected == "plus") {
-											delete w.selected;
-										}
-									}
-									else 
-									{
-										w.name = editString(w.name);
-									}
-									save();
-								}
-							}, w.name)
-                        ]))
-                    )
-                ])
-            ]);
+            
 			
         });
         
