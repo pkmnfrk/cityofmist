@@ -11,6 +11,8 @@ export default class Player extends React.Component {
 	constructor(props) {
 		super(props);
 		
+		this.savedVersions = [];
+		
 		this.state = {
 			player: null,
 			currentTab: (location.hash || "#main").substring(1),
@@ -49,9 +51,17 @@ export default class Player extends React.Component {
 		document.addEventListener('keypress', this.handleKeyPress);
 		
 		this.characterClient = Common.client.subscribe('/character/' + this.props.room, (message) => {
-			this.setState({
-				player: message
-			});
+			if(message.version) {
+				var ix = this.savedVersions.indexOf(message.version);
+				if(ix !== -1) {
+					this.savedVersions.splice(ix, 1);
+				} else {
+					this.setState({
+						player: message
+					});
+				}
+			}
+			
 		});
 		
 		window.addEventListener('popstate', this.handlePopState);
@@ -86,8 +96,13 @@ export default class Player extends React.Component {
 	
 	handleSave() {
 		if(this.state.player != null) {
-			//Common.putSave(this.props.room, this.state.player);
-			console.log("Skipped saving");
+			var ver = Math.floor(Math.random() * 10000000);
+			this.state.player.version = ver;
+			this.savedVersions.push(ver);
+			
+			Common.putSave(this.props.room, this.state.player);
+			/*console.log("Skipped saving");*/
+			
 			this.setState({
 				player: this.state.player
 			})

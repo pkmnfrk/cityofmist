@@ -5,14 +5,14 @@ import { roll, isGm, client, spectrumLevel } from '../../common';
 
 var listeners = [];
 
-var rolls = [{
+var rolls = [/*{
 	total: 11,
 	who: "Mike",
 	when: new Date().getTime(),
 	dice: [1,2],
 	bonus: 9,
 	penalty: 1
-}];
+}*/];
 
 var rolls_client = client.subscribe('/rolls/*').withChannel((channel, message) => {
 

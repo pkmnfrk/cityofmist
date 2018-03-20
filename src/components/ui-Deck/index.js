@@ -8,7 +8,7 @@ import ThemeList from '../ui-ThemeList';
 import Roller from '../ui-Roller';
 import StatusList from '../ui-StatusList';
 import MoveList from '../ui-MoveList';
-//import MapScreen from './MapScreen';
+import MapScreen from '../ui-MapScreen';
 import { firstName } from '../../common';
 
 var tabs = [
@@ -52,9 +52,8 @@ export default class Deck extends React.Component {
 	}
 	
 	mapContent() {
-		//<MapScreen />
 		return (
-			<div>TBD</div>
+			<MapScreen />
 		);
 	}
 	

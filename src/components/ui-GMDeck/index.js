@@ -1,11 +1,11 @@
 import m from 'mithril';
-import Name from './components/ui-Name';
-import TabSwitcher from './components/ui-TabSwitcher';
-import Theme from './components/ui-Theme';
-import Roller from './components/ui-Roller';
-import Statuses from './components/ui-StatusList';
-import Moves from './components/ui-MoveList';
-import MapScreen from './MapScreen';
+import Name from '../ui-Name';
+import TabSwitcher from '../ui-TabSwitcher';
+import Theme from '../ui-Theme';
+import Roller from '../ui-Roller';
+import Statuses from '../ui-StatusList';
+import Moves from '../ui-MoveList';
+import MapScreen from '../ui-MapScreen';
 //import { firstName, toggleLocked } from './common';
 
 export default {
