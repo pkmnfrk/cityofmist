@@ -10,7 +10,7 @@ module.exports = {
 		gm: './src/gm.js'
 	},
 	output: {
-		filename: '[name].[chunkhash].js',
+		filename: '[chunkhash].js',
 		chunkFilename: '[chunkhash].js',
 		path: path.resolve(__dirname, 'dist')
 	},
