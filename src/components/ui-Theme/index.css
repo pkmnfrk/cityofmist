@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Shadows+Into+Light');
+
 .theme {
     order: 2;
     grid-column-end: span 1;
@@ -21,9 +23,9 @@
 	position: absolute;
 	right: 10px;
 	top: 15px;
-	width: 50px;
-	height: 50px;
-	font-size: 33px;
+	width: 40px;
+	height: 40px;
+	font-size: 24px;
 	text-align: center;
 	border-radius: 0 0 0 15px;
 }
@@ -83,7 +85,7 @@
 }
 
 .theme .mystery {
-	font-family: cursive;
+	font-family: 'Shadows Into Light', cursive;
 	font-size: 24px;
 	margin-bottom: 10px;
 }
