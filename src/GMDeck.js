@@ -4,7 +4,7 @@ import TabSwitcher from './components/ui-TabSwitcher';
 import Theme from './components/ui-Theme';
 import Roller from './components/ui-Roller';
 import Statuses from './components/ui-StatusList';
-import Moves from './Moves';
+import Moves from './components/ui-MoveList';
 import MapScreen from './MapScreen';
 //import { firstName, toggleLocked } from './common';
 

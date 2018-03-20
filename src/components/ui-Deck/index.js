@@ -7,7 +7,7 @@ import SubContent from '../ui-SubContent';
 import ThemeList from '../ui-ThemeList';
 import Roller from '../ui-Roller';
 import StatusList from '../ui-StatusList';
-//import Moves from './Moves';
+import MoveList from '../ui-MoveList';
 //import MapScreen from './MapScreen';
 import { firstName } from '../../common';
 
@@ -59,9 +59,8 @@ export default class Deck extends React.Component {
 	}
 	
 	moveContent() {
-		//<Moves personal={this.props.char.moves} />
 		return (
-			<div>TBD</div>
+			<MoveList personal={this.props.char.moves} />
 		);
 	}
 	
