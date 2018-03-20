@@ -3,7 +3,7 @@ import Name from './components/ui-Name';
 import TabSwitcher from './components/ui-TabSwitcher';
 import Theme from './components/ui-Theme';
 import Roller from './components/ui-Roller';
-import Statuses from './Statuses';
+import Statuses from './components/ui-StatusList';
 import Moves from './Moves';
 import MapScreen from './MapScreen';
 //import { firstName, toggleLocked } from './common';
