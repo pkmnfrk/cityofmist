@@ -11,6 +11,7 @@ module.exports = {
 	},
 	output: {
 		filename: '[name].[chunkhash].js',
+		chunkFilename: '[chunkhash].js',
 		path: path.resolve(__dirname, 'dist')
 	},
 	plugins: [
@@ -44,7 +45,8 @@ module.exports = {
 					coast: false,
 					yandex: false,
 					firefox: false,
-					windows: false
+					windows: false,
+					appleStartup: false
 				}
 				
 			}
