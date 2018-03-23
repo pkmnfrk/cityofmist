@@ -20,14 +20,14 @@ module.exports = {
 			title: "City of Mist",
 			template: "index.html",
 			filename: "index.html",
-			favicon: "src/images/city-tiny.png",
+			//favicon: "src/images/city-tiny.png",
 			chunks: ["index"]
 		}),
 		new HtmlWebpackPlugin({
 			title: "City of Mist GM",
 			template: "index.html",
 			filename: "gm.html",
-			favicon: "src/images/city-tiny-gm.png",
+			//favicon: "src/images/city-tiny-gm.png",
 			chunks: ["gm"]
 		}),
 		new WebappWebpackPlugin ({
@@ -47,7 +47,7 @@ module.exports = {
 					firefox: false,
 					windows: false,
 					appleStartup: false,
-					favicons: false
+					//favicons: false
 				}
 				
 			}
