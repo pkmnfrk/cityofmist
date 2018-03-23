@@ -4,17 +4,6 @@ import $ from 'jquery';
 export var client = new Faye.Client('/api/faye');
 
 
-var map_client = client.subscribe("/map", function(message) {
-	var map = document.getElementById("mapimg");
-	
-	if(map) {
-		map.src = "";
-		//map.src = "/map";
-		map.src = "/api/map?" + Math.random();
-		
-	}
-})
-
 var music_client = client.subscribe("/music", function(message) {
     switch(message.command) {
         case "play":

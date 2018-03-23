@@ -17,8 +17,14 @@ export default class MoveList extends React.Component {
 			}
 		}
 		
+		var style = {};
+		
+		if(this.props.hide) {
+			style.display = "none";
+		}
+		
 		return (
-			<div id="moves">
+			<div id="moves" style={style}>
 			{ret}
 			</div>
 		);

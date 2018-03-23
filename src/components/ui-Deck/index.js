@@ -3,6 +3,8 @@ import React from 'react';
 import Name from '../ui-Name';
 import TabSwitcher from '../ui-TabSwitcher';
 import TabCatcher from '../ui-TabCatcher';
+import Tabber from '../ui-Tabber';
+import TabPage from '../ui-TabPage';
 import SubContent from '../ui-SubContent';
 import ThemeList from '../ui-ThemeList';
 import Roller from '../ui-Roller';
@@ -78,6 +80,20 @@ export default class Deck extends React.Component {
 				{thing()}
 			</React.Fragment>
 		);
+		
+		/*return (
+			<Tabber activeTab={this.props.activeTab}>
+				<TabPage id="main" label="Character">
+					{() => this.mainContent()}
+				</TabPage>
+				<TabPage id="map" label="Map">
+					{() => this.mapContent()}
+				</TabPage>
+				<TabPage id="moves" label="Moves">
+					{() => this.moveContent()}
+				</TabPage>
+			</Tabber>
+		);*/
 	}
 };
 

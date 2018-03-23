@@ -1,4 +1,5 @@
-import m from 'mithril';
+import React from 'react'
+
 import Name from '../ui-Name';
 import TabSwitcher from '../ui-TabSwitcher';
 import Theme from '../ui-Theme';
@@ -6,10 +7,40 @@ import Roller from '../ui-Roller';
 import Statuses from '../ui-StatusList';
 import Moves from '../ui-MoveList';
 import MapScreen from '../ui-MapScreen';
+import Icon from '../ui-Icon';
+
 //import { firstName, toggleLocked } from './common';
 
-export default {
-    spectrum: function(s) {
+var tabs = [
+	{
+		id: "main",
+		label: "Characters"
+	},
+	{
+		id: "map",
+		label: "Map"
+	},
+	{
+		id: "moves",
+		label: "Moves"
+	}
+];
+
+export default class GMDeck extends React.Component {
+	constructor(props) {
+		super(props);
+		
+		Object.getOwnPropertyNames(GMDeck.prototype).forEach((prop) => {
+			if(typeof(this[prop]) == "function" && prop.startsWith("handle")) {
+				//console.log(prop);
+				this[prop] = this[prop].bind(this);
+			}
+		})
+		
+	}
+	
+	
+    spectrum(s) {
         if(s <= 1) return "1";
         if(s <= 2) return "2";
         if(s <= 3) return "2 + " + (s - 2);
@@ -20,86 +51,130 @@ export default {
         if(s <= 11) return "5";
         if(s <= 15) return "5 + " + (s - 11);
         if(s <= 16) return "6";
-    },
-    view: function(vnode) {
+    }
+	
+	renderTheme(theme, key) {
+		return (
+			<li key={key} className={theme.type}>
+				{theme.name}
+				<span className="attention">
+					<Icon icon={(theme.attention >= 1 ? "check-" : "") + "square-o"} />
+					<Icon icon={(theme.attention >= 2 ? "check-" : "") + "square-o"} />
+					<Icon icon={(theme.attention >= 3 ? "check-" : "") + "square-o"} />
+				</span>
+				<span className="fade">
+					<Icon icon={(theme.fade >= 1 ? "times-" : "") + "circle-o"} />
+					<Icon icon={(theme.fade >= 2 ? "times-" : "") + "circle-o"} />
+					<Icon icon={(theme.fade >= 3 ? "times-" : "") + "circle-o"} />
+				</span>
+				<ul className="powers">
+				{theme.powertags.map((p, ix) =>
+					<li key={ix} className={(p.burned ? "burned " : "") + p.selected}>{p.name}</li>
+				)}
+				</ul>
+				<ul className="weaknesses">
+				{theme.weaknesses.map((p, ix) =>
+					<li key={ix} className={p.selected}>{p.name}</li>
+				)}
+				</ul>
+				
+			</li>
+		);
+	}
+	
+	renderStatus(status, key) {
+		return (
+			<li key={key} className={(status.spectrum >= 11 ? "danger ": "") + (status.selected || "")}>
+				{status.name} - {this.spectrum(status.spectrum)}
+			</li>
+		);
+	}
+	
+	renderChar(charKey) {
+		var char = this.props.chars[charKey];
+		if(!char) return null;
+		
+		return (
+			<div key={charKey} className="player">
+				<div className="human">Player: <a href={"/?" + charKey}>{charKey}</a></div>
+				<div className="name">Name: {char.name}</div>
+				<div>
+					Themes:
+					<ul className="themes">
+						{char.themes.map((t, ix) => this.renderTheme(t, ix))}
+					</ul>
+				</div>
+				<div>
+					Statuses:
+					<ul className="statuses">
+						{char.statuses.map((s, ix) => this.renderStatus(s, ix))}
+					</ul>
+				</div>
+			</div>
+		);
+	}
+	
+	renderMain() {
+		var mainStyle = {
+			gridTemplateColumns: "repeat(" + (this.props.charKeys.length + 1) + ", 1fr)"
+		};
+		
+		if(this.props.activeTab != "main") {
+			mainStyle.display = "none";
+		}
+		
+		return (
+			<div id="main" style={mainStyle}>
+				<Roller who="GM" room="GM" onChange={this.props.onChange} />
+				{this.props.charKeys.map((charKey) => this.renderChar(charKey))}
+			</div>
+		);
+	}
+	
+	renderMap() {
+		return <MapScreen hide={this.props.activeTab != "map"} isGm="true"/>;
+	}
+	
+	renderMoves() {
+		var moves = this.props.charKeys.map((c) => {
+			var char = this.props.chars[c];
+			if(!char) return [];
+			var ret = this.props.chars[c].moves.map((d) => {
+				return {
+					name: this.props.chars[c].name + ' - ' + d.name,
+					moves: d.moves
+				};
+			})
+			return ret;
+		}).reduce((a,b) => a.concat(b), []);
+		
+		return <Moves personal={moves} hide={this.props.activeTab != "moves"}/>;
+	}
+	
+	
+	render() {
+		var content = () => null;
+		
+		switch(this.props.activeTab) {
+			case "main": content = this.renderMain; break;
+			case "map": content = this.renderMap; break;
+			case "moves": content = this.renderMoves; break;
+		}
+		
+		return (<React.Fragment>
+			<TabSwitcher tabs={tabs} activeTab={this.props.activeTab} onSwitch={this.props.onSwitch} />
+			{this.renderMain()}
+			{this.renderMap()}
+			{this.renderMoves()}
+		</React.Fragment>);
+	}
+	
+    view(vnode) {
         var allchars = vnode.attrs.chars;
         var allcharkeys = Object.keys(allchars);
 		
         return [
-			m(TabSwitcher, {
-				tabs: [
-					{
-						id: "main",
-						label: "Characters"
-					},
-					{
-						id: "map",
-						label: "Map"
-					},
-					{
-						id: "moves",
-						label: "Moves"
-					}
-				]
-			}),
-			m("#main", {
-				style: "grid-template-columns: repeat(" + (allcharkeys.length + 1) + ", 1fr)"
-			}, [
-				m(Roller, {rolls: vnode.attrs.rolls, who: "GM", room: "GM" }),
-				allcharkeys.map((k) => {return {
-					who: k,
-					char: allchars[k]
-				}}).map((c) => m("div[class=player]", [
-					m("div[class=human]", [
-						"Player: ",
-						m("a", { href: "/?" + c.who }, c.who)
-					]),
-					m("div[class=name]", ["Name: ", c.char.name]),
-					m("div", [
-						"Themes:",
-						m("ul[class=themes]", c.char.themes.map((t) => m("li", {class: t.type }, [
-							t.name,
-							m("span[class=attention]", t.attention.map((a) => {
-								if(a) 
-									return m("i[class=fa fa-check-square-o]")
-								else
-									return m("i[class=fa fa-square-o]")
-							})),
-							m("span[class=fade]", t.fade.map((a) => {
-								if(a) 
-									return m("i[class=fa fa-times-circle-o]")
-								else
-									return m("i[class=fa fa-circle-o]")
-							})),
-							m("ul[class=powers]", t.powertags.map((p) => m("li", { class: (p.burned ? "burned ": " ") + (p.selected || "") }, p.name))),
-							m("ul[class=weaknesses]", t.weaknesses.map((w) => m("li", { class: w.selected }, w.name)))
 
-							//m("input[type=checkmark]", {checked: p.burned})
-						])))
-					] ),
-					
-					m("div", [
-						"Statuses:",
-						m("ul[class=statuses]", c.char.statuses.map((s) => m("li", {class: (s.spectrum >= 11 ? "danger " : " ") + (s.selected || "")}, [
-							s.name,
-							" - ",
-							this.spectrum(s.spectrum)
-						])))
-					] )
-				]))
-			]),
-			m(Moves, {
-				personal: allcharkeys.map(function(c) {
-					var ret = allchars[c].moves.map(function(d) {
-						return {
-							name: allchars[c].name + ' - ' + d.name,
-							moves: d.moves
-						}	
-					});
-					return ret;
-					
-				}).reduce(function(a, b){ return a.concat(b); }, [])
-			}),
 			m(MapScreen)
         ];
     }
