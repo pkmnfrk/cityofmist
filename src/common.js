@@ -35,15 +35,44 @@ export function firstName(name) {
     return parts[0];
 }
 
-export function roll(label, who, room, nDice, nSides, bonus, penalty) {
+export function roll(label, who, room, nDice, nSides, bonus, penalty, advantage) {
     var dice = [];
+	var dropped = [];
     var total = 0;
+	
+    var lowest = -1;
+	var highest = -1;
+	
+	if(advantage) {
+		nDice += 1;
+	}
     
-    for(var i = 0; i < nDice; i++) {
+	for(var i = 0; i < nDice; i++) {
         var d = Math.floor(Math.random() * nSides) + 1;
         dice.push(d);
-        total += d;
+		
+		if(lowest == -1 || (lowest !== -1 && d < dice[lowest])) {
+			lowest = i;
+		}
+		if(highest == -1 || (highest !== -1 && d > dice[highest])) {
+			highest = i;
+		}
     }
+	
+	console.log("Lowest: " + lowest);
+	console.log("Highest: " + highest);
+	
+	if(advantage == "advantage") {
+		dropped.push(lowest);
+	} else if(advantage == "disadvantage") {
+		dropped.push(highest);
+	}
+	
+	for(var i = 0; i < dice.length; i++) {
+		if(dropped.indexOf(i) === -1) {
+			total += dice[i];
+		}
+	}
     
     if(bonus) {
         total += bonus;
@@ -59,7 +88,9 @@ export function roll(label, who, room, nDice, nSides, bonus, penalty) {
         dice: dice,
         bonus: bonus,
         penalty: penalty,
-        total: total
+        total: total,
+		advantage: advantage,
+		dropped: dropped
     };
     
     client.publish('/rolls/' + room, message);

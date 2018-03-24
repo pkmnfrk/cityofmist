@@ -69,63 +69,10 @@ ul.weaknesses li:before {
     content: "- ";
 }
 
-.roller {
-    font-size: 24px;
-    padding: 10px;
-    width: 80%;
-}
-
 .danger {
     color: red;
 }
 
-
-.total {
-    font-weight: bold;
-    display:inline-block;
-    width: 3em;
-}
-
-.math {
-    font-size: smaller;
-}
-.math:before, #rolls .label:before {
-    content: " (";
-}
-.math:after, #rolls .label:after {
-    content: ") ";
-}
-
-.die {
-    display:inline-block;
-    width: 1.2em;
-    height: 1.2em;
-    background-color: white;
-    border: thin solid black;
-    text-align: center;
-    vertical-align: bottom;
-}
-
-
-.bonus {
-    color: #080;
-}
-
-.penalty {
-    color: #800;
-}
-
-#rolls {
-    background-color: #eee;
-    overflow: auto;
-    list-style: none;
-    padding-left: 0;
-    
-}
-
-#rolls .label {
-    font-size: smaller;
-}
 
 .music #youtubelink {
     width: 80%;

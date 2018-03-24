@@ -1,18 +1,22 @@
 import React from 'react';
 import Roll from '../ui-Roll';
+import Icon from '../ui-Icon';
+
+import "./index.css"
 
 import { roll, isGm, client, spectrumLevel } from '../../common';
 
 var listeners = [];
 
-var rolls = [/*{
+var rolls = [{
 	total: 11,
 	who: "Mike",
 	when: new Date().getTime(),
-	dice: [1,2],
+	dice: [1,2,3],
+	dropped: [2],
 	bonus: 9,
 	penalty: 1
-}*/];
+}];
 
 var rolls_client = client.subscribe('/rolls/*').withChannel((channel, message) => {
 
@@ -123,8 +127,8 @@ export default class Roller extends React.Component {
 		return this.getRollAttribute("minus");
 	}
 
-	roll() {
-		roll("", this.props.who, this.props.room, 2, 6, this.getBonus(), this.getPenalty());
+	roll(advantage) {
+		roll("", this.props.who, this.props.room, 2, 6, this.getBonus(), this.getPenalty(), advantage);
 		this.clearSelections();
 	}
 	
@@ -135,9 +139,17 @@ export default class Roller extends React.Component {
 		
 		return (
 			<div className="rollers">
-				<button className="roller" onClick={this.roll}>
-					Roll 2d6 {(bonus ? "+" + bonus : "") + (penalty ? "-" + penalty : "")}
-				</button>
+				<div className="rollButtons">
+					<button className="advantage" onClick={() => this.roll("disadvantage")}>
+						<Icon outline icon="thumbs-down" />
+					</button>
+					<button className="roller" onClick={() => this.roll()}>
+						Roll 2d6 {(bonus ? "+" + bonus : "") + (penalty ? "-" + penalty : "")}
+					</button>
+					<button className="advantage" onClick={() => this.roll("advantage")}>
+						<Icon outline icon="thumbs-up" />
+					</button>
+				</div>
 				<ul id="rolls">
 				{rolls.map((r) => <Roll key={r.when} roll={r} />)}
 				</ul>

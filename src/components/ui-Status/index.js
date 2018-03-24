@@ -74,7 +74,7 @@ export default class Status extends React.Component {
 	
 	render() {
 		return (<div className="status">
-			<Icon icon="times-circle-o" big="true" className="close" onClick={this.props.onDelete} />
+			<Icon outline="true" icon="times-circle" big="true" className="close" onClick={this.props.onDelete} />
 			<div className={"header " + (this.props.status.selected || "")} onClick={this.handleHeaderClick}>
 				STATUS SPECTRUM CARD
 			</div>
