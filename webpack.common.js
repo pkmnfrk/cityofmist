@@ -46,8 +46,7 @@ module.exports = {
 					yandex: false,
 					firefox: false,
 					windows: false,
-					appleStartup: false,
-					favicons: false
+					appleStartup: false
 				}
 				
 			}
