@@ -1,17 +1,13 @@
-import m from 'mithril';
-import $ from 'jquery';
+import React from 'react';
+import ReactDom from 'react-dom';
 
-import GMDeck from './GMDeck';
-import TabSwitcher from './TabSwitcher';
+import GM from './components/ui-GM';
 
-import { getSave, client } from "./common";
 import * as Common from "./common";
 
 import './css/gm.css';
 
 var characterKeys = location.search;
-var allChars = {};
-var character_client = null;
 
 if (characterKeys[0] === "?") {
     characterKeys = characterKeys.substring(1);
@@ -23,83 +19,22 @@ if(!characterKeys) {
 }
 
 characterKeys = characterKeys.split(",");
-var loadindex = 0;
-
-function loadone(done) {
-    if(loadindex >= characterKeys.length) {
-        return done();
-    }
-    
-    getSave(characterKeys[loadindex], function(err, char) {
-        allChars[characterKeys[loadindex]] = char;
-        
-        loadindex += 1;
-        return loadone(done);
-    });
-}
 
 
-function onpaste(e) {
-	if(TabSwitcher.active != "map") return;
-	
-	console.log("Start paste");
-	for(var item of e.clipboardData.items) {
-		if(item.kind == "file" && item.type == "image/png") {
-			var file = item.getAsFile();
-			var reader = new FileReader();
-			
-			reader.addEventListener("load", function() {
-				//console.log(reader.result);
-				
-				$.ajax({
-					url: "/api/map",
-					data: reader.result,
-					contentType: "text/plain",
-					method: "PUT",
-					
-					complete: function() {}
-				});
-				
-			});
-			
-			if(file) {
-				console.log("Reading image...");
-				reader.readAsDataURL(file);
-			}
-		}
-	}
-	console.log("End paste");
-};
+var root = document.getElementById("root");
+ReactDom.render(
+	(<GM characterKeys={characterKeys} activeTab="main" />),
+	root
+);
 
-document.addEventListener("paste", onpaste);
 
-function draw() {
-    var root = document.getElementById("root");
-    m.render(root, m(GMDeck, { chars: allChars, activetab: "main" }));
-    
-    //root.style.gridTemplateColumns = "repeat(" + (characterKeys.length + 1) + ", 1fr)";
-    
-    Common.initialize_youtube();
-}
+//root.style.gridTemplateColumns = "repeat(" + (characterKeys.length + 1) + ", 1fr)";
 
-Common.setDrawCallback(draw);
+//Common.initialize_youtube();
 
 
 
-loadone(function() {
-    
-    character_client = client.subscribe('/character/*').withChannel(function (channel, message) {
-        
-        var id = channel.substring('/character/'.length);
-        
-        allChars[id] = message;
-        
-        draw();
-    });
-
-    draw();
-})
-
+/*
 function sendVideo(id) {
     
     var m = /v=(.*)(?:&.)?/.exec(id);
@@ -126,3 +61,4 @@ function setVolume(vol) {
 function setLoop(loop) {
     client.publish('/music', {command: "loop", loop});
 }
+*/

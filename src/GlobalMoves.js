@@ -16,7 +16,7 @@ export default [
 			},
 			{
 				name: "Sneak Around",
-				text: "<p>When you use your abilities <strong>to do something secretly or deceptively</strong>, roll +power. On a 10+, everyone that should fall for it falls for it. On a 7-9, the MC chooses one:</p> <ul><li>Someone unimportant noticed you, but that just made them important, right?</li><li>You are percieved only in a secondary sense (someone picks up your scent while you're sneaking; you're seen whispering a message, but the message is not heard).</li><li>You're stuck in an uneasy and stressful position in the middle of your action. To finish it secretly or get out of there without being seen, you must <strong>Take the Risk</strong> or <strong>Face Danger</strong>, MC's call.<li></ul>",
+				text: "<p>When you use your abilities <strong>to do something secretly or deceptively</strong>, roll +power. On a 10+, everyone that should fall for it falls for it. On a 7-9, the MC chooses one:</p> <ul><li>Someone unimportant noticed you, but that just made them important, right?</li><li>You are percieved only in a secondary sense (someone picks up your scent while you're sneaking; you're seen whispering a message, but the message is not heard).</li><li>You're stuck in an uneasy and stressful position in the middle of your action. To finish it secretly or get out of there without being seen, you must <strong>Take the Risk</strong> or <strong>Face Danger</strong>, MC's call.</li></ul>",
 				examples: [
 					"Lie or deceive",
 					"Impersonate",

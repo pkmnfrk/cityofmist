@@ -2,7 +2,6 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const WebappWebpackPlugin  = require('webapp-webpack-plugin');
 
 module.exports = {
@@ -11,7 +10,8 @@ module.exports = {
 		gm: './src/gm.js'
 	},
 	output: {
-		filename: '[name].[chunkhash].js',
+		filename: '[chunkhash].js',
+		chunkFilename: '[chunkhash].js',
 		path: path.resolve(__dirname, 'dist')
 	},
 	plugins: [
@@ -20,14 +20,14 @@ module.exports = {
 			title: "City of Mist",
 			template: "index.html",
 			filename: "index.html",
-			favicon: "src/images/city-tiny.png",
+			//favicon: "src/images/city-tiny.png",
 			chunks: ["index"]
 		}),
 		new HtmlWebpackPlugin({
 			title: "City of Mist GM",
 			template: "index.html",
 			filename: "gm.html",
-			favicon: "src/images/city-tiny-gm.png",
+			//favicon: "src/images/city-tiny-gm.png",
 			chunks: ["gm"]
 		}),
 		new WebappWebpackPlugin ({
@@ -45,23 +45,22 @@ module.exports = {
 					coast: false,
 					yandex: false,
 					firefox: false,
-					windows: false
+					windows: false,
+					appleStartup: false,
+					favicons: false
 				}
 				
 			}
-		}),
-		new MiniCssExtractPlugin({
-			filename: "[name].[chunkhash].css"
 		})
 	],
 	module: {
 		rules: [
 			{
-				test: /\.css$/,
-				use: [
-					MiniCssExtractPlugin.loader,
-					'css-loader'
-				]
+				test: /\.js$/,
+				exclude: /node_modules/,
+				use: {
+					loader: 'babel-loader'
+				}
 			},
 			{
 				test: /\.(png|gif|jpg|svg)$/,

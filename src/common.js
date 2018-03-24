@@ -3,48 +3,6 @@ import $ from 'jquery';
 
 export var client = new Faye.Client('/api/faye');
 
-export var rolls = [];
-
-export var save = null;
-export var draw = null;
-
-export function setSaveCallback(cb) {
-	save = cb;
-}
-export function setDrawCallback(cb) {
-	draw = cb;
-}
-
-var _isLocked = false;
-
-export function isLocked() {
-	return !document.body.classList.contains("unlocked");
-}
-
-export function toggleLocked(l) {
-	document.body.classList.toggle("unlocked");
-}
-
-var rolls_client = client.subscribe('/rolls/*').withChannel(function(channel, message) {
-
-    rolls.unshift(message);
-    while(rolls.length > 15) {
-        rolls.pop();
-    }
-    
-    draw();
-});
-
-var map_client = client.subscribe("/map", function(message) {
-	var map = document.getElementById("mapimg");
-	
-	if(map) {
-		map.src = "";
-		//map.src = "/map";
-		map.src = "/api/map?" + Math.random();
-		
-	}
-})
 
 var music_client = client.subscribe("/music", function(message) {
     switch(message.command) {
@@ -124,6 +82,15 @@ function updatePlayer(player) {
 	
 	if(!player.name) {
 		player.name = "<character name>";
+	}
+	
+	for(var i = 0; i < player.themes.length; i++) {
+		if(Array.isArray(player.themes[i].attention)) {
+			player.themes[i].attention = player.themes[i].attention.reduce((a,v) => a + (v?1:0),0);
+		}
+		if(Array.isArray(player.themes[i].fade)) {
+			player.themes[i].fade = player.themes[i].fade.reduce((a,v) => a + (v?1:0),0);
+		}
 	}
 }
 
