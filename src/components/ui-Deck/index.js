@@ -55,7 +55,7 @@ export default class Deck extends React.Component {
 	
 	mapContent() {
 		return (
-			<MapScreen />
+			<MapScreen room={this.props.room} />
 		);
 	}
 	
@@ -80,35 +80,5 @@ export default class Deck extends React.Component {
 				{thing()}
 			</React.Fragment>
 		);
-		
-		/*return (
-			<Tabber activeTab={this.props.activeTab}>
-				<TabPage id="main" label="Character">
-					{() => this.mainContent()}
-				</TabPage>
-				<TabPage id="map" label="Map">
-					{() => this.mapContent()}
-				</TabPage>
-				<TabPage id="moves" label="Moves">
-					{() => this.moveContent()}
-				</TabPage>
-			</Tabber>
-		);*/
 	}
 };
-
-/*
-export default {
-	view: function(vnode) {
-		return [
-			m("#main", [
-				m(Statuses, {statuses: vnode.attrs.char.statuses}),
-				
-			]),
-			m(Moves, {
-				personal: vnode.attrs.char.moves
-			}),
-			m(MapScreen)
-        ];
-	}
-};*/

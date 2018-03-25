@@ -4,29 +4,37 @@ import Icon from '../ui-Icon';
 
 import "./index.css"
 
-import { roll, isGm, client, spectrumLevel } from '../../common';
+import { isGm, client, spectrumLevel } from '../../common';
 
 var listeners = [];
 
-var rolls = [/*{
-	total: 11,
-	who: "Mike",
-	when: new Date().getTime(),
-	dice: [1,2,3],
-	dropped: [2],
-	bonus: 9,
-	penalty: 1
-}*/];
+var rolls = {
+	/*main: [{
+		total: 11,
+		who: "Mike",
+		when: new Date().getTime(),
+		dice: [1,2,3],
+		dropped: [2],
+		bonus: 9,
+		penalty: 1
+	}]*/
+};
 
 var rolls_client = client.subscribe('/rolls/*').withChannel((channel, message) => {
-
-	rolls.unshift(message);
-	while(rolls.length > 15) {
-		rolls.pop();
+	var room = channel.substring(7);
+	
+	if(!rolls[room]) {
+		rolls[room] = [];
+	}
+	
+	rolls[room].unshift(message);
+	
+	while(rolls[room].length > 15) {
+		rolls[room].pop();
 	}
 	
 	for(var l of listeners) {
-		l();
+		l(room);
 	}
 });
 
@@ -34,18 +42,24 @@ export default class Roller extends React.Component {
 	constructor(props) {
 		super(props);
 		
+		if(!rolls[this.props.room]) {
+			rolls[this.props.room] = [];
+		}
+		
 		this.state = {
-			rolls: rolls
+			rolls: rolls[this.props.room]
 		}
 		
 		this.roll = this.roll.bind(this);
 		this.handleRollUpdate = this.handleRollUpdate.bind(this);
 	}
 	
-	handleRollUpdate() {
-		this.setState({
-			rolls: rolls
-		});
+	handleRollUpdate(room) {
+		if(room == this.props.room) {
+			this.setState({
+				rolls: rolls[room]
+			});
+		}
 	}
 	
 	componentDidMount() {
@@ -128,8 +142,69 @@ export default class Roller extends React.Component {
 	}
 
 	roll(advantage) {
-		roll("", this.props.who, this.props.room, 2, 6, this.getBonus(), this.getPenalty(), advantage);
+		this.doRoll("", this.props.who, this.props.room, 2, 6, this.getBonus(), this.getPenalty(), advantage);
 		this.clearSelections();
+	}
+	
+	doRoll(label, who, room, nDice, nSides, bonus, penalty, advantage) {
+		var dice = [];
+		var dropped = [];
+		var total = 0;
+		
+		var lowest = -1;
+		var highest = -1;
+		
+		if(advantage) {
+			nDice += 1;
+		}
+		
+		for(var i = 0; i < nDice; i++) {
+			var d = Math.floor(Math.random() * nSides) + 1;
+			dice.push(d);
+			
+			if(lowest == -1 || (lowest !== -1 && d < dice[lowest])) {
+				lowest = i;
+			}
+			if(highest == -1 || (highest !== -1 && d > dice[highest])) {
+				highest = i;
+			}
+		}
+		
+		console.log("Lowest: " + lowest);
+		console.log("Highest: " + highest);
+		
+		if(advantage == "advantage") {
+			dropped.push(lowest);
+		} else if(advantage == "disadvantage") {
+			dropped.push(highest);
+		}
+		
+		for(var i = 0; i < dice.length; i++) {
+			if(dropped.indexOf(i) === -1) {
+				total += dice[i];
+			}
+		}
+		
+		if(bonus) {
+			total += bonus;
+		}
+		if(penalty) {
+			total -= penalty;
+		}
+		
+		var message = {
+			label: label,
+			when: Date.now(),
+			who: who,
+			dice: dice,
+			bonus: bonus,
+			penalty: penalty,
+			total: total,
+			advantage: advantage,
+			dropped: dropped
+		};
+		
+		client.publish('/rolls/' + room, message);
 	}
 	
     render() {
@@ -151,7 +226,7 @@ export default class Roller extends React.Component {
 					</button>
 				</div>
 				<ul id="rolls">
-				{rolls.map((r) => <Roll key={r.when} roll={r} />)}
+				{this.state.rolls.map((r) => <Roll key={r.when} roll={r} />)}
 				</ul>
 			</div>
 		);

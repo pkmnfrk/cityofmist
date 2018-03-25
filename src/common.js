@@ -35,68 +35,11 @@ export function firstName(name) {
     return parts[0];
 }
 
-export function roll(label, who, room, nDice, nSides, bonus, penalty, advantage) {
-    var dice = [];
-	var dropped = [];
-    var total = 0;
-	
-    var lowest = -1;
-	var highest = -1;
-	
-	if(advantage) {
-		nDice += 1;
-	}
-    
-	for(var i = 0; i < nDice; i++) {
-        var d = Math.floor(Math.random() * nSides) + 1;
-        dice.push(d);
-		
-		if(lowest == -1 || (lowest !== -1 && d < dice[lowest])) {
-			lowest = i;
-		}
-		if(highest == -1 || (highest !== -1 && d > dice[highest])) {
-			highest = i;
-		}
-    }
-	
-	console.log("Lowest: " + lowest);
-	console.log("Highest: " + highest);
-	
-	if(advantage == "advantage") {
-		dropped.push(lowest);
-	} else if(advantage == "disadvantage") {
-		dropped.push(highest);
+function updatePlayer(player, id) {
+	if(!player.id) {
+		player.id = id;
 	}
 	
-	for(var i = 0; i < dice.length; i++) {
-		if(dropped.indexOf(i) === -1) {
-			total += dice[i];
-		}
-	}
-    
-    if(bonus) {
-        total += bonus;
-    }
-    if(penalty) {
-        total -= penalty;
-    }
-    
-    var message = {
-        label: label,
-        when: Date.now(),
-        who: who,
-        dice: dice,
-        bonus: bonus,
-        penalty: penalty,
-        total: total,
-		advantage: advantage,
-		dropped: dropped
-    };
-    
-    client.publish('/rolls/' + room, message);
-}
-
-function updatePlayer(player) {
 	if(Array.isArray(player)) {
 		player = {
 			themes: player
@@ -125,12 +68,12 @@ function updatePlayer(player) {
 	}
 }
 
-export function getSave(id, cb) {
+export function getSave(room, id, cb) {
     $.ajax({
-        url: "/api/save/" + id,
+        url: "/api/save/" + room + "/" + id,
         method: "GET",
         success: function(data) {
-			updatePlayer(data);
+			updatePlayer(data, id);
             cb(null, data);
         },
         error: function(err) {
@@ -139,9 +82,9 @@ export function getSave(id, cb) {
     });
 }
 
-export function putSave(id, objs) {
+export function putSave(room, id, objs) {
     $.ajax({
-        url: "/api/save/" + id,
+        url: "/api/save/" + room + "/" + id,
         method: "PUT",
         data: JSON.stringify(objs),
         contentType: "application/json",

@@ -24,7 +24,7 @@ export default class MapScreen extends React.Component {
 			document.addEventListener("paste", this.handlePaste);
 		}
 		
-		this.map_client = client.subscribe("/map", (message) => {
+		this.map_client = client.subscribe("/map/" + this.props.room, (message) => {
 			this.setState({
 				n: this.randomNumber()
 			})
@@ -52,7 +52,7 @@ export default class MapScreen extends React.Component {
 					//console.log(reader.result);
 					
 					$.ajax({
-						url: "/api/map",
+						url: "/api/map/" + this.props.room,
 						data: reader.result,
 						contentType: "text/plain",
 						method: "PUT",
@@ -85,7 +85,7 @@ export default class MapScreen extends React.Component {
 		}
 		return (
 			<div id="map" style={style}>
-				<img id="mapimg" src={"/api/map?n=" + this.state.n} />
+				<img id="mapimg" src={"/api/map/" + this.props.room + "?n=" + this.state.n} />
 			</div>
 		);
 	}

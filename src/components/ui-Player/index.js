@@ -28,7 +28,7 @@ export default class Player extends React.Component {
 	}
 	
 	componentDidMount() {
-		Common.getSave(this.props.room, (err, data) => {
+		Common.getSave(this.props.room, this.props.player, (err, data) => {
 			if(err) {
 				data = {
 					name: "<character name>",
@@ -51,6 +51,8 @@ export default class Player extends React.Component {
 		document.addEventListener('keypress', this.handleKeyPress);
 		
 		this.characterClient = Common.client.subscribe('/character/' + this.props.room, (message) => {
+			if(message.id != this.props.player) return;
+			
 			if(message.version) {
 				var ix = this.savedVersions.indexOf(message.version);
 				if(ix !== -1) {
@@ -100,7 +102,7 @@ export default class Player extends React.Component {
 			this.state.player.version = ver;
 			this.savedVersions.push(ver);
 			
-			Common.putSave(this.props.room, this.state.player);
+			Common.putSave(this.props.room, this.props.player, this.state.player);
 			/*console.log("Skipped saving");*/
 			
 			this.setState({
