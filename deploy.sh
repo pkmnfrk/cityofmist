@@ -4,7 +4,4 @@
 npm ci
 
 # compile
-npm run gulp
-
-# restart daemon
-forever restart cityofmist
+npm run build
