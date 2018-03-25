@@ -106,6 +106,44 @@ export function sendRoll(room, roll) {
     });
 }
 
+export function getRoom(room, cb) {
+    $.ajax({
+        url: "/api/room/" + room,
+        method: "GET",
+        success: function(data) {
+            cb(null, data);
+        },
+        error: function(err) {
+            cb(err);
+        }
+    });
+}
+
+export function joinRoom(room, id) {
+	$.ajax({
+        url: "/api/room/join/" + room,
+        method: "POST",
+        data: JSON.stringify({ id: id }),
+        contentType: "application/json",
+        success: function() {
+            
+        }
+    });
+}
+
+export function partRoom(room, id) {
+	$.ajax({
+        url: "/api/room/part/" + room,
+		async: false,
+        method: "POST",
+        data: JSON.stringify({ id: id }),
+        contentType: "application/json",
+        success: function() {
+            
+        }
+    });
+}
+
 export function isGm() {
     return document.body.classList.contains("gm");
 }

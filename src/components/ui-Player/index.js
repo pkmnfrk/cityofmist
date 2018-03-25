@@ -43,6 +43,8 @@ export default class Player extends React.Component {
 				data.themes[0].type = "mythos";
 			}
 			
+			Common.joinRoom(this.props.room, this.props.player);
+			
 			this.setState({
 				player: data
 			});
@@ -70,11 +72,12 @@ export default class Player extends React.Component {
 		});
 		
 		window.addEventListener('popstate', this.handlePopState);
+		window.addEventListener('unload', this.handleOnClose);
 	}
 	
 	componentWillUnmount() {
 		window.removeEventListener('popstate', this.handlePopState);
-		
+		window.removeEventListener('unload', this.handleOnClose);
 		this.characterClient.unsubscribe();
 		
 	}
@@ -120,6 +123,10 @@ export default class Player extends React.Component {
 		if(e.key == "l") {
 			this.handleToggleLocked();
 		}		
+	}
+	
+	handleOnClose(e) {
+		Common.partRoom(this.props.room, this.props.player);
 	}
 	
 	handleToggleLocked() {

@@ -8,12 +8,12 @@ export default class GM extends React.Component {
 		super(props);
 		
 		this.state = {
-			charKeys: [],
 			chars: {},
 			activeTab: this.props.activeTab,
 		}
 		
 		this.loadindex = 0;
+		this.charKeys = [];
 		
 		Object.getOwnPropertyNames(GM.prototype).forEach((prop) => {
 			if(typeof(this[prop]) == "function" && prop.startsWith("handle")) {
@@ -24,16 +24,23 @@ export default class GM extends React.Component {
 	}
 	
 	componentDidMount() {
-		this.loadone(this.handleLoaded);
+		//this.loadone(this.handleLoaded);
+		Common.getRoom(this.props.room, (err, data) => {
+			this.charKeys = data.characters
+			this.loadindex = 0;
+			this.loadone(() => {
+				this.handleLoaded();
+			});
+		});
 	}
 	
 	loadone(done) {
-		if(this.loadindex >= this.state.charKeys.length) {
+		if(this.loadindex >= this.charKeys.length) {
 			return done();
 		}
 		
-		Common.getSave(this.state.charKeys[this.loadindex], (err, char) => {
-			this.state.chars[this.state.charKeys[this.loadindex]] = char;
+		Common.getSave(this.props.room, this.charKeys[this.loadindex], (err, char) => {
+			this.state.chars[this.charKeys[this.loadindex]] = char;
 			//this.state.chars.length += 1;
 			
 			this.loadindex += 1;
@@ -49,6 +56,14 @@ export default class GM extends React.Component {
 				
 				this.state.chars[message.character.id] = message.character;
 				this.handleChange();
+			}
+			else if(message.kind == "room")
+			{
+				this.charKeys = message.room.characters;
+				this.loadindex = 0;
+				this.loadone(() => {
+					this.handleChange();
+				});
 			}
 		});
 		
@@ -67,7 +82,7 @@ export default class GM extends React.Component {
 	
 	render() {
 		return (
-			<GMDeck chars={this.state.chars} charKeys={this.state.charKeys} activeTab={this.state.activeTab} onChange={this.handleChange} onSwitch={this.handleTabChange} room={this.props.room} />
+			<GMDeck chars={this.state.chars} charKeys={this.charKeys} activeTab={this.state.activeTab} onChange={this.handleChange} onSwitch={this.handleTabChange} room={this.props.room} />
 		);
 	}
 }
