@@ -4,7 +4,7 @@ import Icon from '../ui-Icon';
 
 import "./index.css"
 
-import { isGm, client, spectrumLevel } from '../../common';
+import { isGm, client, spectrumLevel, sendRoll } from '../../common';
 
 var listeners = [];
 
@@ -20,14 +20,16 @@ var rolls = {
 	}]*/
 };
 
-var rolls_client = client.subscribe('/rolls/*').withChannel((channel, message) => {
-	var room = channel.substring(7);
+var rolls_client = client.subscribe('/room/*').withChannel((channel, message) => {
+	if(message.kind != "roll") return;
+	
+	var room = channel.substring(6);
 	
 	if(!rolls[room]) {
 		rolls[room] = [];
 	}
 	
-	rolls[room].unshift(message);
+	rolls[room].unshift(message.roll);
 	
 	while(rolls[room].length > 15) {
 		rolls[room].pop();
@@ -204,7 +206,8 @@ export default class Roller extends React.Component {
 			dropped: dropped
 		};
 		
-		client.publish('/rolls/' + room, message);
+		//client.publish('/rolls/' + room, message);
+		sendRoll(room, message);
 	}
 	
     render() {

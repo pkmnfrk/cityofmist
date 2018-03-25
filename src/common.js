@@ -94,6 +94,18 @@ export function putSave(room, id, objs) {
     });
 }
 
+export function sendRoll(room, roll) {
+    $.ajax({
+        url: "/api/roll/" + room,
+        method: "POST",
+        data: JSON.stringify(roll),
+        contentType: "application/json",
+        success: function() {
+            
+        }
+    });
+}
+
 export function isGm() {
     return document.body.classList.contains("gm");
 }

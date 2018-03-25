@@ -50,17 +50,20 @@ export default class Player extends React.Component {
 		
 		document.addEventListener('keypress', this.handleKeyPress);
 		
-		this.characterClient = Common.client.subscribe('/character/' + this.props.room, (message) => {
-			if(message.id != this.props.player) return;
+		this.room_client = Common.client.subscribe('/room/' + this.props.room, (message) => {
 			
-			if(message.version) {
-				var ix = this.savedVersions.indexOf(message.version);
-				if(ix !== -1) {
-					this.savedVersions.splice(ix, 1);
-				} else {
-					this.setState({
-						player: message
-					});
+			if(message.kind == "character") {
+				if(message.id == this.props.player) {
+					if(message.character.version) {
+						var ix = this.savedVersions.indexOf(message.character.version);
+						if(ix !== -1) {
+							this.savedVersions.splice(ix, 1);
+						} else {
+							this.setState({
+								player: message.character
+							});
+						}
+					}
 				}
 			}
 			
