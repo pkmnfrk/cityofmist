@@ -30,7 +30,7 @@ export default class Icon extends React.Component {
 		
 		return (
 			//<i className={klas} onClick={this.props.onClick} style={style} />
-			<FontAwesomeIcon className={this.props.className} icon={[prefix, icon]} size={size} fixedWidth={this.props.fixedWidth} />
+			<FontAwesomeIcon className={this.props.className} icon={[prefix, icon]} size={size} fixedWidth={this.props.fixedWidth} onClick={this.props.onClick} />
 		);
 	}
 }
