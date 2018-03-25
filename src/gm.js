@@ -7,23 +7,21 @@ import * as Common from "./common";
 
 import './css/gm.css';
 
-var characterKeys = location.search;
+var room = location.search;
 
-if (characterKeys[0] === "?") {
-    characterKeys = characterKeys.substring(1);
+if (room[0] === "?") {
+    room = room.substring(1);
 }
 
-if(!characterKeys) {
-    characterKeys = prompt("Who is in the party? (comma separated, no spaces)");
-    location = "?" + characterKeys;
+if(!room) {
+    room = prompt("What is the room?");
+    location = "?" + room;
 }
-
-characterKeys = characterKeys.split(",");
 
 
 var root = document.getElementById("root");
 ReactDom.render(
-	(<GM characterKeys={characterKeys} activeTab="main" />),
+	(<GM room={room} activeTab="main" />),
 	root
 );
 

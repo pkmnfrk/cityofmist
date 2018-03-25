@@ -58,14 +58,14 @@ export default class GMDeck extends React.Component {
 			<li key={key} className={theme.type}>
 				{theme.name}
 				<span className="attention">
-					<Icon icon={(theme.attention >= 1 ? "check-" : "") + "square-o"} />
-					<Icon icon={(theme.attention >= 2 ? "check-" : "") + "square-o"} />
-					<Icon icon={(theme.attention >= 3 ? "check-" : "") + "square-o"} />
+					<Icon outline="true" icon={(theme.attention >= 1 ? "check-" : "") + "square"} />
+					<Icon outline="true" icon={(theme.attention >= 2 ? "check-" : "") + "square"} />
+					<Icon outline="true" icon={(theme.attention >= 3 ? "check-" : "") + "square"} />
 				</span>
 				<span className="fade">
-					<Icon icon={(theme.fade >= 1 ? "times-" : "") + "circle-o"} />
-					<Icon icon={(theme.fade >= 2 ? "times-" : "") + "circle-o"} />
-					<Icon icon={(theme.fade >= 3 ? "times-" : "") + "circle-o"} />
+					<Icon outline="true" icon={(theme.fade >= 1 ? "times-" : "") + "circle"} />
+					<Icon outline="true" icon={(theme.fade >= 2 ? "times-" : "") + "circle"} />
+					<Icon outline="true" icon={(theme.fade >= 3 ? "times-" : "") + "circle"} />
 				</span>
 				<ul className="powers">
 				{theme.powertags.map((p, ix) =>
@@ -125,14 +125,14 @@ export default class GMDeck extends React.Component {
 		
 		return (
 			<div id="main" style={mainStyle}>
-				<Roller who="GM" room="GM" onChange={this.props.onChange} />
+				<Roller who="GM" room={this.props.room} onChange={this.props.onChange} />
 				{this.props.charKeys.map((charKey) => this.renderChar(charKey))}
 			</div>
 		);
 	}
 	
 	renderMap() {
-		return <MapScreen hide={this.props.activeTab != "map"} isGm="true"/>;
+		return <MapScreen room={this.props.room} hide={this.props.activeTab != "map"} isGm="true"/>;
 	}
 	
 	renderMoves() {

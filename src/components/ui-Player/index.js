@@ -28,7 +28,7 @@ export default class Player extends React.Component {
 	}
 	
 	componentDidMount() {
-		Common.getSave(this.props.room, (err, data) => {
+		Common.getSave(this.props.room, this.props.player, (err, data) => {
 			if(err) {
 				data = {
 					name: "<character name>",
@@ -43,6 +43,8 @@ export default class Player extends React.Component {
 				data.themes[0].type = "mythos";
 			}
 			
+			Common.joinRoom(this.props.room, this.props.player);
+			
 			this.setState({
 				player: data
 			});
@@ -50,27 +52,33 @@ export default class Player extends React.Component {
 		
 		document.addEventListener('keypress', this.handleKeyPress);
 		
-		this.characterClient = Common.client.subscribe('/character/' + this.props.room, (message) => {
-			if(message.version) {
-				var ix = this.savedVersions.indexOf(message.version);
-				if(ix !== -1) {
-					this.savedVersions.splice(ix, 1);
-				} else {
-					this.setState({
-						player: message
-					});
+		this.room_client = Common.client.subscribe('/room/' + this.props.room, (message) => {
+			
+			if(message.kind == "character") {
+				if(message.id == this.props.player) {
+					if(message.character.version) {
+						var ix = this.savedVersions.indexOf(message.character.version);
+						if(ix !== -1) {
+							this.savedVersions.splice(ix, 1);
+						} else {
+							this.setState({
+								player: message.character
+							});
+						}
+					}
 				}
 			}
 			
 		});
 		
 		window.addEventListener('popstate', this.handlePopState);
+		window.addEventListener('unload', this.handleOnClose);
 	}
 	
 	componentWillUnmount() {
 		window.removeEventListener('popstate', this.handlePopState);
-		
-		this.characterClient.unsubscribe();
+		window.removeEventListener('unload', this.handleOnClose);
+		this.room_client.unsubscribe();
 		
 	}
 	
@@ -100,7 +108,7 @@ export default class Player extends React.Component {
 			this.state.player.version = ver;
 			this.savedVersions.push(ver);
 			
-			Common.putSave(this.props.room, this.state.player);
+			Common.putSave(this.props.room, this.props.player, this.state.player);
 			/*console.log("Skipped saving");*/
 			
 			this.setState({
@@ -115,6 +123,10 @@ export default class Player extends React.Component {
 		if(e.key == "l") {
 			this.handleToggleLocked();
 		}		
+	}
+	
+	handleOnClose(e) {
+		Common.partRoom(this.props.room, this.props.player);
 	}
 	
 	handleToggleLocked() {

@@ -1,4 +1,5 @@
 import React from 'react';
+import Icon from '../ui-Icon';
 
 export default class Roll extends React.Component {
 	
@@ -8,8 +9,13 @@ export default class Roll extends React.Component {
 			if(a.length) {
 				a.push(" + ");
 			}
-
-			a.push(<span key={x++} className="die">{v}</span>)
+			var className = "die";
+			
+			if(this.props.roll.dropped.indexOf(x) !== -1) {
+				className += " dropped";
+			}
+			
+			a.push(<span key={x++} className={className}>{v}</span>)
 
 			return a;
 
@@ -22,40 +28,23 @@ export default class Roll extends React.Component {
 		if(this.props.roll.penalty) {
 			dice.push(<span key="penalty" className="penalty"> - {this.props.roll.penalty}</span>);
 		}
+		
+		var icon = null;
+		if(this.props.roll.advantage == "advantage") {
+			icon = <Icon outline icon="thumbs-up" />;
+		} else if(this.props.roll.advantage == "disadvantage") {
+			icon = <Icon outline icon="thumbs-down" />;
+		}
 						
 		return (<li>
 			({new Date(this.props.roll.when).toLocaleTimeString()}){" "}
 			{this.props.roll.who}:
 			<span className="total">{this.props.roll.total}</span>
+				{icon}
 			<span className="math">
 			{dice}
 			</span>
 		</li>);
 	}
-	/*
-	m("ul[id=rolls]", rolls.map((r) => m("li", [
-                    "(",
-                    new Date(r.when).toLocaleTimeString(),
-                    ") ",
-                    r.who,
-                    ": ",
-                    m("span", {class: "total"}, r.total),
-                    m("span", {class: "math"}, [
-                        r.dice.reduce((a, v) => {
-                            if(a.length) {
-                                a.push(" + ");
-                            }
-
-                            a.push(m("span", {class: "die"}, v));
-
-                            return a;
-
-                        }, []),
-                        r.bonus ? [" + ", m("span", {class: "bonus"}, r.bonus)] : [],
-                        r.penalty ? [" - ", m("span", {class: "penalty"}, r.penalty)] : [],
-                    ]),
-                    r.label ? m("span", {class: "label"}, r.label) : ""
-
-                ])))
-				*/
+	
 }

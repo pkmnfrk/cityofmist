@@ -35,37 +35,11 @@ export function firstName(name) {
     return parts[0];
 }
 
-export function roll(label, who, room, nDice, nSides, bonus, penalty) {
-    var dice = [];
-    var total = 0;
-    
-    for(var i = 0; i < nDice; i++) {
-        var d = Math.floor(Math.random() * nSides) + 1;
-        dice.push(d);
-        total += d;
-    }
-    
-    if(bonus) {
-        total += bonus;
-    }
-    if(penalty) {
-        total -= penalty;
-    }
-    
-    var message = {
-        label: label,
-        when: Date.now(),
-        who: who,
-        dice: dice,
-        bonus: bonus,
-        penalty: penalty,
-        total: total
-    };
-    
-    client.publish('/rolls/' + room, message);
-}
-
-function updatePlayer(player) {
+function updatePlayer(player, id) {
+	if(!player.id) {
+		player.id = id;
+	}
+	
 	if(Array.isArray(player)) {
 		player = {
 			themes: player
@@ -94,12 +68,12 @@ function updatePlayer(player) {
 	}
 }
 
-export function getSave(id, cb) {
+export function getSave(room, id, cb) {
     $.ajax({
-        url: "/api/save/" + id,
+        url: "/api/save/" + room + "/" + id,
         method: "GET",
         success: function(data) {
-			updatePlayer(data);
+			updatePlayer(data, id);
             cb(null, data);
         },
         error: function(err) {
@@ -108,11 +82,61 @@ export function getSave(id, cb) {
     });
 }
 
-export function putSave(id, objs) {
+export function putSave(room, id, objs) {
     $.ajax({
-        url: "/api/save/" + id,
+        url: "/api/save/" + room + "/" + id,
         method: "PUT",
         data: JSON.stringify(objs),
+        contentType: "application/json",
+        success: function() {
+            
+        }
+    });
+}
+
+export function sendRoll(room, roll) {
+    $.ajax({
+        url: "/api/roll/" + room,
+        method: "POST",
+        data: JSON.stringify(roll),
+        contentType: "application/json",
+        success: function() {
+            
+        }
+    });
+}
+
+export function getRoom(room, cb) {
+    $.ajax({
+        url: "/api/room/" + room,
+        method: "GET",
+        success: function(data) {
+            cb(null, data);
+        },
+        error: function(err) {
+            cb(err);
+        }
+    });
+}
+
+export function joinRoom(room, id) {
+	$.ajax({
+        url: "/api/room/join/" + room,
+        method: "POST",
+        data: JSON.stringify({ id: id }),
+        contentType: "application/json",
+        success: function() {
+            
+        }
+    });
+}
+
+export function partRoom(room, id) {
+	$.ajax({
+        url: "/api/room/part/" + room,
+		async: false,
+        method: "POST",
+        data: JSON.stringify({ id: id }),
         contentType: "application/json",
         success: function() {
             

@@ -4,12 +4,22 @@ import ReactDom from 'react-dom';
 import * as Common from './common';
 import Player from './components/ui-Player'
 
-var myRoom = window.location.search;
-if(myRoom[0] == "?") myRoom = myRoom.substring(1);
+var search = window.location.search;
+var room, myPlayer;
+if(search[0] == "?") search = search.substring(1);
 
-if(!myRoom) {
-    myRoom = prompt("What is your nickname?");
-    location = "?" + myRoom;
+[room, myPlayer] = search.split('/');
+
+if(room && !myPlayer) {
+	myPlayer = room;
+	room = "main";
+	location = "?" + room + "/" + myPlayer;
+}
+
+if(!room) {
+	room = prompt("What room are you in?");
+    myPlayer = prompt("What is your name?");
+    location = "?" + room + "/" + myPlayer;
     
 }
 
@@ -18,6 +28,6 @@ if(!myRoom) {
 window.root = document.getElementById("root");
 
 ReactDom.render(
-	(<Player room={myRoom} />),
+	(<Player room={room} player={myPlayer} />),
 	root
 );

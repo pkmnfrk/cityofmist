@@ -1,60 +1,43 @@
 import React from 'react';
 import Roll from '../ui-Roll';
+import Icon from '../ui-Icon';
 
-import { roll, isGm, client, spectrumLevel } from '../../common';
+import "./index.css"
 
-var listeners = [];
-
-var rolls = [/*{
-	total: 11,
-	who: "Mike",
-	when: new Date().getTime(),
-	dice: [1,2],
-	bonus: 9,
-	penalty: 1
-}*/];
-
-var rolls_client = client.subscribe('/rolls/*').withChannel((channel, message) => {
-
-	rolls.unshift(message);
-	while(rolls.length > 15) {
-		rolls.pop();
-	}
-	
-	for(var l of listeners) {
-		l();
-	}
-});
+import { isGm, client, spectrumLevel, sendRoll, getRoom } from '../../common';
 
 export default class Roller extends React.Component {
 	constructor(props) {
 		super(props);
 		
 		this.state = {
-			rolls: rolls
+			rolls: []
 		}
 		
 		this.roll = this.roll.bind(this);
-		this.handleRollUpdate = this.handleRollUpdate.bind(this);
 	}
+
 	
-	handleRollUpdate() {
-		this.setState({
-			rolls: rolls
+	componentDidMount() {
+		
+		this.rolls_client = client.subscribe('/room/' + this.props.room, (message) => {
+			if(message.kind == "room") {
+				this.setState({
+					rolls: message.room.rolls
+				});
+			}
+		});
+		
+		getRoom(this.props.room, (err, data) => {
+			this.setState({
+				rolls: data.rolls
+			})
 		});
 	}
 	
-	componentDidMount() {
-		listeners.push(this.handleRollUpdate);
-	}
-	
 	componentWillUnmount() {
-		for(var i in listeners) {
-			if(listeners[i] == this.handleRollUpdate) {
-				listeners.splice(i, 1);
-				break;
-			}
-		}
+		this.rolls_client.unsubscribe();
+
 	}
 	
 	clearSelections() {
@@ -123,9 +106,71 @@ export default class Roller extends React.Component {
 		return this.getRollAttribute("minus");
 	}
 
-	roll() {
-		roll("", this.props.who, this.props.room, 2, 6, this.getBonus(), this.getPenalty());
+	roll(advantage) {
+		this.doRoll("", this.props.who, this.props.room, 2, 6, this.getBonus(), this.getPenalty(), advantage);
 		this.clearSelections();
+	}
+	
+	doRoll(label, who, room, nDice, nSides, bonus, penalty, advantage) {
+		var dice = [];
+		var dropped = [];
+		var total = 0;
+		
+		var lowest = -1;
+		var highest = -1;
+		
+		if(advantage) {
+			nDice += 1;
+		}
+		
+		for(var i = 0; i < nDice; i++) {
+			var d = Math.floor(Math.random() * nSides) + 1;
+			dice.push(d);
+			
+			if(lowest == -1 || (lowest !== -1 && d < dice[lowest])) {
+				lowest = i;
+			}
+			if(highest == -1 || (highest !== -1 && d > dice[highest])) {
+				highest = i;
+			}
+		}
+		
+		console.log("Lowest: " + lowest);
+		console.log("Highest: " + highest);
+		
+		if(advantage == "advantage") {
+			dropped.push(lowest);
+		} else if(advantage == "disadvantage") {
+			dropped.push(highest);
+		}
+		
+		for(var i = 0; i < dice.length; i++) {
+			if(dropped.indexOf(i) === -1) {
+				total += dice[i];
+			}
+		}
+		
+		if(bonus) {
+			total += bonus;
+		}
+		if(penalty) {
+			total -= penalty;
+		}
+		
+		var message = {
+			label: label,
+			when: Date.now(),
+			who: who,
+			dice: dice,
+			bonus: bonus,
+			penalty: penalty,
+			total: total,
+			advantage: advantage,
+			dropped: dropped
+		};
+		
+		//client.publish('/rolls/' + room, message);
+		sendRoll(room, message);
 	}
 	
     render() {
@@ -135,11 +180,19 @@ export default class Roller extends React.Component {
 		
 		return (
 			<div className="rollers">
-				<button className="roller" onClick={this.roll}>
-					Roll 2d6 {(bonus ? "+" + bonus : "") + (penalty ? "-" + penalty : "")}
-				</button>
+				<div className="rollButtons">
+					<button className="advantage" onClick={() => this.roll("disadvantage")}>
+						<Icon outline icon="thumbs-down" />
+					</button>
+					<button className="roller" onClick={() => this.roll()}>
+						Roll 2d6 {(bonus ? "+" + bonus : "") + (penalty ? "-" + penalty : "")}
+					</button>
+					<button className="advantage" onClick={() => this.roll("advantage")}>
+						<Icon outline icon="thumbs-up" />
+					</button>
+				</div>
 				<ul id="rolls">
-				{rolls.map((r) => <Roll key={r.when} roll={r} />)}
+				{this.state.rolls.map((r) => <Roll key={r.when} roll={r} />)}
 				</ul>
 			</div>
 		);

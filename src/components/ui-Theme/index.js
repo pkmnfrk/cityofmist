@@ -174,7 +174,7 @@ export default class Theme extends React.Component {
 				<Icon
 					hide={this.props.isLocked}
 					className="close"
-					big="true"
+					big
 					icon="times-circle-o"
 					onClick={this.props.onDelete}
 				/>

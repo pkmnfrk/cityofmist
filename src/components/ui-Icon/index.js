@@ -1,30 +1,36 @@
 import React from 'react';
+import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 
-export default class Icon extends React.PureComponent {
+export default class Icon extends React.Component {
+	constructor(props) {
+		super(props);
+	}
+	
 	render() {
-		var klas = "fa";
+		if(this.props.hide)
+			return null;
+		
+		var prefix = "fa";
 		var style = {};
+		var size = null;
+		
+		if(this.props.outline || this.props.icon.endsWith("-o")) {
+			prefix = "far";
+		}
 		
 		if(this.props.big) {
-			klas += " fa-2x";
+			size = "2x";
 		}
 		
-		if(this.props.fixed) {
-			klas += " fa-fw";
-		}
+		var icon = this.props.icon;
 		
-		klas += " fa-" + this.props.icon;
-		
-		if(this.props.className) {
-			klas += " " + this.props.className;
-		}
-		
-		if(this.props.hide) {
-			style.display = 'none';
+		if(icon.endsWith("-o")) {
+			icon = icon.substring(0, icon.length - 2);
 		}
 		
 		return (
-			<i className={klas} onClick={this.props.onClick} style={style} />
+			//<i className={klas} onClick={this.props.onClick} style={style} />
+			<FontAwesomeIcon className={this.props.className} icon={[prefix, icon]} size={size} fixedWidth={this.props.fixedWidth} />
 		);
 	}
 }
