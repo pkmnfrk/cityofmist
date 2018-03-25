@@ -78,7 +78,7 @@ export default class Player extends React.Component {
 	componentWillUnmount() {
 		window.removeEventListener('popstate', this.handlePopState);
 		window.removeEventListener('unload', this.handleOnClose);
-		this.characterClient.unsubscribe();
+		this.room_client.unsubscribe();
 		
 	}
 	

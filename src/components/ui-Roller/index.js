@@ -4,77 +4,40 @@ import Icon from '../ui-Icon';
 
 import "./index.css"
 
-import { isGm, client, spectrumLevel, sendRoll } from '../../common';
-
-var listeners = [];
-
-var rolls = {
-	/*main: [{
-		total: 11,
-		who: "Mike",
-		when: new Date().getTime(),
-		dice: [1,2,3],
-		dropped: [2],
-		bonus: 9,
-		penalty: 1
-	}]*/
-};
-
-var rolls_client = client.subscribe('/room/*').withChannel((channel, message) => {
-	if(message.kind != "roll") return;
-	
-	var room = channel.substring(6);
-	
-	if(!rolls[room]) {
-		rolls[room] = [];
-	}
-	
-	rolls[room].unshift(message.roll);
-	
-	while(rolls[room].length > 15) {
-		rolls[room].pop();
-	}
-	
-	for(var l of listeners) {
-		l(room);
-	}
-});
+import { isGm, client, spectrumLevel, sendRoll, getRoom } from '../../common';
 
 export default class Roller extends React.Component {
 	constructor(props) {
 		super(props);
 		
-		if(!rolls[this.props.room]) {
-			rolls[this.props.room] = [];
-		}
-		
 		this.state = {
-			rolls: rolls[this.props.room]
+			rolls: []
 		}
 		
 		this.roll = this.roll.bind(this);
-		this.handleRollUpdate = this.handleRollUpdate.bind(this);
 	}
-	
-	handleRollUpdate(room) {
-		if(room == this.props.room) {
-			this.setState({
-				rolls: rolls[room]
-			});
-		}
-	}
+
 	
 	componentDidMount() {
-		listeners.push(this.handleRollUpdate);
+		
+		this.rolls_client = client.subscribe('/room/' + this.props.room, (message) => {
+			if(message.kind == "room") {
+				this.setState({
+					rolls: message.room.rolls
+				});
+			}
+		});
+		
+		getRoom(this.props.room, (err, data) => {
+			this.setState({
+				rolls: data.rolls
+			})
+		});
 	}
 	
 	componentWillUnmount() {
-		for(var i in listeners) {
-			if(listeners[i] == this.handleRollUpdate) {
-				listeners.splice(i, 1);
-				break;
-			}
-		}
+		this.rolls_client.unsubscribe();
+
 	}
 	
 	clearSelections() {
