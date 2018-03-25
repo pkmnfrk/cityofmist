@@ -24,10 +24,12 @@ export default class MapScreen extends React.Component {
 			document.addEventListener("paste", this.handlePaste);
 		}
 		
-		this.map_client = client.subscribe("/map/" + this.props.room, (message) => {
-			this.setState({
-				n: this.randomNumber()
-			})
+		this.map_client = client.subscribe("/room/" + this.props.room, (message) => {
+			if(message.kind == "map") {
+				this.setState({
+					n: this.randomNumber()
+				})
+			}
 		})
 	}
 	

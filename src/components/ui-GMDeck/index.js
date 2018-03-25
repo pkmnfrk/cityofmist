@@ -125,14 +125,14 @@ export default class GMDeck extends React.Component {
 		
 		return (
 			<div id="main" style={mainStyle}>
-				<Roller who="GM" room="GM" onChange={this.props.onChange} />
+				<Roller who="GM" room={this.props.room} onChange={this.props.onChange} />
 				{this.props.charKeys.map((charKey) => this.renderChar(charKey))}
 			</div>
 		);
 	}
 	
 	renderMap() {
-		return <MapScreen hide={this.props.activeTab != "map"} isGm="true"/>;
+		return <MapScreen room={this.props.room} hide={this.props.activeTab != "map"} isGm="true"/>;
 	}
 	
 	renderMoves() {

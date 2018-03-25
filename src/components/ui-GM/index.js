@@ -8,6 +8,7 @@ export default class GM extends React.Component {
 		super(props);
 		
 		this.state = {
+			charKeys: [],
 			chars: {},
 			activeTab: this.props.activeTab,
 		}
@@ -27,12 +28,12 @@ export default class GM extends React.Component {
 	}
 	
 	loadone(done) {
-		if(this.loadindex >= this.props.characterKeys.length) {
+		if(this.loadindex >= this.state.charKeys.length) {
 			return done();
 		}
 		
-		Common.getSave(this.props.characterKeys[this.loadindex], (err, char) => {
-			this.state.chars[this.props.characterKeys[this.loadindex]] = char;
+		Common.getSave(this.state.charKeys[this.loadindex], (err, char) => {
+			this.state.chars[this.state.charKeys[this.loadindex]] = char;
 			//this.state.chars.length += 1;
 			
 			this.loadindex += 1;
@@ -41,15 +42,14 @@ export default class GM extends React.Component {
 	}
 	
 	handleLoaded() {
-		this.character_client = Common.client.subscribe('/character/*').withChannel((channel, message) => {
+		this.character_client = Common.client.subscribe('/room/' + this.props.room, (message) => {
 			
-			var id = channel.substring('/character/'.length);
-			
-			this.state.chars[id] = message;
-			
-			
-			
-			this.handleChange();
+			//var id = channel.substring('/character/'.length);
+			if(message.kind == "character") {
+				
+				this.state.chars[message.character.id] = message.character;
+				this.handleChange();
+			}
 		});
 		
 		this.handleChange();
@@ -67,7 +67,7 @@ export default class GM extends React.Component {
 	
 	render() {
 		return (
-			<GMDeck chars={this.state.chars} charKeys={this.props.characterKeys} activeTab={this.state.activeTab} onChange={this.handleChange} onSwitch={this.handleTabChange} />
+			<GMDeck chars={this.state.chars} charKeys={this.state.charKeys} activeTab={this.state.activeTab} onChange={this.handleChange} onSwitch={this.handleTabChange} room={this.props.room} />
 		);
 	}
 }
