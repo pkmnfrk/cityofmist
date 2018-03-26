@@ -96,7 +96,7 @@ export default class GMDeck extends React.Component {
 		
 		return (
 			<div key={charKey} className="player">
-				<div className="human">Player: <a href={"/?" + room + "/" + charKey}>{charKey}</a></div>
+				<div className="human">Player: <a href={"/?" + this.props.room + "/" + charKey}>{charKey}</a></div>
 				<div className="name">Name: {char.name}</div>
 				<div>
 					Themes:
