@@ -7,8 +7,8 @@
 	padding: 10px;
 	display: grid;
 	position: relative;
-	grid-template-rows: 30px 1fr minmax(20px, auto);
-	
+	grid-template-rows: 30px 90px auto minmax(20px, min-content);
+	align-items: start;
 }
 
 .status .plus {
@@ -56,6 +56,7 @@
     padding-left: 5px;
     padding-right: 5px;
     margin-top: 10px;
+	height: 70px;
 }
 
 .status .inner div.col {
@@ -105,6 +106,7 @@
     line-height: 48px;
     height: 48px;
     margin-top: 10px;
+	align-self: start;
 }
 
 .status .taglabel {
@@ -135,4 +137,30 @@
     text-align: center;
     margin-left: 10px;
     margin-right: 10px;
+}
+
+.status .substatuses {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.status .substatuses li {
+	margin: 0;
+	
+}
+
+.status .substatuses .delete {
+	margin-right: 5px;
+	margin-left: 5px;
+	cursor: pointer;
+}
+
+.status .substatuses .minusstatus, .status .substatuses .plusstatus {
+	margin-left: 5px;
+	cursor: pointer;
+}
+
+.status .addtags button {
+	width: 50%;
 }

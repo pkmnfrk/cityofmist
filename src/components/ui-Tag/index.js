@@ -2,7 +2,7 @@ import React from 'react';
 import Icon from '../ui-Icon';
 import StatusPip from '../ui-StatusPip';
 
-import { editString } from '../../common';
+import * as Common from '../../common';
 
 import './index.css';
 
@@ -67,10 +67,23 @@ export default class Status extends React.Component {
 	}
 	
 	handleTagClick() {
-		var newTag = editString(this.props.tag.name);
+		var newTag = Common.editString(this.props.tag.name);
 		if(newTag != this.props.tag.name) {
 			this.props.tag.name = newTag;
 			this.props.onChange();
+		}
+	}
+	
+	handleStatusClick(id) {
+		for(var i = 0; i < this.props.tag.statuses.length; i++) {
+			if(this.props.tag.statuses[i].id === id) {
+				var newTag = Common.editString(this.props.tag.statuses[i].name);
+				if(newTag != this.props.tag.statuses[i].name) {
+					this.props.tag.statuses[i].name = newTag;
+					this.props.tag.statuses.sort(this.sortStatuses);
+					this.props.onChange();
+				}
+			}
 		}
 	}
 	
@@ -82,10 +95,107 @@ export default class Status extends React.Component {
 		}
 	}
 	
+	handleAddStatus() {
+		var status = Common.createTag("status");
+		status.name = "Status";
+		
+		if(!this.props.tag.statuses) {
+			this.props.tag.statuses = [];
+		}
+		this.props.tag.statuses.push(status);
+		this.props.tag.statuses.sort(this.sortStatuses);
+		this.props.onChange();
+	}
+	
+	handleAddTag() {
+		var status = Common.createTag("tag");
+		status.name = "Tag";
+		
+		if(!this.props.tag.statuses) {
+			this.props.tag.statuses = [];
+		}
+		this.props.tag.statuses.push(status);
+		this.props.tag.statuses.sort(this.sortStatuses);
+		this.props.onChange();
+	}
+	
+	handleDeleteStatus(id) {
+		for(var i = 0; i < this.props.tag.statuses.length; i++) {
+			if(this.props.tag.statuses[i].id === id) {
+				this.props.tag.statuses.splice(i, 1);
+				this.props.tag.statuses.sort(this.sortStatuses);
+				this.props.onChange();
+				return;
+			}
+		}
+	}
+	
+	handleModifyStatus(e, id, amt) {
+		e.stopPropagation();
+		e.preventDefault();
+		for(var i = 0; i < this.props.tag.statuses.length; i++) {
+			if(this.props.tag.statuses[i].id === id) {
+				var newSpec = Common.addMajorSpectrumLevel(this.props.tag.statuses[i].spectrum, amt);
+				if(newSpec != this.props.tag.statuses[i].spectrum) {
+					this.props.tag.statuses[i].spectrum = newSpec;
+					this.props.onChange();
+				}
+				return;
+			}
+		}
+	}
+	
+	sortStatuses(a, b) {
+		if(a.type == "tag" && b.type == "status") return -1;
+		if(a.type == "status" && b.type == "tag") return 1;
+		if(a.name < b.name) return -1;
+		if(a.name > b.name) return 1;
+		return a.id - b.id;
+	}
+	
 	renderSpectrum() {
 		return (<div className="inner">
 				{this.viewSpectrumLabels()}
 			</div>);
+	}
+	
+	renderStatuses() {
+		var statuses = null;
+		
+		if(this.props.tag.statuses && this.props.tag.statuses.length) {
+			statuses = this.props.tag.statuses.map((s) => {
+				var spec = null;
+				if(s.type == "status") {
+					spec = (<React.Fragment>
+						&nbsp;-&nbsp;
+						{Common.spectrumLevel(s.spectrum)}
+							{" "}
+						<Icon outline={false} icon="minus-circle" className="minusstatus" onClick={(e) => this.handleModifyStatus(e, s.id, -1)} />
+						<Icon outline={false} icon="plus-circle" className="plusstatus"   onClick={(e) => this.handleModifyStatus(e, s.id, 1)} />
+					</React.Fragment>);
+				}
+				
+				return (<li key={s.id}>
+					<Icon outline={false} icon="times-circle" className="delete" onClick={() => this.handleDeleteStatus(s.id)} />
+					<span onClick={() => this.handleStatusClick(s.id)}>{s.name}</span>
+					{spec}
+				</li>);
+			});
+		}
+		
+		//if(statuses) {
+			statuses = <ul className="substatuses">{statuses}</ul>
+		//}
+		
+		return (
+			<React.Fragment>
+				{statuses}
+				<div className="addtags">
+					<button onClick={() => this.handleAddStatus()}> Add Status</button>
+					<button onClick={() => this.handleAddTag()}> Add Tag</button>
+				</div>
+			</React.Fragment>
+		);
 	}
 	
 	renderHelp() {
@@ -103,7 +213,7 @@ export default class Status extends React.Component {
 		}
 		else if(this.props.tag.type == "tag")
 		{
-			return null;
+			return this.renderStatuses();
 		}
 		else if(this.props.tag.type == "status")
 		{
@@ -129,18 +239,34 @@ export default class Status extends React.Component {
 		return "smallest";
 	}
 	
+	renderHeader()
+	{
+		var title = "TRACKING CARD";
+		
+		switch(this.props.tag.type) {
+			case "clue": title = "CLUE " + title; break;
+			case "juice": title = "JUICE " + title; break;
+			case "tag": title = "TAG " + title; break;
+			case "status": title = "STATUS " + title; break;
+			default: title = "UNKNOWN " + title; break;
+		}
+		
+		return (
+		<div className={"header " + (this.props.tag.selected || "")} onClick={this.handleHeaderClick}>
+			{title}
+			<div className="icons">
+				<Icon className={"icon " + (this.props.tag.type == "clue" ? "active" : "")}   onClick={(e)=> this.handleTypeClick(e, "clue")} fixedWidth={true} icon="search" />
+				<Icon className={"icon " + (this.props.tag.type == "juice" ? "active" : "")}  onClick={(e)=> this.handleTypeClick(e, "juice")} fixedWidth={true} icon="wine-glass" />
+				<Icon className={"icon " + (this.props.tag.type == "tag" ? "active" : "")}    onClick={(e)=> this.handleTypeClick(e, "tag")} fixedWidth={true} icon="tag" />
+				<Icon className={"icon " + (this.props.tag.type == "status" ? "active" : "")} onClick={(e)=> this.handleTypeClick(e, "status")} fixedWidth={true} icon="medkit" />
+			</div>
+		</div>);
+	}
+	
 	render() {
 		return (<div className="status">
 			<Icon outline="true" icon="times-circle" big="true" className="close" onClick={this.props.onDelete} />
-			<div className={"header " + (this.props.tag.selected || "")} onClick={this.handleHeaderClick}>
-				Tracking CARD
-				<div className="icons">
-					<Icon className={"icon " + (this.props.tag.type == "clue" ? "active" : "")}   onClick={(e)=> this.handleTypeClick(e, "clue")} fixedWidth={true} icon="search" />
-					<Icon className={"icon " + (this.props.tag.type == "juice" ? "active" : "")}  onClick={(e)=> this.handleTypeClick(e, "juice")} fixedWidth={true} icon="wine-glass" />
-					<Icon className={"icon " + (this.props.tag.type == "tag" ? "active" : "")}    onClick={(e)=> this.handleTypeClick(e, "tag")} fixedWidth={true} icon="tag" />
-					<Icon className={"icon " + (this.props.tag.type == "status" ? "active" : "")} onClick={(e)=> this.handleTypeClick(e, "status")} fixedWidth={true} icon="medkit" />
-				</div>
-			</div>
+				{this.renderHeader()}
 			{ (this.props.tag.type != "tag") ? this.renderSpectrum() : null}
 			<div className="tagwrap">
 				<div className="taglabel">TAG</div>

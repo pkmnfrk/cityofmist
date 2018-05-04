@@ -17,11 +17,7 @@ export default class StatusList extends React.Component {
     }
     
     addStatus() {
-        var newStatus = {
-            spectrum: 1,
-			type: "tag",
-			id: Common.randomId()
-        };
+        var newStatus = Common.createTag("tag");
         
         this.props.statuses.push(newStatus);
         

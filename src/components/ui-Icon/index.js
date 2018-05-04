@@ -6,6 +6,10 @@ export default class Icon extends React.Component {
 		super(props);
 	}
 	
+	stopErrantClicks(e) {
+		e.preventDefault();
+	}
+	
 	render() {
 		if(this.props.hide)
 			return null;
@@ -13,6 +17,7 @@ export default class Icon extends React.Component {
 		var prefix = "fa";
 		var style = {};
 		var size = null;
+		var onMouseDown = null;
 		
 		if(this.props.outline || this.props.icon.endsWith("-o")) {
 			prefix = "far";
@@ -28,9 +33,13 @@ export default class Icon extends React.Component {
 			icon = icon.substring(0, icon.length - 2);
 		}
 		
+		if(this.props.onClick) {
+			onMouseDown = this.stopErrantClicks;
+		}
+		
 		return (
 			//<i className={klas} onClick={this.props.onClick} style={style} />
-			<FontAwesomeIcon className={this.props.className} icon={[prefix, icon]} size={size} fixedWidth={this.props.fixedWidth} onClick={this.props.onClick} />
+			<FontAwesomeIcon className={this.props.className} icon={[prefix, icon]} size={size} fixedWidth={this.props.fixedWidth} onClick={this.props.onClick} onMouseDown={onMouseDown} />
 		);
 	}
 }

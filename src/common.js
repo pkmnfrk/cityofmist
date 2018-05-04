@@ -51,6 +51,14 @@ export function randomId() {
 	return randomRange(1, 1000000000);
 }
 
+export function createTag(type) {
+	return {
+		spectrum: 1,
+		type: type,
+		id: randomId()
+	}
+}
+
 function updatePlayer(player, id) {
 	if(!player.id) {
 		player.id = id;
@@ -181,6 +189,20 @@ export function spectrumLevel(s) {
 	if(s <= 10) return 4;
 	if(s <= 15) return 5;
 	return 6;
+}
+
+export function addMajorSpectrumLevel(orig, add)
+{
+	var level = spectrumLevel(orig);
+	
+	level += add;
+	
+	if(level <= 1) return 1;
+	if(level == 2) return 2;
+	if(level == 3) return 4;
+	if(level == 4) return 7;
+	if(level == 5) return 11;
+	return 16;
 }
 
 export function editString(t) {
