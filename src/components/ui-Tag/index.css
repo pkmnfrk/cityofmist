@@ -1,0 +1,138 @@
+.status {
+    font-family: "Impact", "Verdana", sans-serif;
+    /*height: 300px;*/
+    order: 5;
+	
+	border-radius: 15px;
+	padding: 10px;
+	display: grid;
+	position: relative;
+	grid-template-rows: 30px 1fr minmax(20px, auto);
+	
+}
+
+.status .plus {
+	background-image: url(../ui-Theme/plus-lt.gif);
+}
+
+.status .minus {
+	background-image: url(../ui-Theme/minus-lt.gif);
+}
+
+.status .header {
+    font-style: normal;
+    font-size: 14px;
+    text-align: left;
+	text-transform: uppercase;
+}
+
+.status .header .icons {
+	display: inline-block;
+	float: right;
+}
+
+.status .header .icons .icon {
+	background: white;
+	color: #a8562d;
+	padding: 4px 3px;
+	margin-left: 4px;
+	margin-top: -3px;
+	border-radius: 15px;
+}
+
+.status .header .icons .icon.active {
+	background-color: black;
+	color: white;
+	
+}
+
+.status .inner {
+    display:grid;
+    grid-column-gap: 2px;
+    grid-template-columns: 5fr 5fr 4fr 5fr 3fr 4fr 5fr 2fr 3fr 4fr 5fr 1fr 2fr 3fr 4fr 5fr;
+    text-align: center;
+    margin-left: 5px;
+    margin-right: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+    margin-top: 10px;
+}
+
+.status .inner div.col {
+    background-color: rgba(255, 255, 255, 0.75);
+    transform: skewX(-10deg);
+    display: grid;
+    grid-template-rows: 20px auto 34px;
+    overflow: hidden;
+}
+
+.status .inner div.col.shaded {
+    background-color: rgba(64, 0, 0, 0.75)
+}
+
+.status .inner div.col div {
+    min-height: 10px;
+}
+
+.status .inner div.col div.label {
+    font-size: 10px;
+    color: #f00;
+    min-height: 1em;
+}
+
+.status .inner div.col div.number {
+    color: #d1c59d;
+    font-size: 40px;
+    font-weight: bold;
+    line-height: 40px;
+    /*vertical-align: sub;*/
+    text-align: right;
+}
+
+.status .inner div.col.shaded div.number {
+    color: #eee2ba;
+}
+
+.status .close {
+    position: absolute;
+    right: -12px;
+    top: -12px;
+}
+
+.status .tagwrap {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    line-height: 48px;
+    height: 48px;
+    margin-top: 10px;
+}
+
+.status .taglabel {
+    font-size: 48px;
+}
+
+.status .tag {
+    font-size: 40px;
+    padding-left: 10px;
+    background-color: white;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	line-height: 1.1em;
+}
+
+.status .tag.small {
+	font-size: 30px;
+}
+
+.status .tag.smallest {
+	font-size: 20px;
+}
+
+.status .help {
+    font-family: "Verdana", sans-serif;
+    text-transform: uppercase;
+    font-size: 10px;
+    text-align: center;
+    margin-left: 10px;
+    margin-right: 10px;
+}

@@ -29,113 +29,13 @@ body {
 	margin-bottom: 30px;
 }
 
-.status {
-    font-family: "Impact", "Verdana", sans-serif;
-    height: 300px;
-    order: 5;
-}
-
-.status .plus {
-	background-image: url(../ui-Theme/plus-lt.gif);
-}
-
-.status .minus {
-	background-image: url(../ui-Theme/minus-lt.gif);
-}
-
-.status .header {
-    font-style: normal;
-    font-size: 14px;
-    text-align: center;
-}
-
-.status .inner {
-    display:grid;
-    grid-column-gap: 2px;
-    grid-template-columns: 5fr 5fr 4fr 5fr 3fr 4fr 5fr 2fr 3fr 4fr 5fr 1fr 2fr 3fr 4fr 5fr;
-    text-align: center;
-    margin-left: 5px;
-    margin-right: 5px;
-    padding-left: 5px;
-    padding-right: 5px;
-    margin-top: 10px;
-}
-
-.status .inner div.col {
-    background-color: rgba(255, 255, 255, 0.75);
-    transform: skewX(-10deg);
-    display: grid;
-    grid-template-rows: 20px auto 34px;
-    overflow: hidden;
-}
-
-.status .inner div.col.shaded {
-    background-color: rgba(64, 0, 0, 0.75)
-}
-
-.status .inner div.col div {
-    min-height: 10px;
-}
-
-.status .inner div.col div.label {
-    font-size: 10px;
-    color: #f00;
-    min-height: 1em;
-}
-
-.status .inner div.col div.number {
-    color: #d1c59d;
-    font-size: 40px;
-    font-weight: bold;
-    line-height: 40px;
-    /*vertical-align: sub;*/
-    text-align: right;
-}
-
-.status .inner div.col.shaded div.number {
-    color: #eee2ba;
-}
-
 .close, .add {
     cursor: pointer;
 }
 
-.status .close {
-    position: absolute;
-    right: -12px;
-    top: -12px;
-}
-
-.status .tagwrap {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    line-height: 48px;
-    height: 48px;
-    margin-top: 10px;
-}
-
-.status .taglabel {
-    font-size: 48px;
-}
-
-.status .tag {
-    font-size: 40px;
-    padding-left: 10px;
-    background-color: white;
-}
-
-.status .help {
-    font-family: "Verdana", sans-serif;
-    text-transform: uppercase;
-    font-size: 10px;
-    text-align: center;
-    margin-left: 10px;
-    margin-right: 10px;
-}
-
 .newstatus {
     max-height: 2em;
-    max-width: 100px;
+    max-width: 200px;
     order: 10;
 }
 
