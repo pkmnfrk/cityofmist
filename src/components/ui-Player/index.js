@@ -21,7 +21,6 @@ export default class Player extends React.Component {
 		
 		Object.getOwnPropertyNames(Player.prototype).forEach((prop) => {
 			if(typeof(this[prop]) == "function" && prop.startsWith("handle")) {
-				//console.log(prop);
 				this[prop] = this[prop].bind(this);
 			}
 		})

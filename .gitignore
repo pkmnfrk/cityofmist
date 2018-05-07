@@ -11,3 +11,4 @@ build
 !.elasticbeanstalk/*.cfg.yml
 
 !.elasticbeanstalk/*.global.yml
+/audio

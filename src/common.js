@@ -35,6 +35,30 @@ export function firstName(name) {
     return parts[0];
 }
 
+export function randomRange(min, max) {
+	if(typeof min == "undefined") {
+		min = 0;
+	}
+	if(typeof max == "undefined") {
+		max = 100;
+	}
+	var rng = max - min;
+	
+	return Math.floor(Math.random() * rng) + min;
+}
+
+export function randomId() {
+	return randomRange(1, 1000000000);
+}
+
+export function createTag(type) {
+	return {
+		spectrum: 1,
+		type: type,
+		id: randomId()
+	}
+}
+
 function updatePlayer(player, id) {
 	if(!player.id) {
 		player.id = id;
@@ -65,6 +89,16 @@ function updatePlayer(player, id) {
 		if(Array.isArray(player.themes[i].fade)) {
 			player.themes[i].fade = player.themes[i].fade.reduce((a,v) => a + (v?1:0),0);
 		}
+	}
+	
+	for(var i = 0; i < player.statuses.length; i++) {
+		if(!player.statuses[i].type) {
+			player.statuses[i].type = "status";
+		}
+		if(!player.statuses[i].id) {
+			player.statuses[i].id = randomId();
+		}
+		
 	}
 }
 
@@ -155,6 +189,20 @@ export function spectrumLevel(s) {
 	if(s <= 10) return 4;
 	if(s <= 15) return 5;
 	return 6;
+}
+
+export function addMajorSpectrumLevel(orig, add)
+{
+	var level = spectrumLevel(orig);
+	
+	level += add;
+	
+	if(level <= 1) return 1;
+	if(level == 2) return 2;
+	if(level == 3) return 4;
+	if(level == 4) return 7;
+	if(level == 5) return 11;
+	return 16;
 }
 
 export function editString(t) {

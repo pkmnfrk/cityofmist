@@ -11,7 +11,7 @@
     right: 13px;
 }
 
-.theme, .status {
+.theme /*, .status*/ {
 	border-radius: 15px;
 	padding: 10px;
 	display: grid;

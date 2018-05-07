@@ -1,5 +1,6 @@
 import React from 'react';
-import Status from '../ui-Status';
+import Tag from '../ui-Tag';
+import * as Common from '../../common';
 
 export default class StatusList extends React.Component {
 	constructor(props) {
@@ -16,9 +17,7 @@ export default class StatusList extends React.Component {
     }
     
     addStatus() {
-        var newStatus = {
-            spectrum: 1
-        };
+        var newStatus = Common.createTag("tag");
         
         this.props.statuses.push(newStatus);
         
@@ -29,14 +28,14 @@ export default class StatusList extends React.Component {
 		return (
 		<React.Fragment>
 		{this.props.statuses.map((status, ix) => 
-			<Status
-				key={ix}
+			<Tag
+				key={status.id}
 				onChange={this.props.onChange}
 				onDelete={() => this.deleteStatus(status)}
-				status={status}
+				tag={status}
 			/>
 		)}
-			<button className="newstatus" onClick={() => this.addStatus()}>Add status</button>
+			<button className="newstatus" onClick={() => this.addStatus()}>Add Tracking Card</button>
 		</React.Fragment>
 		);
 		

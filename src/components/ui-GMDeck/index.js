@@ -82,10 +82,18 @@ export default class GMDeck extends React.Component {
 		);
 	}
 	
-	renderStatus(status, key) {
+	renderStatus(status) {
+		var spec = null, sub = null;
+		if(status.type != "tag") {
+			spec = <React.Fragment> - {this.spectrum(status.spectrum)}</React.Fragment>
+		}
+		if(status.statuses && status.statuses.length) {
+			sub = (<ul>{status.statuses.map((s) => this.renderStatus(s))}</ul>)
+		}
 		return (
-			<li key={key} className={(status.spectrum >= 11 ? "danger ": "") + (status.selected || "")}>
-				{status.name} - {this.spectrum(status.spectrum)}
+			<li key={status.id} className={(status.spectrum >= 11 ? "danger ": "") + (status.selected || "")}>
+				{status.name} ({status.type}){spec}
+				{sub}
 			</li>
 		);
 	}
@@ -101,13 +109,12 @@ export default class GMDeck extends React.Component {
 				<div>
 					Themes:
 					<ul className="themes">
-						{char.themes.map((t, ix) => this.renderTheme(t, ix))}
+						{char.themes.map((t, ix) => this.renderTheme(t, t.name))}
 					</ul>
 				</div>
 				<div>
-					Statuses:
 					<ul className="statuses">
-						{char.statuses.map((s, ix) => this.renderStatus(s, ix))}
+						{char.statuses.map((s, ix) => this.renderStatus(s))}
 					</ul>
 				</div>
 			</div>
