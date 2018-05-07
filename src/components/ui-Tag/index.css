@@ -156,7 +156,7 @@
 	cursor: pointer;
 }
 
-.status .substatuses .minusstatus, .status .substatuses .plusstatus {
+.status .substatuses .minusstatus, .status .substatuses .plusstatus, .status .substatuses .edit {
 	margin-left: 5px;
 	cursor: pointer;
 }

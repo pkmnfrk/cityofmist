@@ -56,6 +56,8 @@ export default class Status extends React.Component {
     }
 	
 	handleHeaderClick() {
+		if(this.props.tag.type == "clue" || this.props.tag.type == "juice") return;
+		
 		if(!this.props.tag.selected) {
 			this.props.tag.selected = "minus";
 		} else if(this.props.tag.selected == "minus") {
@@ -66,6 +68,24 @@ export default class Status extends React.Component {
 		this.props.onChange();
 	}
 	
+	handleStatusClick(id) {
+		for(var i = 0; i < this.props.tag.statuses.length; i++) {
+			var stat = this.props.tag.statuses[i];
+			
+			if(stat.id === id) {
+				
+				if(!stat.selected) {
+					stat.selected = "minus";
+				} else if(stat.selected == "minus") {
+					stat.selected = "plus";
+				} else if(stat.selected == "plus") {
+					delete stat.selected;
+				}
+				this.props.onChange();
+			}
+		}
+	}
+	
 	handleTagClick() {
 		var newTag = Common.editString(this.props.tag.name);
 		if(newTag != this.props.tag.name) {
@@ -74,7 +94,8 @@ export default class Status extends React.Component {
 		}
 	}
 	
-	handleStatusClick(id) {
+	handleStatusEdit(e, id) {
+		e.stopPropagation()
 		for(var i = 0; i < this.props.tag.statuses.length; i++) {
 			if(this.props.tag.statuses[i].id === id) {
 				var newTag = Common.editString(this.props.tag.statuses[i].name);
@@ -175,9 +196,10 @@ export default class Status extends React.Component {
 					</React.Fragment>);
 				}
 				
-				return (<li key={s.id}>
+				return (<li key={s.id} className={s.selected} onClick={() => this.handleStatusClick(s.id)}>
 					<Icon outline={false} icon="times-circle" className="delete" onClick={() => this.handleDeleteStatus(s.id)} />
-					<span onClick={() => this.handleStatusClick(s.id)}>{s.name}</span>
+					{s.name}
+					<Icon outline={true} icon="edit" className="edit" onClick={(e) => this.handleStatusEdit(e, s.id)} />
 					{spec}
 				</li>);
 			});

@@ -62,6 +62,14 @@ export default class Roller extends React.Component {
 					any = true;
 					delete status.selected;
 				}
+				if(status.statuses) {
+					for(var sub of status.statuses) {
+						if(sub.selected) {
+							delete sub.selected;
+							any = true;
+						}
+					}
+				}
 			}
 			
 			if(any) {
@@ -91,6 +99,13 @@ export default class Roller extends React.Component {
 			for(var status of this.props.char.statuses) {
 				if(status.selected == kind) {
 					ret += spectrumLevel(status.spectrum);
+				}
+				if(status.statuses) {
+					for(var sub of status.statuses) {
+						if(sub.selected == kind) {
+							ret += sub.type == "status" ? spectrumLevel(sub.spectrum) : 1;
+						}
+					}
 				}
 			}
 		}
